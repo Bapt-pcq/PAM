@@ -37,14 +37,6 @@ def create_grid():
     if taille == 2  :
         grille10x10()
 
-
-
-
-
-
-
-
-
 def grille8x8():
     global taille, text_id_message, text_ids, grid_values, rows, cols, cell_size, canvas, roots, page1_ouverte, root,offset_x,offset_y
     taille =1
@@ -173,7 +165,82 @@ def grille8x8():
 
 
 def grille10x10():
-    return 0
+    global taille, text_id_message, text_ids, grid_values, rows, cols, cell_size, canvas, roots, page1_ouverte, root,offset_x,offset_y
+    taille =2
+    # Définition des paramètres graphique
+    if page1_ouverte == False :
+        roots.destroy()
+    page1_ouverte = True
+    root = tk.Tk()
+    root.title("Grille 10x10")
+
+    # Dimensions de la grille
+    rows, cols = 10, 10
+    cell_size = 50  # Taille des cellules en pixels
+
+    # Création du canvas pour dessiner la grille
+    canvas = tk.Canvas(root, width=cols*cell_size*1.9, height=rows*cell_size*1.3)
+    canvas.pack()
+    text_ids = [[None for _ in range(cols)] for _ in range(rows)]
+    grid_values = [["" for _ in range(cols)] for _ in range(rows)]
+    text_id_message = None
+    grid_values1 = [["" for _ in range(cols)] for _ in range(rows)]
+    # Définir les décalages pour centrer la grille
+    offset_x = 30  # Décalage horizontal
+    offset_y = 20  # Décalage vertical
+
+    # Dessin des lignes horizontales et verticales
+    for i in range(rows + 1):
+        canvas.create_line(offset_x, offset_y + i * cell_size, offset_x + cols * cell_size, offset_y + i * cell_size)  # Lignes horizontales
+
+    for j in range(cols + 1):
+        canvas.create_line(offset_x + j * cell_size, offset_y, offset_x + j * cell_size, offset_y + rows * cell_size)  # Lignes verticales
+    canvas.bind("<Button-1>", on_click)
+    # creation des boutons
+    button_clear = tk.Button(root, text="Réinitialiser", command=clear,width=15, height=3)
+    button_verif = tk.Button(root, text="Vérifier", command=verifier10x10,width=15, height=3)
+    button_valider = tk.Button(root, text="Valider", command=verifier10x10,width=15, height=3)
+    button_home = tk.Button(root, text="Accueil", command=home,width=7, height=2)
+    # Placement du bouton dans la fenêtre
+    button_clear.place(x=700, y=100)
+    button_verif.place(x=700, y=200)
+    button_valider.place(x=700, y=300)
+    button_home.place(x=900, y=0)
+
+    canvas.create_text(750, 40, text="TAKUZU grille 10x10", font=('Helvetica', 20), fill="black")
+
+    canvas.create_text(250, 560, text="Message", font=('Helvetica', 10), fill="black")
+
+
+
+    canvas.create_rectangle(220, 570, 570, 600, outline="black", width=1, fill="")
+    #numérotation ligne
+    canvas.create_text(offset_x-10, offset_y+10, text="1", font=('Helvetica', 10), fill="black")
+    canvas.create_text(offset_x-10, offset_y+60, text="2", font=('Helvetica', 10), fill="black")
+    canvas.create_text(offset_x-10, offset_y+110, text="3", font=('Helvetica', 10), fill="black")
+    canvas.create_text(offset_x-10, offset_y+160, text="4", font=('Helvetica', 10), fill="black")
+    canvas.create_text(offset_x-10, offset_y+210, text="5", font=('Helvetica', 10), fill="black")
+    canvas.create_text(offset_x-10, offset_y+260, text="6", font=('Helvetica', 10), fill="black")
+    canvas.create_text(offset_x-10, offset_y+310, text="7", font=('Helvetica', 10), fill="black")
+    canvas.create_text(offset_x-10, offset_y+360, text="8", font=('Helvetica', 10), fill="black")
+    canvas.create_text(offset_x-10, offset_y+410, text="9", font=('Helvetica', 10), fill="black")
+    canvas.create_text(offset_x-10, offset_y+460, text="10", font=('Helvetica', 10), fill="black")
+    
+
+    #numérotation colonne
+    canvas.create_text(offset_x+10, offset_y-10, text="1", font=('Helvetica', 10), fill="black")
+    canvas.create_text(offset_x+60, offset_y-10, text="2", font=('Helvetica', 10), fill="black")
+    canvas.create_text(offset_x+110, offset_y-10, text="3", font=('Helvetica', 10), fill="black")
+    canvas.create_text(offset_x+160, offset_y-10, text="4", font=('Helvetica', 10), fill="black")
+    canvas.create_text(offset_x+210, offset_y-10, text="5", font=('Helvetica', 10), fill="black")
+    canvas.create_text(offset_x+260, offset_y-10, text="6", font=('Helvetica', 10), fill="black")
+    canvas.create_text(offset_x+310, offset_y-10, text="7", font=('Helvetica', 10), fill="black")
+    canvas.create_text(offset_x+360, offset_y-10, text="8", font=('Helvetica', 10), fill="black")
+    canvas.create_text(offset_x+410, offset_y-10, text="9", font=('Helvetica', 10), fill="black")
+    canvas.create_text(offset_x+460, offset_y-10, text="10", font=('Helvetica', 10), fill="black")
+
+    for i in range(10) :
+        print(grid_values[i])
 
 def grille6x6():
     global taille, text_id_message, text_ids, grid_values, rows, cols, cell_size, canvas, roots, page1_ouverte, root, offset_x, offset_y
@@ -309,7 +376,40 @@ def verifier():
 
     return True
 
+def verifier10x10():
+    # Vérifier les lignes
+    global text_id_message, grid_values
+    if text_id_message != None:
+        canvas.delete(text_id_message)
+    if not all_unique(grid_values):
 
+        text_id_message = canvas.create_text(350, 585, text="Faux - Lignes ou colonnes identiques", font=('Helvetica', 10), fill="black")
+
+        return False
+    for row in range(rows):
+        if not is_valid_sequence(grid_values[row]) :
+
+            text_id_message = canvas.create_text(350, 585, text="Faux ligne "+ str(row + 1), font=('Helvetica', 10), fill="black")
+
+            return False
+        if not has_equal_zeros_ones(grid_values[row]) :
+            text_id_message = canvas.create_text(350, 585, text="Faux ligne " + str(row + 1) + " dif nb 0 et 1", font=('Helvetica', 10), fill="black")
+
+            return False
+    # Vérifier les colonnes
+    for col in range(cols):
+        column = [grid_values[row][col] for row in range(rows)]
+        if not is_valid_sequence(column) :
+            text_id_message = canvas.create_text(350, 585, text="Faux colonne "+ str(col + 1), font=('Helvetica', 10), fill="black")
+
+            return False
+        if not has_equal_zeros_ones(column):
+            text_id_message = canvas.create_text(350, 585, text="Faux colonne " + str(col + 1) + " dif nb 0 et 1", font=('Helvetica', 10), fill="black")
+
+            return False
+    text_id_message = canvas.create_text(350, 585, text="Vrai", font=('Helvetica', 10), fill="black")
+
+    return True
 
 
 
