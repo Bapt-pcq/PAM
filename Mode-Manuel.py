@@ -497,11 +497,14 @@ def on_click(event):
         if text_ids[row][col] == "Rempli" :
             return False
 
-        if grid_values[row][col] == 0 or grid_values[row][col] == "":
+        if grid_values[row][col] == "":
+            grid_values[row][col] = 0
+            text_ids[row][col] = canvas.create_text(x, y, text="0", font=('Helvetica', 12), fill="green")
+        elif grid_values[row][col] == 0:
             grid_values[row][col] = 1
             text_ids[row][col] = canvas.create_text(x, y, text="1", font=('Helvetica', 12), fill="green")
         elif grid_values[row][col] == 1:
-            grid_values[row][col] = 0
-            text_ids[row][col] = canvas.create_text(x, y, text="0", font=('Helvetica', 12), fill="green")
+            grid_values[row][col] = ''
+            text_ids[row][col] = canvas.create_text(x, y, text='', font=('Helvetica', 12), fill="green")
 
 first_page()
