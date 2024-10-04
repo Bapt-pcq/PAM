@@ -199,7 +199,7 @@ def grille10x10():
     # creation des boutons
     button_clear = tk.Button(root, text="Réinitialiser", command=clear,width=15, height=3)
     button_verif = tk.Button(root, text="Vérifier", command=verifier10x10,width=15, height=3)
-    button_valider = tk.Button(root, text="Valider", command=verifier10x10,width=15, height=3)
+    button_valider = tk.Button(root, text="Valider", command=valider10x10,width=15, height=3)
     button_home = tk.Button(root, text="Accueil", command=home,width=7, height=2)
     # Placement du bouton dans la fenêtre
     button_clear.place(x=700, y=100)
@@ -343,7 +343,7 @@ def grille6x6():
     # creation des boutons
     button_clear = tk.Button(root, text="Réinitialiser", command=clear,width=15, height=3)
     button_verif = tk.Button(root, text="Vérifier", command=verifier,width=15, height=3)
-    button_valider = tk.Button(root, text="Valider", command=verifier,width=15, height=3)
+    button_valider = tk.Button(root, text="Valider", command=valider,width=15, height=3)
     button_home = tk.Button(root, text="Accueil", command=home,width=7, height=2)
     # Placement du bouton dans la fenêtre
     button_clear.place(x=530, y=100)
@@ -423,7 +423,15 @@ def grille6x6():
     for i in range(6) :
         print(grid_values[i])
 def valider():
-    return 0
+    global text_id_message, grid_values
+    if not check_empty_cells(grid_values) :
+        if not verifier():
+            canvas.delete(text_id_message)
+            text_id_message = canvas.create_text(310, 465, text="Malheureusement, la grille est fausse vous devez recommencer !", font=('Helvetica', 10), fill="black")
+            return False
+        canvas.delete(text_id_message)
+        text_id_message = canvas.create_text(310, 465, text="Vous avez correctement complété la grille, félicitation !", font=('Helvetica', 10), fill="black")    
+        return True
 def verifier():
     # Vérifier les lignes
     global text_id_message, grid_values
@@ -528,7 +536,25 @@ def verifier10x10():
 
     return True
 
+def valider10x10():
+    global text_id_message, grid_values
+    if not check_empty_cells(grid_values) :
+        if not verifier():
+            canvas.delete(text_id_message)
+            text_id_message = canvas.create_text(390, 585, text="Malheureusement, la grille est fausse vous devez recommencer !", font=('Helvetica', 10), fill="black")
+            return False
+        canvas.delete(text_id_message)
+        text_id_message = canvas.create_text(390, 585, text="Vous avez correctement complété la grille, félicitation !", font=('Helvetica', 10), fill="black")    
+        return True
 
+
+def check_empty_cells(grid):
+    # Parcourir chaque ligne de la grille
+    for row in grid:
+        # Vérifier s'il y a une cellule vide ('') dans la ligne
+        if '' in row:
+            return True  # Il y a au moins une cellule vide
+    return False  # Pas de cellules vides
 
 
 
