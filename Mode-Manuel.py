@@ -239,6 +239,89 @@ def grille10x10():
     canvas.create_text(offset_x+410, offset_y-10, text="9", font=('Helvetica', 10), fill="black")
     canvas.create_text(offset_x+460, offset_y-10, text="10", font=('Helvetica', 10), fill="black")
 
+    # Remplir le canvas avec les valeurs générées dans grid_values
+    text_ids[4][0] = "Rempli"
+    canvas.create_text(offset_x+0 * cell_size + cell_size // 2,offset_y+ 4 * cell_size + cell_size // 2, text=0, font=('Helvetica', 12), fill="black")
+    grid_values[4][0]=0
+    text_ids[5][0] = "Rempli"
+    canvas.create_text(offset_x+0 * cell_size + cell_size // 2,offset_y+ 5 * cell_size + cell_size // 2, text=0, font=('Helvetica', 12), fill="black")
+    grid_values[5][0]=0
+    text_ids[8][0] = "Rempli"
+    canvas.create_text(offset_x+0 * cell_size + cell_size // 2,offset_y+ 8 * cell_size + cell_size // 2, text=1, font=('Helvetica', 12), fill="black")
+    grid_values[8][0]=1
+    text_ids[1][1] = "Rempli"
+    canvas.create_text(offset_x+1 * cell_size + cell_size // 2,offset_y+ 1 * cell_size + cell_size // 2, text=0, font=('Helvetica', 12), fill="black")
+    grid_values[1][1]=0
+    text_ids[2][1] = "Rempli"
+    canvas.create_text(offset_x+1 * cell_size + cell_size // 2,offset_y+ 2 * cell_size + cell_size // 2, text=0, font=('Helvetica', 12), fill="black")
+    grid_values[2][1]=0
+    text_ids[8][1] = "Rempli"
+    canvas.create_text(offset_x+1 * cell_size + cell_size // 2,offset_y+ 8 * cell_size + cell_size // 2, text=0, font=('Helvetica', 12), fill="black")
+    grid_values[8][1]=0
+    text_ids[9][1] = "Rempli"
+    canvas.create_text(offset_x+ 1 * cell_size + cell_size // 2,offset_y+ 9 * cell_size + cell_size // 2, text=1, font=('Helvetica', 12), fill="black")
+    grid_values[9][1]=1
+    text_ids[1][2] = "Rempli"
+    canvas.create_text(offset_x+ 2 * cell_size + cell_size // 2,offset_y+ 1 * cell_size + cell_size // 2, text=1, font=('Helvetica', 12), fill="black")
+    grid_values[1][2]=1
+    text_ids[5][2] = "Rempli"
+    canvas.create_text(offset_x+ 2 * cell_size + cell_size // 2,offset_y+ 5 * cell_size + cell_size // 2, text=1, font=('Helvetica', 12), fill="black")
+    grid_values[5][2]=1
+    text_ids[0][3] = "Rempli"
+    canvas.create_text(offset_x+ 3 * cell_size + cell_size // 2,offset_y+ 0 * cell_size + cell_size // 2, text=0, font=('Helvetica', 12), fill="black")
+    grid_values[0][3]=0
+    text_ids[3][3] = "Rempli"
+    canvas.create_text(offset_x+ 3 * cell_size + cell_size // 2,offset_y+ 3 * cell_size + cell_size // 2, text=0, font=('Helvetica', 12), fill="black")
+    grid_values[3][3]=0
+    text_ids[2][4] = "Rempli"
+    canvas.create_text(offset_x+ 4 * cell_size + cell_size // 2,offset_y+ 2 * cell_size + cell_size // 2, text=0, font=('Helvetica', 12), fill="black")
+    grid_values[2][4]=0
+    text_ids[6][4] = "Rempli"
+    canvas.create_text(offset_x+ 4 * cell_size + cell_size // 2,offset_y+ 6 * cell_size + cell_size // 2, text=0, font=('Helvetica', 12), fill="black")
+    grid_values[6][4]=0
+    text_ids[7][4] = "Rempli"
+    canvas.create_text(offset_x+ 4 * cell_size + cell_size // 2,offset_y+ 7 * cell_size + cell_size // 2, text=0, font=('Helvetica', 12), fill="black")
+    grid_values[7][4]=0
+    text_ids[9][4] = "Rempli"
+    canvas.create_text(offset_x+ 4 * cell_size + cell_size // 2,offset_y+ 9 * cell_size + cell_size // 2, text=1, font=('Helvetica', 12), fill="black")
+    grid_values[9][4]=1
+    text_ids[0][5] = "Rempli"
+    canvas.create_text(offset_x+ 5 * cell_size + cell_size // 2,offset_y+ 0 * cell_size + cell_size // 2, text=1, font=('Helvetica', 12), fill="black")
+    grid_values[0][5]=1
+    text_ids[4][5] = "Rempli"
+    canvas.create_text(offset_x+ 5 * cell_size + cell_size // 2,offset_y+ 4 * cell_size + cell_size // 2, text=1, font=('Helvetica', 12), fill="black")
+    grid_values[4][5]=1
+    text_ids[5][5] = "Rempli"
+    canvas.create_text(offset_x+ 5 * cell_size + cell_size // 2,offset_y+ 5 * cell_size + cell_size // 2, text=1, font=('Helvetica', 12), fill="black")
+    grid_values[5][5]=1
+    text_ids[7][5] = "Rempli"
+    canvas.create_text(offset_x+ 5 * cell_size + cell_size // 2,offset_y+ 7 * cell_size + cell_size // 2, text=0, font=('Helvetica', 12), fill="black")
+    grid_values[7][5]=0
+    text_ids[0][6] = "Rempli"
+    canvas.create_text(offset_x+ 6 * cell_size + cell_size // 2,offset_y+ 0 * cell_size + cell_size // 2, text=1, font=('Helvetica', 12), fill="black")
+    grid_values[0][6]=1
+    text_ids[4][7] = "Rempli"
+    canvas.create_text(offset_x+ 7 * cell_size + cell_size // 2,offset_y+ 4 * cell_size + cell_size // 2, text=1, font=('Helvetica', 12), fill="black")
+    grid_values[4][7]=1
+    text_ids[5][7] = "Rempli"
+    canvas.create_text(offset_x+ 7 * cell_size + cell_size // 2,offset_y+ 5 * cell_size + cell_size // 2, text=1, font=('Helvetica', 12), fill="black")
+    grid_values[5][7]=1
+    text_ids[1][8] = "Rempli"
+    canvas.create_text(offset_x+ 8 * cell_size + cell_size // 2,offset_y+ 1 * cell_size + cell_size // 2, text=1, font=('Helvetica', 12), fill="black")
+    grid_values[1][8]=1
+    text_ids[4][8] = "Rempli"
+    canvas.create_text(offset_x+ 8 * cell_size + cell_size // 2,offset_y+ 4 * cell_size + cell_size // 2, text=0, font=('Helvetica', 12), fill="black")
+    grid_values[4][8]=0
+    text_ids[3][9] = "Rempli"
+    canvas.create_text(offset_x+ 9 * cell_size + cell_size // 2,offset_y+ 3 * cell_size + cell_size // 2, text=1, font=('Helvetica', 12), fill="black")
+    grid_values[3][9]=1
+    text_ids[6][9] = "Rempli"
+    canvas.create_text(offset_x+ 9 * cell_size + cell_size // 2,offset_y+ 6 * cell_size + cell_size // 2, text=0, font=('Helvetica', 12), fill="black")
+    grid_values[6][9]=0
+    text_ids[8][9] = "Rempli"
+    canvas.create_text(offset_x+ 9 * cell_size + cell_size // 2,offset_y+ 8 * cell_size + cell_size // 2, text=0, font=('Helvetica', 12), fill="black")
+    grid_values[8][9]=0
+
     for i in range(10) :
         print(grid_values[i])
 
