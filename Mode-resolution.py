@@ -513,7 +513,7 @@ def on_click(event):
 def resoudre():
     global taille, text_id_message, text_ids, grid_values, rows, cols, cell_size, canvas, roots, page1_ouverte, root, offset_x, offset_y
     
-    all_unique_pas_a_pas(grid_values)
+    row_unique_pas_a_pas(grid_values)
     grid_col = []
     
     # Parcourir chaque colonne de la grille
@@ -527,18 +527,27 @@ def resoudre():
         
         # Ajouter la colonne actuelle à la liste des colonnes
         grid_col.append(current_column)
+    col_unique_pas_a_pas(grid_col)
     #print(grid_col)
     #all_unique_pas_a_pas(grid_col)
     #if not verifier():
     #    return False
-    
-    
-        
+    for row in range(rows):
+        for col in range(cols):
+                # Vérifier si l'ajout de cette valeur respecte les règles du Takuzu
+                b = is_valid_placement(row, col, 1)
+                print(b)
+                if b != False :
+                    grid_values[row][col] = is_valid_placement(row, col, 1)
+                    print(grid_values[row][col])
+                    a=grid_values[row][col]
+                    canvas.create_text(offset_x+col * cell_size + cell_size // 2,offset_y+ row * cell_size + cell_size // 2, text=a, font=('Helvetica', 12), fill="black")
+    print(grid_values)                
     return 0 
 
-def all_unique_pas_a_pas(sequence):
+def row_unique_pas_a_pas(sequence):
     # Filtrer les lignes qui ne contiennent pas de ''
-    global filtered_rows
+    global filtered_rows,identical_rows
     
     filtered_rows = sequence
     
@@ -547,12 +556,76 @@ def all_unique_pas_a_pas(sequence):
     for i in range(len(filtered_rows)):
         for j in range(i+1, len(filtered_rows)):
             if filtered_rows[i] == filtered_rows[j]:
-                identical_rows.append((i, j))
-    print(identical_rows)      
+                identical_rows.append(i)
+                identical_rows.append(j)
+    print("identical row : ",identical_rows)      
     
-
+def col_unique_pas_a_pas(sequence):
+    # Filtrer les lignes qui ne contiennent pas de ''
+    global filtered_rows,identical_col
+    
+    filtered_col = sequence
+    
+    # Vérifier les lignes identiques
+    identical_col = []
+    for i in range(len(filtered_col)):
+        for j in range(i+1, len(filtered_col)):
+            if filtered_col[i] == filtered_col[j]:
+                identical_col.append(i)
+                identical_col.append(j)
+    print("identical col: ",identical_col)      
     # Afficher les résultats
 
+def is_valid_placement(row, col, value):
+    global filtered_rows,identical_col, grid_values, identical_rows, text_ids
+    # Vérifie si la valeur proposée est valide à la position (row, col)
+    # Vérifier si ajouter la valeur viole la règle des 3 consécutifs dans la ligne
+    for i in range(len(identical_rows)):
+        if row == identical_rows[i] :
+            return False
+    for i in range(len(identical_col)):
+        if col == identical_col[i] :
+            return False
+    if text_ids[row][col] == "Rempli" :
+        return False
+    if col >= 2 and grid_values[row][col-1] == value and grid_values[row][col-2] == value:
+        if(value==1) :
+            return 0
+        if(value==0) :
+            return 1
+    # Vérifier si ajouter la valeur viole la règle des 3 consécutifs dans la colonne
+    if row >= 2 and grid_values[row-1][col] == value and grid_values[row-2][col] == value:
+        if(value==1) :
+            return 0
+        if(value==0) :
+            return 1
+    else :
+        return value
+
+   # Compter le nombre de 0 et 1 dans la ligne
+    count_0_row = grid_values[row][:col].count(0) + (1 if value == 0 else 0)
+    count_1_row = grid_values[row][:col].count(1) + (1 if value == 1 else 0)
+
+    # Vérifier si on dépasse le nombre maximal de 0 ou 1 dans la ligne
+    if count_0_row > rows // 2 or count_1_row > rows // 2:
+        if(value==1) :
+            return 0
+        if(value==0) :
+            return 1
+
+    # Compter le nombre de 0 et 1 dans la colonne
+    count_0_col = sum(grid_values[r][col] == 0 for r in range(row)) + (1 if value == 0 else 0)
+    count_1_col = sum(grid_values[r][col] == 1 for r in range(row)) + (1 if value == 1 else 0)
+
+    # Vérifier si on dépasse le nombre maximal de 0 ou 1 dans la colonne
+    if count_0_col > cols // 2 or count_1_col > cols // 2:
+        if(value==1) :
+            return 0
+        if(value==0) :
+            return 1
+
+    else :
+        return value
 
 first_page()
 
