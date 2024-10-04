@@ -431,7 +431,25 @@ def verifier():
         canvas.delete(text_id_message)
     if not all_unique(grid_values):
 
-        text_id_message = canvas.create_text(250, 465, text="Faux - Lignes ou colonnes identiques", font=('Helvetica', 10), fill="black")
+        text_id_message = canvas.create_text(250, 465, text="Faux - Lignes identiques", font=('Helvetica', 10), fill="black")
+
+        return False
+    grid_col = []
+    
+    # Parcourir chaque colonne de la grille
+    for col in range(len(grid_values[0])):
+        # Initialiser une liste pour la colonne actuelle
+        current_column = []
+        
+        # Parcourir chaque ligne pour extraire l'élément de la colonne actuelle
+        for lig in range(len(grid_values)):
+            current_column.append(grid_values[lig][col])
+        
+        # Ajouter la colonne actuelle à la liste des colonnes
+        grid_col.append(current_column)
+    if not all_unique(grid_col):
+
+        text_id_message = canvas.create_text(250, 465, text="Faux - Colonnes identiques", font=('Helvetica', 10), fill="black")
 
         return False
     for row in range(rows):
@@ -466,7 +484,23 @@ def verifier10x10():
         canvas.delete(text_id_message)
     if not all_unique(grid_values):
 
-        text_id_message = canvas.create_text(350, 585, text="Faux - Lignes ou colonnes identiques", font=('Helvetica', 10), fill="black")
+        text_id_message = canvas.create_text(350, 585, text="Faux - Lignes identiques", font=('Helvetica', 10), fill="black")
+
+        return False
+    grid_col = []
+    for col in range(len(grid_values[0])):
+            # Initialiser une liste pour la colonne actuelle
+            current_column = []
+            
+            # Parcourir chaque ligne pour extraire l'élément de la colonne actuelle
+            for lig in range(len(grid_values)):
+                current_column.append(grid_values[lig][col])
+            
+            # Ajouter la colonne actuelle à la liste des colonnes
+            grid_col.append(current_column)
+    if not all_unique(grid_col):
+
+        text_id_message = canvas.create_text(350, 585, text="Faux - Colonnes identiques", font=('Helvetica', 10), fill="black")
 
         return False
     for row in range(rows):
