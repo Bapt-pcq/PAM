@@ -2,16 +2,11 @@ import tkinter as tk
 
 class ihm_10x10:
 
-    def __init__(self):
-        self.taille = 0
         
-    def grille10x10():
-        global taille, text_id_message, text_ids, grid_values, rows, cols, cell_size, canvas, roots, page1_ouverte, root,offset_x,offset_y
+    def grille10x10(self):
+        global taille, text_id_message, text_ids, grid_values, rows, cols, cell_size, canvas,  root,offset_x,offset_y
         taille =2
         # Définition des paramètres graphique
-        if page1_ouverte == False :
-            roots.destroy()
-        page1_ouverte = True
         root = tk.Tk()
         root.title("Grille 10x10")
 
@@ -36,12 +31,12 @@ class ihm_10x10:
 
         for j in range(cols + 1):
             canvas.create_line(offset_x + j * cell_size, offset_y, offset_x + j * cell_size, offset_y + rows * cell_size)  # Lignes verticales
-        canvas.bind("<Button-1>", on_click)
+        canvas.bind("<Button-1>", ihm_10x10.on_click)
         # creation des boutons
-        button_clear = tk.Button(root, text="Réinitialiser", command=clear10x10,width=15, height=3)
-        button_verif = tk.Button(root, text="Vérifier", command=verifier10x10,width=15, height=3)
-        button_valider = tk.Button(root, text="Valider", command=valider10x10,width=15, height=3)
-        button_home = tk.Button(root, text="Accueil", command=home,width=7, height=2)
+        button_clear = tk.Button(root, text="Réinitialiser", command=ihm_10x10.clear10x10,width=15, height=3)
+        button_verif = tk.Button(root, text="Vérifier", command=ihm_10x10.verifier10x10,width=15, height=3)
+        button_valider = tk.Button(root, text="Valider", command=ihm_10x10.valider10x10,width=15, height=3)
+        button_home = tk.Button(root, text="Accueil", command=ihm_10x10.home,width=7, height=2)
         # Placement du bouton dans la fenêtre
         button_clear.place(x=700, y=100)
         button_verif.place(x=700, y=200)
@@ -165,3 +160,168 @@ class ihm_10x10:
 
         for i in range(10) :
             print(grid_values[i])
+    
+    def check_empty_cells(grid):
+            # Parcourir chaque ligne de la grille
+            for row in grid:
+                # Vérifier s'il y a une cellule vide ('') dans la ligne
+                if '' in row:
+                    return True  # Il y a au moins une cellule vide
+            return False  # Pas de cellules vides
+
+
+
+
+    def clear10x10():
+        global root, canvas, text_id_message
+        root.destroy()
+        for row in range(rows):
+            for col in range(cols):
+                grid_values[row][col] = ""
+        ihm_10x10.grille10x10("a")
+        text_id_message = canvas.create_text(350, 585, text="La grille a été réinitialisée", font=('Helvetica', 10), fill="black")
+
+    def home():
+        from first_page import first_page 
+        global root
+        root.destroy()
+        first_page()
+
+    def is_valid_sequence(sequence):
+        # Vérifie qu'il n'y a pas plus de deux 0 ou 1 consécutifs
+        count = 1
+
+        for i in range(1, len(sequence)):
+
+            if sequence[i] != "" or sequence[i-1] != "":
+                if sequence[i] == sequence[i - 1]  :
+                    count += 1
+                    if count > 2:
+                        return False
+                else:
+                    count = 1
+        return True
+
+
+    def has_equal_zeros_ones(sequence):
+        # Vérifie qu'il y a le même nombre de 0 et de 1
+        vide = sequence.count("")
+        if vide!=0:
+            return True
+        zeros = sequence.count(0)
+        ones = sequence.count(1)
+        if zeros != ones :
+            return False
+        return True
+
+    def all_unique(sequence):
+        # Filtrer les lignes qui ne contiennent pas de ''
+        filtered_rows = [row for row in sequence if '' not in row]
+
+        # Vérifier les lignes identiques
+        identical_rows = []
+        for i in range(len(filtered_rows)):
+            for j in range(i+1, len(filtered_rows)):
+                if filtered_rows[i] == filtered_rows[j]:
+                    identical_rows.append((i, j))
+
+        # Afficher les résultats
+
+        if identical_rows:
+            return False
+        else:
+            return True
+
+
+    def verifier10x10():
+    # Vérifier les lignes
+        global text_id_message, grid_values
+        if text_id_message != None:
+            canvas.delete(text_id_message)
+        if not ihm_10x10.all_unique(grid_values):
+
+            text_id_message = canvas.create_text(350, 585, text="Il y a une erreur, deux lignes sont identiques", font=('Helvetica', 10), fill="black")
+
+            return False
+        grid_col = []
+        for col in range(len(grid_values[0])):
+                # Initialiser une liste pour la colonne actuelle
+                current_column = []
+                
+                # Parcourir chaque ligne pour extraire l'élément de la colonne actuelle
+                for lig in range(len(grid_values)):
+                    current_column.append(grid_values[lig][col])
+                
+                # Ajouter la colonne actuelle à la liste des colonnes
+                grid_col.append(current_column)
+        if not ihm_10x10.all_unique(grid_col):
+
+            text_id_message = canvas.create_text(350, 585, text="Il y a une erreur, deux colonnes sont identiques", font=('Helvetica', 10), fill="black")
+
+            return False
+        for row in range(rows):
+            if not ihm_10x10.is_valid_sequence(grid_values[row]) :
+
+                text_id_message = canvas.create_text(350, 585, text="Il y a une erreur dans la ligne "+ str(row + 1), font=('Helvetica', 10), fill="black")
+
+                return False
+            if not ihm_10x10.has_equal_zeros_ones(grid_values[row]) :
+                text_id_message = canvas.create_text(350, 585, text="Il y a une erreur dans la ligne " + str(row + 1) + " le nombre de 0 et de 1 est différent", font=('Helvetica', 10), fill="black")
+
+                return False
+        # Vérifier les colonnes
+        for col in range(cols):
+            column = [grid_values[row][col] for row in range(rows)]
+            if not ihm_10x10.is_valid_sequence(column) :
+                text_id_message = canvas.create_text(350, 585, text="Il y a une erreur dans la colonne "+ str(col + 1), font=('Helvetica', 10), fill="black")
+
+                return False
+            if not ihm_10x10.has_equal_zeros_ones(column):
+                text_id_message = canvas.create_text(350, 585, text="Il y a une erreur dans la colonne " + str(col + 1) + " le nombre de 0 et de 1 est différent", font=('Helvetica', 10), fill="black")
+
+                return False
+        text_id_message = canvas.create_text(350, 585, text="Il n'y a pas d'erreur", font=('Helvetica', 10), fill="black")
+
+        return True
+
+    def valider10x10():
+        global text_id_message, grid_values
+        if not ihm_10x10.check_empty_cells(grid_values) :
+            if not ihm_10x10.verifier():
+                canvas.delete(text_id_message)
+                text_id_message = canvas.create_text(390, 585, text="Malheureusement, la grille est fausse vous devez recommencer !", font=('Helvetica', 10), fill="black")
+                return False
+            canvas.delete(text_id_message)
+            text_id_message = canvas.create_text(390, 585, text="Vous avez correctement complété la grille, félicitation !", font=('Helvetica', 10), fill="black")    
+            return True
+        canvas.delete(text_id_message)
+        text_id_message = canvas.create_text(390, 585,  text="Vous devez d'abord terminer la grille !", font=('Helvetica', 10), fill="black")
+    def on_click(event):
+        global cell_size, grid_values, text_ids, cols, rows, canvas, offset_x, offset_y
+    # Trouver les coordonnées de la cellule cliquée en prenant en compte les offsets
+        col = (event.x - offset_x) // cell_size
+        row = (event.y - offset_y) // cell_size
+
+        # Vérifier que les coordonnées sont dans la grille
+        if 0 <= row < rows and 0 <= col < cols:
+            # Calculer la position pour centrer le texte dans la cellule
+            x = offset_x + col * cell_size + cell_size // 2
+            y = offset_y + row * cell_size + cell_size // 2
+
+            # Ajouter ou modifier le texte au centre de la cellule cliquée
+
+            if text_ids[row][col] is not None:
+                canvas.delete(text_ids[row][col])  # Effacer le texte existant
+
+            if text_ids[row][col] == "Rempli" :
+                return False
+
+            if grid_values[row][col] == "":
+                grid_values[row][col] = 0
+                text_ids[row][col] = canvas.create_text(x, y, text="0", font=('Helvetica', 12), fill="green")
+            elif grid_values[row][col] == 0:
+                grid_values[row][col] = 1
+                text_ids[row][col] = canvas.create_text(x, y, text="1", font=('Helvetica', 12), fill="green")
+            elif grid_values[row][col] == 1:
+                grid_values[row][col] = ''
+                text_ids[row][col] = canvas.create_text(x, y, text='', font=('Helvetica', 12), fill="green")
