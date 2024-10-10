@@ -1,7 +1,7 @@
 
 
 class verification : 
-    def is_valid_sequence(self,sequence):
+    def is_valid_sequence(sequence):
         # Vérifie qu'il n'y a pas plus de deux 0 ou 1 consécutifs
         count = 1
 
@@ -17,7 +17,7 @@ class verification :
         return True
 
 
-    def has_equal_zeros_ones(self,sequence):
+    def has_equal_zeros_ones(sequence):
         # Vérifie qu'il y a le même nombre de 0 et de 1
         vide = sequence.count("")
         if vide!=0:
@@ -28,7 +28,7 @@ class verification :
             return False
         return True
 
-    def all_unique(self,sequence):
+    def all_unique(sequence):
         # Filtrer les lignes qui ne contiennent pas de ''
         filtered_rows = [row for row in sequence if '' not in row]
 
@@ -45,7 +45,7 @@ class verification :
             return False
         else:
             return True
-    def check_empty_cells(self,grid):
+    def check_empty_cells(grid):
         # Parcourir chaque ligne de la grille
         for row in grid:
             # Vérifier s'il y a une cellule vide ('') dans la ligne

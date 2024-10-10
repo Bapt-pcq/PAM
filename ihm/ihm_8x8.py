@@ -42,81 +42,38 @@ class ihm_8x8:
         canvas.create_text(80, 440, text="Message", font=('Helvetica', 10), fill="black")
         canvas.create_rectangle(50, 450, 500, 480, outline="black", width=1, fill="")
 
-        
         #numérotation ligne
-        canvas.create_text(offset_x-10, offset_y+10, text="1", font=('Helvetica', 10), fill="black")
-        canvas.create_text(offset_x-10, offset_y+60, text="2", font=('Helvetica', 10), fill="black")
-        canvas.create_text(offset_x-10, offset_y+110, text="3", font=('Helvetica', 10), fill="black")
-        canvas.create_text(offset_x-10, offset_y+160, text="4", font=('Helvetica', 10), fill="black")
-        canvas.create_text(offset_x-10, offset_y+210, text="5", font=('Helvetica', 10), fill="black")
-        canvas.create_text(offset_x-10, offset_y+260, text="6", font=('Helvetica', 10), fill="black")
-        canvas.create_text(offset_x-10, offset_y+310, text="7", font=('Helvetica', 10), fill="black")
-        canvas.create_text(offset_x-10, offset_y+360, text="8", font=('Helvetica', 10), fill="black")
+        for i in range(8):
+            canvas.create_text(offset_x-10, offset_y+10+50*i, text=i+1, font=('Helvetica', 10), fill="black")
+
+
         #numérotation colonne
-        canvas.create_text(offset_x+10, offset_y-10, text="1", font=('Helvetica', 10), fill="black")
-        canvas.create_text(offset_x+60, offset_y-10, text="2", font=('Helvetica', 10), fill="black")
-        canvas.create_text(offset_x+110, offset_y-10, text="3", font=('Helvetica', 10), fill="black")
-        canvas.create_text(offset_x+160, offset_y-10, text="4", font=('Helvetica', 10), fill="black")
-        canvas.create_text(offset_x+210, offset_y-10, text="5", font=('Helvetica', 10), fill="black")
-        canvas.create_text(offset_x+260, offset_y-10, text="6", font=('Helvetica', 10), fill="black")
-        canvas.create_text(offset_x+310, offset_y-10, text="7", font=('Helvetica', 10), fill="black")
-        canvas.create_text(offset_x+360, offset_y-10, text="8", font=('Helvetica', 10), fill="black")
+        for i in range(8):
+            canvas.create_text(offset_x+10+50*i, offset_y-10, text=i+1, font=('Helvetica', 10), fill="black")
+
+
         # Remplir le canvas avec les valeurs générées dans grid_values
-        text_ids[0][3] = "Rempli"
-        canvas.create_text(offset_x+3 * cell_size + cell_size // 2,offset_y+ 0 * cell_size + cell_size // 2, text=0, font=('Helvetica', 12), fill="black")
-        grid_values[0][3]=0
-        text_ids[0][5] = "Rempli"
-        canvas.create_text(offset_x + 5 * cell_size + cell_size // 2,offset_y+ 0 * cell_size + cell_size // 2, text=0, font=('Helvetica', 12), fill="black")
-        grid_values[0][5]=0
-        text_ids[1][0] = "Rempli"
-        canvas.create_text(offset_x+0 * cell_size + cell_size // 2, offset_y+1 * cell_size + cell_size // 2, text=1, font=('Helvetica', 12), fill="black")
-        grid_values[1][0]=1
-        text_ids[1][7] = "Rempli"
-        canvas.create_text(offset_x+7 * cell_size + cell_size // 2,offset_y+ 1 * cell_size + cell_size // 2, text=0, font=('Helvetica', 12), fill="black")
-        grid_values[1][7]=0
-        text_ids[2][4] = "Rempli"
-        canvas.create_text(offset_x+4 * cell_size + cell_size // 2,offset_y+ 2 * cell_size + cell_size // 2, text=0, font=('Helvetica', 12), fill="black")
-        grid_values[2][4]=0
-        text_ids[3][2] = "Rempli"
-        canvas.create_text(offset_x+2 * cell_size + cell_size // 2,offset_y+ 3 * cell_size + cell_size // 2, text=1, font=('Helvetica', 12), fill="black")
-        grid_values[3][2]=1
-        text_ids[4][4] = "Rempli"
-        canvas.create_text(offset_x+4 * cell_size + cell_size // 2,offset_y+ 4 * cell_size + cell_size // 2, text=0, font=('Helvetica', 12), fill="black")
-        grid_values[4][4]=0
-        text_ids[4][5] = "Rempli"
-        canvas.create_text(offset_x+5 * cell_size + cell_size // 2,offset_y+ 4 * cell_size + cell_size // 2, text=0, font=('Helvetica', 12), fill="black")
-        grid_values[4][5]=0
-        text_ids[4][7] = "Rempli"
-        canvas.create_text(offset_x+7 * cell_size + cell_size // 2,offset_y+ 4 * cell_size + cell_size // 2, text=0, font=('Helvetica', 12), fill="black")
-        grid_values[4][7]=0
-        text_ids[6][0] = "Rempli"
-        canvas.create_text(offset_x+0 * cell_size + cell_size // 2,offset_y+ 6 * cell_size + cell_size // 2, text=0, font=('Helvetica', 12), fill="black")
-        grid_values[6][0]=0
-        text_ids[6][2] = "Rempli"
-        canvas.create_text(offset_x+2 * cell_size + cell_size // 2,offset_y+ 6 * cell_size + cell_size // 2, text=0, font=('Helvetica', 12), fill="black")
-        grid_values[6][2]=0
-        text_ids[6][5] = "Rempli"
-        canvas.create_text(offset_x+5 * cell_size + cell_size // 2,offset_y+ 6 * cell_size + cell_size // 2, text=0, font=('Helvetica', 12), fill="black")
-        grid_values[6][5]=0
-        text_ids[6][7] = "Rempli"
-        canvas.create_text(offset_x+7 * cell_size + cell_size // 2,offset_y+ 6 * cell_size + cell_size // 2, text=0, font=('Helvetica', 12), fill="black")
-        grid_values[6][7]=0
-        text_ids[7][0] = "Rempli"
-        canvas.create_text(offset_x+0 * cell_size + cell_size // 2,offset_y+ 7 * cell_size + cell_size // 2, text=0, font=('Helvetica', 12), fill="black")
-        grid_values[7][0]=0
-        text_ids[7][3] = "Rempli"
-        canvas.create_text(offset_x+3 * cell_size + cell_size // 2,offset_y+ 7 * cell_size + cell_size // 2, text=0, font=('Helvetica', 12), fill="black")
-        grid_values[7][3]=0
-        text_ids[7][5] = "Rempli"
-        canvas.create_text(offset_x+5 * cell_size + cell_size // 2,offset_y+ 7 * cell_size + cell_size // 2, text=1, font=('Helvetica', 12), fill="black")
-        grid_values[7][5]=1
-        text_ids[7][6] = "Rempli"
-        canvas.create_text(offset_x+6 * cell_size + cell_size // 2,offset_y+ 7 * cell_size + cell_size // 2, text=1, font=('Helvetica', 12), fill="black")
-        grid_values[7][6]=1
+               # Remplir le canvas avec les valeurs générées dans grid_values
+        fichier_grille = "grille/8x8.txt"  # Chemin vers ton fichier txt
+        grille = ihm_8x8.lire_grille_depuis_fichier(fichier_grille)
+        
+        for row in range(8):
+            for col in range(8):
+                print(grille[row][col])
+                if grille[row][col]!=-1:
+                    text_ids[row][col] = "Rempli"
+                    canvas.create_text(offset_x+col * cell_size + cell_size // 2,offset_y+ row * cell_size + cell_size // 2, text=grille[row][col], font=('Helvetica', 12), fill="black")
+                    grid_values[row][col]=grille[row][col]
         for i in range(8) :
             print(grid_values[i])
    
-
+    def lire_grille_depuis_fichier(fichier):
+        # Ouvrir le fichier en lecture
+        with open(fichier, 'r') as f:
+            # Lire le contenu ligne par ligne et convertir chaque ligne en une liste d'entiers
+            grille = [list(map(int, ligne.split())) for ligne in f]
+        
+        return grille
 
 
     # effacer et regenerer la grille

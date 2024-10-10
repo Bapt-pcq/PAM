@@ -53,56 +53,44 @@ class ihm_6x6:
         canvas.create_text(80, 440, text="Message", font=('Helvetica', 10), fill="black")
         canvas.create_rectangle(50, 450, 500, 480, outline="black", width=1, fill="")
         #numérotation ligne
-        canvas.create_text(40, 60, text="1", font=('Helvetica', 10), fill="black")
-        canvas.create_text(40, 120, text="2", font=('Helvetica', 10), fill="black")
-        canvas.create_text(40, 180, text="3", font=('Helvetica', 10), fill="black")
-        canvas.create_text(40, 240, text="4", font=('Helvetica', 10), fill="black")
-        canvas.create_text(40, 300, text="5", font=('Helvetica', 10), fill="black")
-        canvas.create_text(40, 360, text="6", font=('Helvetica', 10), fill="black")
+        for i in range(6):
+            canvas.create_text(offset_x-10, offset_y +10+60*i, text=i+1, font=('Helvetica', 10), fill="black")
+
 
         #numérotation colonne
-        canvas.create_text(60, 40, text="1", font=('Helvetica', 10), fill="black")
-        canvas.create_text(120, 40, text="2", font=('Helvetica', 10), fill="black")
-        canvas.create_text(180, 40, text="3", font=('Helvetica', 10), fill="black")
-        canvas.create_text(240, 40, text="4", font=('Helvetica', 10), fill="black")
-        canvas.create_text(300, 40, text="5", font=('Helvetica', 10), fill="black")
-        canvas.create_text(360, 40, text="6", font=('Helvetica', 10), fill="black")
+        for i in range(6):
+            canvas.create_text(offset_x+10+60*i, offset_y-10, text=i+1, font=('Helvetica', 10), fill="black")
+
 
         
         # Remplir le canvas avec les valeurs générées dans grid_values
-        text_ids[0][3] = "Rempli"
-        canvas.create_text(offset_x+3 * cell_size + cell_size // 2,offset_y+ 0 * cell_size + cell_size // 2, text=0, font=('Helvetica', 12), fill="black")
-        grid_values[0][3]=0
-        text_ids[1][0] = "Rempli"
-        canvas.create_text(offset_x+0 * cell_size + cell_size // 2,offset_y+ 1 * cell_size + cell_size // 2, text=1, font=('Helvetica', 12), fill="black")
-        grid_values[1][0]=1
-        text_ids[1][2] = "Rempli"
-        canvas.create_text(offset_x+2 * cell_size + cell_size // 2,offset_y+ 1 * cell_size + cell_size // 2, text=1, font=('Helvetica', 12), fill="black")
-        grid_values[1][2]=1
-        text_ids[2][4] = "Rempli"
-        canvas.create_text(offset_x+4 * cell_size + cell_size // 2,offset_y+ 2 * cell_size + cell_size // 2, text=0, font=('Helvetica', 12), fill="black")
-        grid_values[2][4]=0
-        text_ids[3][2] = "Rempli"
-        canvas.create_text(offset_x+2 * cell_size + cell_size // 2,offset_y+ 3 * cell_size + cell_size // 2, text=1, font=('Helvetica', 12), fill="black")
-        grid_values[3][2]=1
-        text_ids[3][3] = "Rempli"
-        canvas.create_text(offset_x+3 * cell_size + cell_size // 2,offset_y+ 3 * cell_size + cell_size // 2, text=1, font=('Helvetica', 12), fill="black")
-        grid_values[3][3]=1
-        text_ids[3][5] = "Rempli"
-        canvas.create_text(offset_x+5 * cell_size + cell_size // 2,offset_y+ 3 * cell_size + cell_size // 2, text=0, font=('Helvetica', 12), fill="black")
-        grid_values[3][5]=0
-        text_ids[4][1] = "Rempli"
-        canvas.create_text(offset_x+1 * cell_size + cell_size // 2,offset_y+ 4 * cell_size + cell_size // 2, text=0, font=('Helvetica', 12), fill="black")
-        grid_values[4][1]=0
-        text_ids[5][0] = "Rempli"
-        canvas.create_text(offset_x+0 * cell_size + cell_size // 2,offset_y+ 5 * cell_size + cell_size // 2, text=1, font=('Helvetica', 12), fill="black")
-        grid_values[5][0]=1
+        fichier_grille = "grille/6x6.txt"  # Chemin vers ton fichier txt
+        grille = ihm_6x6.lire_grille_depuis_fichier(fichier_grille)
+        
+        for row in range(6):
+            for col in range(6):
+                print(grille[row][col])
+                if grille[row][col]!=-1:
+                    text_ids[row][col] = "Rempli"
+                    canvas.create_text(offset_x+col * cell_size + cell_size // 2,offset_y+ row * cell_size + cell_size // 2, text=grille[row][col], font=('Helvetica', 12), fill="black")
+                    grid_values[row][col]=grille[row][col]
+        
 
         for i in range(6) :
             print(grid_values[i])
 
+            # Utilisation des fonctions
 
         return True
+    def lire_grille_depuis_fichier(fichier):
+        # Ouvrir le fichier en lecture
+        with open(fichier, 'r') as f:
+            # Lire le contenu ligne par ligne et convertir chaque ligne en une liste d'entiers
+            grille = [list(map(int, ligne.split())) for ligne in f]
+        
+        return grille
+
+
 
 
 
