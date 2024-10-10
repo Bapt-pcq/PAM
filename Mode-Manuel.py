@@ -82,11 +82,11 @@ def grille8x8():
 
     canvas.create_text(590, 40, text="TAKUZU grille 8x8", font=('Helvetica', 20), fill="black")
 
-    canvas.create_text(130, 440, text="Message", font=('Helvetica', 10), fill="black")
+    canvas.create_text(80, 440, text="Message", font=('Helvetica', 10), fill="black")
+    canvas.create_rectangle(50, 450, 500, 480, outline="black", width=1, fill="")
 
 
-
-    canvas.create_rectangle(100, 450, 450, 480, outline="black", width=1, fill="")
+    
     #numérotation ligne
     canvas.create_text(offset_x-10, offset_y+10, text="1", font=('Helvetica', 10), fill="black")
     canvas.create_text(offset_x-10, offset_y+60, text="2", font=('Helvetica', 10), fill="black")
@@ -197,7 +197,7 @@ def grille10x10():
         canvas.create_line(offset_x + j * cell_size, offset_y, offset_x + j * cell_size, offset_y + rows * cell_size)  # Lignes verticales
     canvas.bind("<Button-1>", on_click)
     # creation des boutons
-    button_clear = tk.Button(root, text="Réinitialiser", command=clear,width=15, height=3)
+    button_clear = tk.Button(root, text="Réinitialiser", command=clear10x10,width=15, height=3)
     button_verif = tk.Button(root, text="Vérifier", command=verifier10x10,width=15, height=3)
     button_valider = tk.Button(root, text="Valider", command=valider10x10,width=15, height=3)
     button_home = tk.Button(root, text="Accueil", command=home,width=7, height=2)
@@ -209,11 +209,11 @@ def grille10x10():
 
     canvas.create_text(750, 40, text="TAKUZU grille 10x10", font=('Helvetica', 20), fill="black")
 
-    canvas.create_text(250, 560, text="Message", font=('Helvetica', 10), fill="black")
+    canvas.create_text(180, 560, text="Message", font=('Helvetica', 10), fill="black")
 
 
 
-    canvas.create_rectangle(220, 570, 570, 600, outline="black", width=1, fill="")
+    canvas.create_rectangle(150, 570, 570, 600, outline="black", width=1, fill="")
     #numérotation ligne
     canvas.create_text(offset_x-10, offset_y+10, text="1", font=('Helvetica', 10), fill="black")
     canvas.create_text(offset_x-10, offset_y+60, text="2", font=('Helvetica', 10), fill="black")
@@ -372,8 +372,8 @@ def grille6x6():
     canvas.bind("<Button-1>", on_click)
     canvas.create_text(590, 40, text="TAKUZU grille 6x6", font=('Helvetica', 20), fill="black")
 
-    canvas.create_text(130, 440, text="Message", font=('Helvetica', 10), fill="black")
-
+    canvas.create_text(80, 440, text="Message", font=('Helvetica', 10), fill="black")
+    canvas.create_rectangle(50, 450, 500, 480, outline="black", width=1, fill="")
     #numérotation ligne
     canvas.create_text(40, 60, text="1", font=('Helvetica', 10), fill="black")
     canvas.create_text(40, 120, text="2", font=('Helvetica', 10), fill="black")
@@ -390,7 +390,7 @@ def grille6x6():
     canvas.create_text(300, 40, text="5", font=('Helvetica', 10), fill="black")
     canvas.create_text(360, 40, text="6", font=('Helvetica', 10), fill="black")
 
-    canvas.create_rectangle(100, 450, 450, 480, outline="black", width=1, fill="")
+    
     # Remplir le canvas avec les valeurs générées dans grid_values
     text_ids[0][3] = "Rempli"
     canvas.create_text(offset_x+3 * cell_size + cell_size // 2,offset_y+ 0 * cell_size + cell_size // 2, text=0, font=('Helvetica', 12), fill="black")
@@ -439,7 +439,7 @@ def verifier():
         canvas.delete(text_id_message)
     if not all_unique(grid_values):
 
-        text_id_message = canvas.create_text(250, 465, text="Faux - Lignes identiques", font=('Helvetica', 10), fill="black")
+        text_id_message = canvas.create_text(250, 465, text="Il y a une erreur, deux lignes sont identiques", font=('Helvetica', 10), fill="black")
 
         return False
     grid_col = []
@@ -457,31 +457,31 @@ def verifier():
         grid_col.append(current_column)
     if not all_unique(grid_col):
 
-        text_id_message = canvas.create_text(250, 465, text="Faux - Colonnes identiques", font=('Helvetica', 10), fill="black")
+        text_id_message = canvas.create_text(250, 465, text="Il y a une erreur, deux colonnes sont identiques", font=('Helvetica', 10), fill="black")
 
         return False
     for row in range(rows):
         if not is_valid_sequence(grid_values[row]) :
 
-            text_id_message = canvas.create_text(250, 465, text="Faux ligne "+ str(row + 1), font=('Helvetica', 10), fill="black")
+            text_id_message = canvas.create_text(250, 465, text="Il y a une erreur dans la ligne "+ str(row + 1), font=('Helvetica', 10), fill="black")
 
             return False
         if not has_equal_zeros_ones(grid_values[row]) :
-            text_id_message = canvas.create_text(250, 465, text="Faux ligne " + str(row + 1) + " dif nb 0 et 1", font=('Helvetica', 10), fill="black")
+            text_id_message = canvas.create_text(250, 465, text="Il y a une erreur dans la ligne " + str(row + 1) + " le nombre de 0 et de 1 est différent", font=('Helvetica', 10), fill="black")
 
             return False
     # Vérifier les colonnes
     for col in range(cols):
         column = [grid_values[row][col] for row in range(rows)]
         if not is_valid_sequence(column) :
-            text_id_message = canvas.create_text(250, 465, text="Faux colonne "+ str(col + 1), font=('Helvetica', 10), fill="black")
+            text_id_message = canvas.create_text(250, 465, text="Il y a une erreur dans la colonne "+ str(col + 1), font=('Helvetica', 10), fill="black")
 
             return False
         if not has_equal_zeros_ones(column):
-            text_id_message = canvas.create_text(250, 465, text="Faux colonne " + str(col + 1) + " dif nb 0 et 1", font=('Helvetica', 10), fill="black")
+            text_id_message = canvas.create_text(250, 465, text="Il y a une erreur dans la colonne " + str(col + 1) + " le nombre de 0 et de 1 est différent", font=('Helvetica', 10), fill="black")
 
             return False
-    text_id_message = canvas.create_text(250, 465, text="Vrai", font=('Helvetica', 10), fill="black")
+    text_id_message = canvas.create_text(250, 465, text="Il n'y a pas d'erreur", font=('Helvetica', 10), fill="black")
 
     return True
 
@@ -492,7 +492,7 @@ def verifier10x10():
         canvas.delete(text_id_message)
     if not all_unique(grid_values):
 
-        text_id_message = canvas.create_text(350, 585, text="Faux - Lignes identiques", font=('Helvetica', 10), fill="black")
+        text_id_message = canvas.create_text(350, 585, text="Il y a une erreur, deux lignes sont identiques", font=('Helvetica', 10), fill="black")
 
         return False
     grid_col = []
@@ -508,31 +508,31 @@ def verifier10x10():
             grid_col.append(current_column)
     if not all_unique(grid_col):
 
-        text_id_message = canvas.create_text(350, 585, text="Faux - Colonnes identiques", font=('Helvetica', 10), fill="black")
+        text_id_message = canvas.create_text(350, 585, text="Il y a une erreur, deux colonnes sont identiques", font=('Helvetica', 10), fill="black")
 
         return False
     for row in range(rows):
         if not is_valid_sequence(grid_values[row]) :
 
-            text_id_message = canvas.create_text(350, 585, text="Faux ligne "+ str(row + 1), font=('Helvetica', 10), fill="black")
+            text_id_message = canvas.create_text(350, 585, text="Il y a une erreur dans la ligne "+ str(row + 1), font=('Helvetica', 10), fill="black")
 
             return False
         if not has_equal_zeros_ones(grid_values[row]) :
-            text_id_message = canvas.create_text(350, 585, text="Faux ligne " + str(row + 1) + " dif nb 0 et 1", font=('Helvetica', 10), fill="black")
+            text_id_message = canvas.create_text(350, 585, text="Il y a une erreur dans la ligne " + str(row + 1) + " le nombre de 0 et de 1 est différent", font=('Helvetica', 10), fill="black")
 
             return False
     # Vérifier les colonnes
     for col in range(cols):
         column = [grid_values[row][col] for row in range(rows)]
         if not is_valid_sequence(column) :
-            text_id_message = canvas.create_text(350, 585, text="Faux colonne "+ str(col + 1), font=('Helvetica', 10), fill="black")
+            text_id_message = canvas.create_text(350, 585, text="Il y a une erreur dans la colonne "+ str(col + 1), font=('Helvetica', 10), fill="black")
 
             return False
         if not has_equal_zeros_ones(column):
-            text_id_message = canvas.create_text(350, 585, text="Faux colonne " + str(col + 1) + " dif nb 0 et 1", font=('Helvetica', 10), fill="black")
+            text_id_message = canvas.create_text(350, 585, text="Il y a une erreur dans la colonne " + str(col + 1) + " le nombre de 0 et de 1 est différent", font=('Helvetica', 10), fill="black")
 
             return False
-    text_id_message = canvas.create_text(350, 585, text="Vrai", font=('Helvetica', 10), fill="black")
+    text_id_message = canvas.create_text(350, 585, text="Il n'y a pas d'erreur", font=('Helvetica', 10), fill="black")
 
     return True
 
@@ -560,12 +560,22 @@ def check_empty_cells(grid):
 
 # effacer et regenerer la grille
 def clear():
-    global root, canvas
+    global root, canvas, text_id_message
     root.destroy()
     for row in range(rows):
         for col in range(cols):
             grid_values[row][col] = ""
     create_grid()
+    text_id_message = canvas.create_text(250, 465, text="La grille a été réinitialisée", font=('Helvetica', 10), fill="black")
+
+def clear10x10():
+    global root, canvas, text_id_message
+    root.destroy()
+    for row in range(rows):
+        for col in range(cols):
+            grid_values[row][col] = ""
+    create_grid()
+    text_id_message = canvas.create_text(350, 585, text="La grille a été réinitialisée", font=('Helvetica', 10), fill="black")
 
 
 def home():
