@@ -159,15 +159,7 @@ class ihm_10x10:
         grid_values[8][9]=0
 
         for i in range(10) :
-            print(grid_values[i])
-    
-    def check_empty_cells(grid):
-            # Parcourir chaque ligne de la grille
-            for row in grid:
-                # Vérifier s'il y a une cellule vide ('') dans la ligne
-                if '' in row:
-                    return True  # Il y a au moins une cellule vide
-            return False  # Pas de cellules vides
+            print(grid_values[i])   
 
 
 
@@ -203,42 +195,27 @@ class ihm_10x10:
         return True
 
 
-    def has_equal_zeros_ones(sequence):
-        # Vérifie qu'il y a le même nombre de 0 et de 1
-        vide = sequence.count("")
-        if vide!=0:
+    def valider10x10():
+        global text_id_message, grid_values
+        from vérification.verification import verification
+        if not verification.check_empty_cells(grid_values) :
+            if not ihm_10x10.verifier():
+                canvas.delete(text_id_message)
+                text_id_message = canvas.create_text(390, 585, text="Malheureusement, la grille est fausse vous devez recommencer !", font=('Helvetica', 10), fill="black")
+                return False
+            canvas.delete(text_id_message)
+            text_id_message = canvas.create_text(390, 585, text="Vous avez correctement complété la grille, félicitation !", font=('Helvetica', 10), fill="black")    
             return True
-        zeros = sequence.count(0)
-        ones = sequence.count(1)
-        if zeros != ones :
-            return False
-        return True
-
-    def all_unique(sequence):
-        # Filtrer les lignes qui ne contiennent pas de ''
-        filtered_rows = [row for row in sequence if '' not in row]
-
-        # Vérifier les lignes identiques
-        identical_rows = []
-        for i in range(len(filtered_rows)):
-            for j in range(i+1, len(filtered_rows)):
-                if filtered_rows[i] == filtered_rows[j]:
-                    identical_rows.append((i, j))
-
-        # Afficher les résultats
-
-        if identical_rows:
-            return False
-        else:
-            return True
-
-
+        canvas.delete(text_id_message)
+        text_id_message = canvas.create_text(390, 585,  text="Vous devez d'abord terminer la grille !", font=('Helvetica', 10), fill="black")
+        
     def verifier10x10():
     # Vérifier les lignes
+        from vérification.verification import verification
         global text_id_message, grid_values
         if text_id_message != None:
             canvas.delete(text_id_message)
-        if not ihm_10x10.all_unique(grid_values):
+        if not verification.all_unique(grid_values):
 
             text_id_message = canvas.create_text(350, 585, text="Il y a une erreur, deux lignes sont identiques", font=('Helvetica', 10), fill="black")
 
@@ -254,29 +231,29 @@ class ihm_10x10:
                 
                 # Ajouter la colonne actuelle à la liste des colonnes
                 grid_col.append(current_column)
-        if not ihm_10x10.all_unique(grid_col):
+        if not verification.all_unique(grid_col):
 
             text_id_message = canvas.create_text(350, 585, text="Il y a une erreur, deux colonnes sont identiques", font=('Helvetica', 10), fill="black")
 
             return False
         for row in range(rows):
-            if not ihm_10x10.is_valid_sequence(grid_values[row]) :
+            if not verification.is_valid_sequence(grid_values[row]) :
 
                 text_id_message = canvas.create_text(350, 585, text="Il y a une erreur dans la ligne "+ str(row + 1), font=('Helvetica', 10), fill="black")
 
                 return False
-            if not ihm_10x10.has_equal_zeros_ones(grid_values[row]) :
+            if not verification.has_equal_zeros_ones(grid_values[row]) :
                 text_id_message = canvas.create_text(350, 585, text="Il y a une erreur dans la ligne " + str(row + 1) + " le nombre de 0 et de 1 est différent", font=('Helvetica', 10), fill="black")
 
                 return False
         # Vérifier les colonnes
         for col in range(cols):
             column = [grid_values[row][col] for row in range(rows)]
-            if not ihm_10x10.is_valid_sequence(column) :
+            if not verification.is_valid_sequence(column) :
                 text_id_message = canvas.create_text(350, 585, text="Il y a une erreur dans la colonne "+ str(col + 1), font=('Helvetica', 10), fill="black")
 
                 return False
-            if not ihm_10x10.has_equal_zeros_ones(column):
+            if not verification.has_equal_zeros_ones(column):
                 text_id_message = canvas.create_text(350, 585, text="Il y a une erreur dans la colonne " + str(col + 1) + " le nombre de 0 et de 1 est différent", font=('Helvetica', 10), fill="black")
 
                 return False
@@ -284,18 +261,7 @@ class ihm_10x10:
 
         return True
 
-    def valider10x10():
-        global text_id_message, grid_values
-        if not ihm_10x10.check_empty_cells(grid_values) :
-            if not ihm_10x10.verifier():
-                canvas.delete(text_id_message)
-                text_id_message = canvas.create_text(390, 585, text="Malheureusement, la grille est fausse vous devez recommencer !", font=('Helvetica', 10), fill="black")
-                return False
-            canvas.delete(text_id_message)
-            text_id_message = canvas.create_text(390, 585, text="Vous avez correctement complété la grille, félicitation !", font=('Helvetica', 10), fill="black")    
-            return True
-        canvas.delete(text_id_message)
-        text_id_message = canvas.create_text(390, 585,  text="Vous devez d'abord terminer la grille !", font=('Helvetica', 10), fill="black")
+
     def on_click(event):
         global cell_size, grid_values, text_ids, cols, rows, canvas, offset_x, offset_y
     # Trouver les coordonnées de la cellule cliquée en prenant en compte les offsets
