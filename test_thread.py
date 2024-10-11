@@ -1,43 +1,40 @@
 import threading
 import time
 
-def afficher_nombres():
+# Variable partagée
+valeur_partagee = 0
+# Verrou pour synchronisation
+verrou = threading.Lock()
+
+# Fonction pour modifier la variable
+def modifier_valeur():
+    global valeur_partagee
     for i in range(1, 6):
-        print(f"Nombre : {i}")
-        time.sleep(1)
+        with verrou:
+            valeur_partagee = i
+            print(f"Valeur modifiée : {valeur_partagee}")
+        time.sleep(2)  # Simule un traitement qui prend du temps
 
-def afficher_lettres():
-    for lettre in ['A', 'B', 'C', 'D', 'E']:
-        print(f"Lettre : {lettre}")
-        time.sleep(1.5)
-def grilles():
-    global grille
-    
-    for i in range(5):
-        grille[i]=-1
+# Fonction pour surveiller et réagir à la mise à jour de la variable
+def surveiller_valeur():
+    valeur_precedente = -1
+    while True:
+        with verrou:
+            if valeur_partagee != valeur_precedente:
+                print(f"Thread mis à jour avec nouvelle valeur : {valeur_partagee}")
+                valeur_precedente = valeur_partagee
+        time.sleep(1)  # Fréquence de vérification
 
-def case_11():
-    global grille
-    ligne1=grille
-    print(ligne1)
-    
+# Création des threads
+t1 = threading.Thread(target=modifier_valeur)
+t2 = threading.Thread(target=surveiller_valeur, daemon=True) #thread de type deamon qui s'execute en arrière plan 
+                                                             #s'arrete lorsque tous les threads non Deamon sont terminés
 
-grille=["","","",0,1,""]
-# Création de deux threads
-t1 = threading.Thread(target=afficher_nombres)
-t2 = threading.Thread(target=afficher_lettres)
-t3 = threading.Thread(target=case_11)
-t4 = threading.Thread(target=grilles)
 # Démarrage des threads
 t1.start()
 t2.start()
-t3.start()
-t4.start()
-print("hello")
-# Joindre les threads pour s'assurer qu'ils se terminent
-t1.join()
-t2.join()
-t3.join()
-t4.join()
 
-print("Les quatres threads sont terminés.")
+# Attendre que le premier thread se termine
+t1.join()
+
+print("Le thread de modification est terminé.")
