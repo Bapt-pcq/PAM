@@ -115,16 +115,104 @@ class ihm_6x6:
         
         while running:
             with verrou:
-                    Mem_col = [grid_values[5][col] for i in range (len(grid_values))]
+                    
                     Mem_row = grid_values[row]
                     
+                    
+                    
+                    grid_col = []
+        
+                    # Parcourir chaque colonne de la grille
+                    for col in range(len(grid_values[0])):
+                        # Initialiser une liste pour la colonne actuelle
+                        current_column = []
+                        
+                        # Parcourir chaque ligne pour extraire l'élément de la colonne actuelle
+                        for lig in range(len(grid_values)):
+                            current_column.append(grid_values[lig][col])
+                        
+                        # Ajouter la colonne actuelle à la liste des colonnes
+                        grid_col.append(current_column)
+                    
+                    Mem_col=grid_col[row]
+                    
                     Mem = []
+                    #Mem[0]
                     Mem.append(Mem_col[row]) #valeur de la case
+                    #Mem[1]
+                    if row-2 <0:
+                        Mem.append(-2) #case en dehors de la grill donc -2
+                    else:
+                        Mem.append(Mem_col[row-2]) #valeur deuxième case au dessus
+ 
+                    #Mem[2]
+                    if row-1 <0:
+                        Mem.append(-2) #case en dehors de la grill donc -2
+                    else:
+                        Mem.append(Mem_col[row-1]) #valeur première case au dessus
+       
+                    #Mem[3]
+                    if col+2 > len(Mem_col)-1:
+                        Mem.append(-2) #case en dehors de la grill donc -2
+                    else:
+                        Mem.append(Mem_row[col+2]) #valeur deuxième case à droite
+ 
+                    #Mem[4]
+                    if col+1 > len(Mem_col)-1:
+                        Mem.append(-2) #case en dehors de la grill donc -2
+                    else:
+                        Mem.append(Mem_row[col+1]) #valeur première case à droite
+ 
+                    #Mem[5]
+                    if row-2 > len(Mem_row)-1:
+                        Mem.append(-2) #case en dehors de la grill donc -2
+                    else:
+                        Mem.append(Mem_col[row-2]) #valeur deuxième case en dessous
+ 
+                    #Mem[6]
+                    if row+1 > len(Mem_row)-1:
+                        Mem.append(-2) #case en dehors de la grill donc -2
+                    else:
+                        Mem.append(Mem_col[row-1]) #valeur première case au dessous
+ 
+                    #Mem[7]
+                    if col-2 < 0:
+                        Mem.append(-2) #case en dehors de la grill donc -2
+                    else:
+                        Mem.append(Mem_row[col-2]) #valeur deuxième case à gauche
+ 
+                    #Mem[8]
+                    if col-1 < 0:
+                        Mem.append(-2) #case en dehors de la grill donc -2
+                    else:
+                        Mem.append(Mem_row[col-1]) #valeur première case à gauche
+                    
+                    
+                    #Mem[9]
+                    Mem.append(0) 
+                    for i in range(len(Mem_row)):
+                        if Mem_row[i] == 1:
+                            Mem[9] += 1
+                
+                    #Mem[10]
+                    Mem.append(0)
+                    for i in range(len(Mem_row)):
+                        if Mem_row[i] == 0:
+                            Mem[10] += 1
+            
+                    #Mem[11]
+                    Mem.append(0)
+                    for i in range(len(Mem_col)):
+                        if Mem_col[i] == 1:
+                            Mem[11] += 1
+                
+                    #Mem[12]
+                    Mem.append(0)
+                    for i in range(len(Mem_col)):
+                        if Mem_col[i] == 0:
+                            Mem[12] += 1
+                    
                     print(Mem,row,col)
-                    
-                    
-                    
-
             time.sleep(2)  # Fréquence de vérification
     
     def lire_grille_depuis_fichier(fichier):
