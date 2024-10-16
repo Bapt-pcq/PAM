@@ -62,7 +62,7 @@ class ihm_10x10:
 
         # Remplir le canvas avec les valeurs générées dans grid_values
                # Remplir le canvas avec les valeurs générées dans grid_values
-        fichier_grille = "grille/10x10.txt"  # Chemin vers ton fichier txt
+        fichier_grille = "grille/10x10_3.txt"  # Chemin vers ton fichier txt
         grille = ihm_10x10.lire_grille_depuis_fichier(fichier_grille)
         
         for row in range(10):
