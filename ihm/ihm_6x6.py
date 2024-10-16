@@ -1,10 +1,11 @@
 import tkinter as tk
-
+import threading
+import time
 
 
 class ihm_6x6:     
     def grille6x6(self):
-        global taille, text_id_message, text_ids, grid_values, rows, cols, cell_size, canvas, root, offset_x, offset_y
+        global taille, text_id_message, text_ids, grid_values, rows, cols, cell_size, canvas, root, offset_x, offset_y, verrou, running
         taille =0
         # Définition des paramètres graphique
        
@@ -13,6 +14,8 @@ class ihm_6x6:
         root = tk.Tk()
         root.title("Grille 6x6")
 
+        # Drapeau pour arrêter les threads
+        running = True
         # Création du canvas pour dessiner la grille
         canvas = tk.Canvas(root, width=8*50*1.9, height=8*50*1.3)
         canvas.pack()
@@ -76,12 +79,47 @@ class ihm_6x6:
                     grid_values[row][col]=grille[row][col]
         
 
-        for i in range(6) :
-            print(grid_values[i])
+        #Threads
+        verrou = threading.Lock()
+        
 
+        for i in range(6):  # Boucle pour les lignes
+            for j in range(6):  # Boucle pour les colonnes
+                thread_name = f"t{i}{j}"
+                print(f"Création du thread {thread_name}")
+                thread = threading.Thread(target=ihm_6x6.surveiller_valeur, args=(i, j), daemon=True, name=thread_name)
+                thread.start()
+        #ihm_6x6.etat_page()
+        print(grid_values)
+
+        root.protocol("WM_DELETE_WINDOW", self.on_close)
             # Utilisation des fonctions
 
         return True
+    
+    
+    
+
+    # # Fonction pour surveiller et réagir à la mise à jour de la variable
+    def surveiller_valeur(row,col):
+        global grid_values, running
+        grid_col = []
+        
+        
+        while running:
+            with verrou:
+                    Mem_col = [grid_values[5][col] for i in range (len(grid_values))]
+                    Mem_row = grid_values[row]
+                    
+                    Mem = []
+                    Mem.append(Mem_col[row]) #valeur de la case
+                    print(Mem,row,col)
+                    
+                    
+                    
+
+            time.sleep(2)  # Fréquence de vérification
+    
     def lire_grille_depuis_fichier(fichier):
         # Ouvrir le fichier en lecture
         with open(fichier, 'r') as f:
@@ -128,6 +166,7 @@ class ihm_6x6:
             return True
         canvas.delete(text_id_message)
         text_id_message = canvas.create_text(310, 465, text="Vous devez d'abord terminer la grille !", font=('Helvetica', 10), fill="black")
+        
     def verifier():
         from vérification.verification import verification
         # Vérifier les lignes
@@ -209,4 +248,10 @@ class ihm_6x6:
             elif grid_values[row][col] == 1:
                 grid_values[row][col] = ''
                 text_ids[row][col] = canvas.create_text(x, y, text='', font=('Helvetica', 12), fill="green")
+    def on_close(self):
+        global running
+        print("Fermeture de la fenêtre...")
+        running = False  # Mettre le drapeau à False pour arrêter les threads
+        
+        root.destroy()  # Détruire la fenêtre principale
     
