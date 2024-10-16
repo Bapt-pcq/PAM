@@ -54,7 +54,7 @@ class ihm_8x8:
 
         # Remplir le canvas avec les valeurs générées dans grid_values
                # Remplir le canvas avec les valeurs générées dans grid_values
-        fichier_grille = "grille/8x8.txt"  # Chemin vers ton fichier txt
+        fichier_grille = "grille/8x8_1.txt"  # Chemin vers ton fichier txt
         grille = ihm_8x8.lire_grille_depuis_fichier(fichier_grille)
         
         for row in range(8):
