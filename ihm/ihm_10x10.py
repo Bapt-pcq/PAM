@@ -1,4 +1,5 @@
 import tkinter as tk
+import random
 
 class ihm_10x10:
 
@@ -62,7 +63,15 @@ class ihm_10x10:
 
         # Remplir le canvas avec les valeurs générées dans grid_values
                # Remplir le canvas avec les valeurs générées dans grid_values
-        fichier_grille = "grille/10x10_3.txt"  # Chemin vers ton fichier txt
+                # Générer un nombre aléatoire entre 1 et 3
+        nombre_aleatoire = random.randint(1, 3)
+        # Remplir le canvas avec les valeurs générées dans grid_values
+        if nombre_aleatoire==1:
+            fichier_grille = "grille/10x10_1.txt"  # Chemin vers ton fichier txt
+        elif nombre_aleatoire==2:
+            fichier_grille = "grille/10x10_2.txt"  # Chemin vers ton fichier txt
+        elif nombre_aleatoire==3:
+            fichier_grille = "grille/10x10_3.txt"  # Chemin vers ton fichier txt
         grille = ihm_10x10.lire_grille_depuis_fichier(fichier_grille)
         
         for row in range(10):

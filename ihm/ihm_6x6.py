@@ -1,6 +1,7 @@
 import tkinter as tk
 import threading
 import time
+import random
 
 
 class ihm_6x6:     
@@ -65,9 +66,15 @@ class ihm_6x6:
             canvas.create_text(offset_x+10+60*i, offset_y-10, text=i+1, font=('Helvetica', 10), fill="black")
 
 
-        
+        # Générer un nombre aléatoire entre 1 et 3
+        nombre_aleatoire = random.randint(1, 3)
         # Remplir le canvas avec les valeurs générées dans grid_values
-        fichier_grille = "grille/6x6_3.txt"  # Chemin vers ton fichier txt
+        if nombre_aleatoire==1:
+            fichier_grille = "grille/6x6_1.txt"  # Chemin vers ton fichier txt
+        elif nombre_aleatoire==2:
+            fichier_grille = "grille/6x6_2.txt"  # Chemin vers ton fichier txt
+        elif nombre_aleatoire==3:
+            fichier_grille = "grille/6x6_3.txt"  # Chemin vers ton fichier txt
         grille = ihm_6x6.lire_grille_depuis_fichier(fichier_grille)
         
         for row in range(6):
@@ -135,7 +142,8 @@ class ihm_6x6:
 
     # effacer et regenerer la grille
     def clear():
-        global root, canvas, text_id_message
+        global root, canvas, text_id_message, running
+        running = False
         root.destroy()
         for row in range(rows):
             for col in range(cols):
@@ -147,7 +155,8 @@ class ihm_6x6:
 
     def home():
         from first_page import first_page 
-        global root
+        global root, running
+        running = False
         root.destroy()
         first_page()
 

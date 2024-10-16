@@ -1,4 +1,5 @@
 import tkinter as tk
+import random
 
 class ihm_8x8:
 
@@ -54,7 +55,16 @@ class ihm_8x8:
 
         # Remplir le canvas avec les valeurs générées dans grid_values
                # Remplir le canvas avec les valeurs générées dans grid_values
-        fichier_grille = "grille/8x8_1.txt"  # Chemin vers ton fichier txt
+        # Générer un nombre aléatoire entre 1 et 3
+        nombre_aleatoire = random.randint(1, 3)
+        # Remplir le canvas avec les valeurs générées dans grid_values
+        if nombre_aleatoire==1:
+            fichier_grille = "grille/8x8_1.txt"  # Chemin vers ton fichier txt
+        elif nombre_aleatoire==2:
+            fichier_grille = "grille/8x8_2.txt"  # Chemin vers ton fichier txt
+        elif nombre_aleatoire==3:
+            fichier_grille = "grille/8x8_3.txt"  # Chemin vers ton fichier txt
+        
         grille = ihm_8x8.lire_grille_depuis_fichier(fichier_grille)
         
         for row in range(8):
