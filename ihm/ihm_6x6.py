@@ -305,7 +305,7 @@ class ihm_6x6:
 
                 return False
         text_id_message = canvas.create_text(250, 465, text="Il n'y a pas d'erreur", font=('Helvetica', 10), fill="black")
-
+        return True
     def on_click(event):
         global cell_size, grid_values, text_ids, cols, rows, canvas, offset_x, offset_y
     # Trouver les coordonnées de la cellule cliquée en prenant en compte les offsets
