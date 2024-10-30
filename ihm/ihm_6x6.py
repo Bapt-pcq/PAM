@@ -3,6 +3,7 @@ import threading
 import random
 import threading
 import time
+from grille.lecture import lecture
 
 class ihm_6x6:     
     def grille6x6(self):
@@ -75,7 +76,7 @@ class ihm_6x6:
             fichier_grille = "grille/6x6_2.txt"  # Chemin vers ton fichier txt
         elif nombre_aleatoire==3:
             fichier_grille = "grille/6x6_3.txt"  # Chemin vers ton fichier txt
-        grille = ihm_6x6.lire_grille_depuis_fichier(fichier_grille)
+        grille = lecture.lire_grille_depuis_fichier(fichier_grille)
         
         for row in range(6):
             for col in range(6):
@@ -211,15 +212,6 @@ class ihm_6x6:
                     
             print(Mem,row,col)
             time.sleep(2)  # Fréquence de vérification    
-   
-    
-    def lire_grille_depuis_fichier(fichier):
-        # Ouvrir le fichier en lecture
-        with open(fichier, 'r') as f:
-            # Lire le contenu ligne par ligne et convertir chaque ligne en une liste d'entiers
-            grille = [list(map(int, ligne.split())) for ligne in f]
-        
-        return grille
 
 
 

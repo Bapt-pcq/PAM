@@ -2,6 +2,7 @@ import tkinter as tk
 import random
 import time 
 import threading
+from grille.lecture import lecture
 
 class ihm_10x10:
 
@@ -74,7 +75,7 @@ class ihm_10x10:
             fichier_grille = "grille/10x10_2.txt"  # Chemin vers ton fichier txt
         elif nombre_aleatoire==3:
             fichier_grille = "grille/10x10_3.txt"  # Chemin vers ton fichier txt
-        grille = ihm_10x10.lire_grille_depuis_fichier(fichier_grille)
+        grille = lecture.lire_grille_depuis_fichier(fichier_grille)
         
         for row in range(10):
             for col in range(10):
@@ -213,18 +214,7 @@ class ihm_10x10:
             time.sleep(2)  # Fréquence de vérification 
    
    
-   
-   
-   
-   
-   
-    def lire_grille_depuis_fichier(fichier):
-        # Ouvrir le fichier en lecture
-        with open(fichier, 'r') as f:
-            # Lire le contenu ligne par ligne et convertir chaque ligne en une liste d'entiers
-            grille = [list(map(int, ligne.split())) for ligne in f]
-        
-        return grille
+
 
 
     def clear10x10():
@@ -238,7 +228,8 @@ class ihm_10x10:
 
     def home():
         from first_page import first_page 
-        global root
+        global root, running
+        running = False
         root.destroy()
         first_page()
 
