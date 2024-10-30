@@ -1,11 +1,13 @@
 import tkinter as tk
 import random
+import time 
+import threading
 
 class ihm_10x10:
 
         
     def grille10x10(self):
-        global taille, text_id_message, text_ids, grid_values, rows, cols, cell_size, canvas,  root,offset_x,offset_y
+        global taille, text_id_message, text_ids, grid_values, rows, cols, cell_size, canvas,  root,offset_x,offset_y, verrou, running
         taille =2
         # Définition des paramètres graphique
         root = tk.Tk()
@@ -14,7 +16,7 @@ class ihm_10x10:
         # Dimensions de la grille
         rows, cols = 10, 10
         cell_size = 50  # Taille des cellules en pixels
-
+        running = True
         # Création du canvas pour dessiner la grille
         canvas = tk.Canvas(root, width=cols*cell_size*1.9, height=rows*cell_size*1.3)
         canvas.pack()
@@ -83,6 +85,138 @@ class ihm_10x10:
                     grid_values[row][col]=grille[row][col]
         for i in range(10) :
             print(grid_values[i])
+        #Threads
+        verrou = threading.Lock()
+        
+        #creation d'un thread par case
+        for i in range(10):  # Boucle pour les lignes
+            for j in range(10):  # Boucle pour les colonnes
+                ihm_10x10.create_thread(i, j)
+        #ihm_6x6.etat_page()
+        print(grid_values)
+
+        root.protocol("WM_DELETE_WINDOW", self.on_close)
+            # Utilisation des fonctions
+
+   
+   
+   
+    def create_thread(i, j):
+            
+        thread_name = f"t{i}{j}"
+        print(f"Création du thread {thread_name}")
+        thread = threading.Thread(target=ihm_10x10.surveiller_valeur, args=(i, j), daemon=True, name=thread_name)
+        thread.start()
+
+    # # Fonction pour surveiller et réagir à la mise à jour de la variable
+    def surveiller_valeur(row,col):
+        global grid_values, running
+        grid_col = []
+               
+        while running:
+            with verrou:                   
+                    Mem_row = grid_values[row]
+                   
+                    grid_col = []
+        
+                    # Parcourir chaque colonne de la grille
+                    for col in range(len(grid_values[0])):
+                        # Initialiser une liste pour la colonne actuelle
+                        current_column = []
+                        
+                        # Parcourir chaque ligne pour extraire l'élément de la colonne actuelle
+                        for lig in range(len(grid_values)):
+                            current_column.append(grid_values[lig][col])
+                        
+                        # Ajouter la colonne actuelle à la liste des colonnes
+                        grid_col.append(current_column)
+                    
+                    Mem_col=grid_col[row]
+                    
+                    Mem = []
+                    #Mem[0]
+                    Mem.append(Mem_col[row]) #valeur de la case
+                    #Mem[1]
+                    if row-2 <0:
+                        Mem.append(-2) #case en dehors de la grill donc -2
+                    else:
+                        Mem.append(Mem_col[row-2]) #valeur deuxième case au dessus
+
+                    #Mem[2]
+                    if row-1 <0:
+                        Mem.append(-2) #case en dehors de la grill donc -2
+                    else:
+                        Mem.append(Mem_col[row-1]) #valeur première case au dessus
+    
+                    #Mem[3]
+                    if col+2 > len(Mem_col)-1:
+                        Mem.append(-2) #case en dehors de la grill donc -2
+                    else:
+                        Mem.append(Mem_row[col+2]) #valeur deuxième case à droite
+
+                    #Mem[4]
+                    if col+1 > len(Mem_col)-1:
+                        Mem.append(-2) #case en dehors de la grill donc -2
+                    else:
+                        Mem.append(Mem_row[col+1]) #valeur première case à droite
+
+                    #Mem[5]
+                    if row-2 > len(Mem_row)-1:
+                        Mem.append(-2) #case en dehors de la grill donc -2
+                    else:
+                        Mem.append(Mem_col[row-2]) #valeur deuxième case en dessous
+
+                    #Mem[6]
+                    if row+1 > len(Mem_row)-1:
+                        Mem.append(-2) #case en dehors de la grill donc -2
+                    else:
+                        Mem.append(Mem_col[row-1]) #valeur première case au dessous
+
+                    #Mem[7]
+                    if col-2 < 0:
+                        Mem.append(-2) #case en dehors de la grill donc -2
+                    else:
+                        Mem.append(Mem_row[col-2]) #valeur deuxième case à gauche
+
+                    #Mem[8]
+                    if col-1 < 0:
+                        Mem.append(-2) #case en dehors de la grill donc -2
+                    else:
+                        Mem.append(Mem_row[col-1]) #valeur première case à gauche
+                    
+                    
+                    #Mem[9]
+                    Mem.append(0) 
+                    for i in range(len(Mem_row)):
+                        if Mem_row[i] == 1:
+                            Mem[9] += 1
+                
+                    #Mem[10]
+                    Mem.append(0)
+                    for i in range(len(Mem_row)):
+                        if Mem_row[i] == 0:
+                            Mem[10] += 1
+            
+                    #Mem[11]
+                    Mem.append(0)
+                    for i in range(len(Mem_col)):
+                        if Mem_col[i] == 1:
+                            Mem[11] += 1
+                
+                    #Mem[12]
+                    Mem.append(0)
+                    for i in range(len(Mem_col)):
+                        if Mem_col[i] == 0:
+                            Mem[12] += 1
+                    
+            print(Mem,row,col)
+            time.sleep(2)  # Fréquence de vérification 
+   
+   
+   
+   
+   
+   
    
     def lire_grille_depuis_fichier(fichier):
         # Ouvrir le fichier en lecture
@@ -220,3 +354,10 @@ class ihm_10x10:
             elif grid_values[row][col] == 1:
                 grid_values[row][col] = ''
                 text_ids[row][col] = canvas.create_text(x, y, text='', font=('Helvetica', 12), fill="green")
+
+    def on_close(self):
+        global running
+        print("Fermeture de la fenêtre...")
+        running = False  # Mettre le drapeau à False pour arrêter les threads
+        
+        root.destroy()  # Détruire la fenêtre principale

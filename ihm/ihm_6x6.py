@@ -1,8 +1,8 @@
 import tkinter as tk
 import threading
-import time
 import random
-
+import threading
+import time
 
 class ihm_6x6:     
     def grille6x6(self):
@@ -89,13 +89,10 @@ class ihm_6x6:
         #Threads
         verrou = threading.Lock()
         
-
+        #creation d'un thread par case
         for i in range(6):  # Boucle pour les lignes
             for j in range(6):  # Boucle pour les colonnes
-                thread_name = f"t{i}{j}"
-                print(f"Création du thread {thread_name}")
-                thread = threading.Thread(target=ihm_6x6.surveiller_valeur, args=(i, j), daemon=True, name=thread_name)
-                thread.start()
+                ihm_6x6.create_thread(i, j)
         #ihm_6x6.etat_page()
         print(grid_values)
 
@@ -104,22 +101,22 @@ class ihm_6x6:
 
         return True
     
-    
-    
+    def create_thread(i, j):
+            
+        thread_name = f"t{i}{j}"
+        print(f"Création du thread {thread_name}")
+        thread = threading.Thread(target=ihm_6x6.surveiller_valeur, args=(i, j), daemon=True, name=thread_name)
+        thread.start()
 
     # # Fonction pour surveiller et réagir à la mise à jour de la variable
     def surveiller_valeur(row,col):
         global grid_values, running
         grid_col = []
-        
-        
+               
         while running:
-            with verrou:
-                    
+            with verrou:                   
                     Mem_row = grid_values[row]
-                    
-                    
-                    
+                   
                     grid_col = []
         
                     # Parcourir chaque colonne de la grille
@@ -144,43 +141,43 @@ class ihm_6x6:
                         Mem.append(-2) #case en dehors de la grill donc -2
                     else:
                         Mem.append(Mem_col[row-2]) #valeur deuxième case au dessus
- 
+
                     #Mem[2]
                     if row-1 <0:
                         Mem.append(-2) #case en dehors de la grill donc -2
                     else:
                         Mem.append(Mem_col[row-1]) #valeur première case au dessus
-       
+    
                     #Mem[3]
                     if col+2 > len(Mem_col)-1:
                         Mem.append(-2) #case en dehors de la grill donc -2
                     else:
                         Mem.append(Mem_row[col+2]) #valeur deuxième case à droite
- 
+
                     #Mem[4]
                     if col+1 > len(Mem_col)-1:
                         Mem.append(-2) #case en dehors de la grill donc -2
                     else:
                         Mem.append(Mem_row[col+1]) #valeur première case à droite
- 
+
                     #Mem[5]
                     if row-2 > len(Mem_row)-1:
                         Mem.append(-2) #case en dehors de la grill donc -2
                     else:
                         Mem.append(Mem_col[row-2]) #valeur deuxième case en dessous
- 
+
                     #Mem[6]
                     if row+1 > len(Mem_row)-1:
                         Mem.append(-2) #case en dehors de la grill donc -2
                     else:
                         Mem.append(Mem_col[row-1]) #valeur première case au dessous
- 
+
                     #Mem[7]
                     if col-2 < 0:
                         Mem.append(-2) #case en dehors de la grill donc -2
                     else:
                         Mem.append(Mem_row[col-2]) #valeur deuxième case à gauche
- 
+
                     #Mem[8]
                     if col-1 < 0:
                         Mem.append(-2) #case en dehors de la grill donc -2
@@ -212,8 +209,9 @@ class ihm_6x6:
                         if Mem_col[i] == 0:
                             Mem[12] += 1
                     
-                    print(Mem,row,col)
-            time.sleep(2)  # Fréquence de vérification
+            print(Mem,row,col)
+            time.sleep(2)  # Fréquence de vérification    
+   
     
     def lire_grille_depuis_fichier(fichier):
         # Ouvrir le fichier en lecture
