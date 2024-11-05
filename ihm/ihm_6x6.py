@@ -1,5 +1,5 @@
 import tkinter as tk
-
+import tkinter.messagebox
 
 
 class ihm_6x6:     
@@ -28,6 +28,14 @@ class ihm_6x6:
             self.start_chronometer()
             
         #####################################################################################
+        
+        
+        ############################## Aide #################################################
+        # Ajouter le bouton d'aide
+        button_aide = tk.Button(root, text="[?]", command=self.afficher_aide, width=4, height=1)
+        #button_aide.pack(side='right'& 'bottom')  # Position en bas à droite width=760 ; height=520
+        button_aide.place(x=760, y=520, anchor="se")
+        #####################################################################################        
         
         # creation des boutons
         button_clear = tk.Button(root, text="Réinitialiser", command=ihm_6x6.clear,width=15, height=3)
@@ -235,3 +243,15 @@ class ihm_6x6:
         seconds = self.elapsed_time % 60
         print(f"Temps final du chronomètre : {minutes:02}:{seconds:02}")
         self.timer_label.config(text=f"Chronomètre arrêté à : {minutes:02}:{seconds:02}")
+        
+    def afficher_aide(self):
+        #"""Fonction appelée lors du clic sur le bouton Aide."""
+        aide_message = (
+            "Bienvenue dans le jeu Takuzu!\n\n"
+            "Objectif : Remplir la grille en suivant ces règles :\n"
+            "- Aucun chiffre ne doit se répéter plus de deux fois à la suite dans une ligne ou une colonne.\n"
+            "- Chaque ligne et chaque colonne doivent contenir un nombre égal de 0 et de 1.\n"
+            "- Les lignes et les colonnes doivent être uniques.\n\n"
+            "Bonne chance!"
+            )
+        tk.messagebox.showinfo("Aide Takuzu", aide_message)
