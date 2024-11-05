@@ -1,15 +1,29 @@
+import time
 import tkinter as tk
+
 
 class ihm_10x10:
 
+
         
-    def grille10x10(self):
+    def grille10x10(self, timer_enabled):
         global taille, text_id_message, text_ids, grid_values, rows, cols, cell_size, canvas,  root,offset_x,offset_y
         taille =2
         # Définition des paramètres graphique
         root = tk.Tk()
         root.title("Grille 10x10")
+        timer_running = False
+        ################################### Timer ##########################################
+        self.timer_enabled = timer_enabled
+        self.elapsed_time = 0  # Temps écoulé en secondes
 
+        
+        if  self.timer_enabled :
+            self.timer_label = tk.Label(root, text="Chronomètre : 0s")
+            self.timer_label.pack()            
+            self.start_chronometer()
+            
+        #####################################################################################
         # Dimensions de la grille
         rows, cols = 10, 10
         cell_size = 50  # Taille des cellules en pixels
@@ -36,7 +50,8 @@ class ihm_10x10:
         button_clear = tk.Button(root, text="Réinitialiser", command=ihm_10x10.clear10x10,width=15, height=3)
         button_verif = tk.Button(root, text="Vérifier", command=ihm_10x10.verifier10x10,width=15, height=3)
         button_valider = tk.Button(root, text="Valider", command=ihm_10x10.valider10x10,width=15, height=3)
-        button_home = tk.Button(root, text="Accueil", command=ihm_10x10.home,width=7, height=2)
+        button_home = tk.Button(root, text="Accueil", command= self.home,width=7, height=2)
+        
         # Placement du bouton dans la fenêtre
         button_clear.place(x=700, y=100)
         button_verif.place(x=700, y=200)
@@ -93,11 +108,13 @@ class ihm_10x10:
         ihm_10x10.grille10x10("a")
         text_id_message = canvas.create_text(350, 585, text="La grille a été réinitialisée", font=('Helvetica', 10), fill="black")
 
-    def home():
+    def home(self):
+        if self.timer_enabled == True :
+            self.stop_chronometer()
         from first_page import first_page 
-        global root
         root.destroy()
         first_page()
+        
 
     def is_valid_sequence(sequence):
         # Vérifie qu'il n'y a pas plus de deux 0 ou 1 consécutifs
@@ -211,3 +228,19 @@ class ihm_10x10:
             elif grid_values[row][col] == 1:
                 grid_values[row][col] = ''
                 text_ids[row][col] = canvas.create_text(x, y, text='', font=('Helvetica', 12), fill="green")
+    
+    def start_chronometer(self):
+        self.elapsed_time += 1  # Incrémente le temps écoulé
+        minutes = self.elapsed_time // 60  # Calcul des minutes
+        seconds = self.elapsed_time % 60  # Calcul des secondes
+        self.timer_label.config(text=f"Chronomètre : {minutes:02}:{seconds:02}")  # Affichage formaté MM:SS
+        #root.after(1000, self.start_chronometer)  # Relance après 1 seconde
+        self._chronometer_running = root.after(1000, self.start_chronometer)
+        
+    def stop_chronometer(self):
+        """Arrête le chronomètre et affiche la valeur finale."""
+        root.after_cancel(self._chronometer_running)  # Annule l'appel programmé
+        minutes = self.elapsed_time // 60
+        seconds = self.elapsed_time % 60
+        print(f"Temps final du chronomètre : {minutes:02}:{seconds:02}")
+        self.timer_label.config(text=f"Chronomètre arrêté à : {minutes:02}:{seconds:02}")
