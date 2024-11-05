@@ -26,11 +26,13 @@ class ihm_6x6:
         button_verif = tk.Button(root, text="Vérifier", command=ihm_6x6.verifier,width=15, height=3)
         button_valider = tk.Button(root, text="Valider", command=ihm_6x6.valider,width=15, height=3)
         button_home = tk.Button(root, text="Accueil", command=ihm_6x6.home,width=7, height=2)
+        button_resoudre = tk.Button(root, text="Resolution", command=ihm_6x6.init_resolution,width=7, height=2)
         # Placement du bouton dans la fenêtre
         button_clear.place(x=530, y=100)
         button_verif.place(x=530, y=200)
         button_valider.place(x=530, y=300)
         button_home.place(x=710, y=0)
+        button_resoudre.place(x=530, y=400)
         # Dimensions de la grille
         rows, cols = 6, 6
         cell_size = 60  # Taille des cellules en pixels
@@ -38,7 +40,7 @@ class ihm_6x6:
         text_ids = [[None for _ in range(cols)] for _ in range(rows)]
         grid_values = [["" for _ in range(cols)] for _ in range(rows)]
         text_id_message = None
-        grid_values1 = [["" for _ in range(cols)] for _ in range(rows)]
+        
         # Définir les décalages pour centrer la grille
         offset_x = 50  # Décalage horizontal
         offset_y = 50  # Décalage vertical
@@ -197,7 +199,22 @@ class ihm_6x6:
                 return False
         text_id_message = canvas.create_text(250, 465, text="Il n'y a pas d'erreur", font=('Helvetica', 10), fill="black")
         return True
+
+    def init_resolution():
+        Agents.resolution(6)  
     
+    def ecrire_valeur(Mem_row,Mem_col,valeur) :
+        global grid_values, text_ids
+        grid_values[Mem_row][Mem_col] = valeur
+        x = offset_x + Mem_col * cell_size + cell_size // 2
+        y = offset_y + Mem_row * cell_size + cell_size // 2
+        print("x ",x,"y ",y)
+        print("Mem_col ", Mem_col, "Mem_row", Mem_row)
+        valeur_str = str(valeur)
+        text_ids[Mem_row][Mem_col] = canvas.create_text(x, y, text=valeur_str, font=('Helvetica', 12), fill="green")
+        
+
+  
     def on_click(event):
         global cell_size, grid_values, text_ids, cols, rows, canvas, offset_x, offset_y
     # Trouver les coordonnées de la cellule cliquée en prenant en compte les offsets
