@@ -7,7 +7,7 @@ class verification :
 
         for i in range(1, len(sequence)):
 
-            if sequence[i] != "" or sequence[i-1] != "":
+            if sequence[i] != -1 or sequence[i-1] != -1:
                 if sequence[i] == sequence[i - 1]  :
                     count += 1
                     if count > 2:
@@ -19,7 +19,7 @@ class verification :
 
     def has_equal_zeros_ones(sequence):
         # Vérifie qu'il y a le même nombre de 0 et de 1
-        vide = sequence.count("")
+        vide = sequence.count(-1)
         if vide!=0:
             return True
         zeros = sequence.count(0)
@@ -30,7 +30,7 @@ class verification :
 
     def all_unique(sequence):
         # Filtrer les lignes qui ne contiennent pas de ''
-        filtered_rows = [row for row in sequence if '' not in row]
+        filtered_rows = [row for row in sequence if -1 not in row]
 
         # Vérifier les lignes identiques
         identical_rows = []
