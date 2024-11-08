@@ -229,8 +229,20 @@ class ihm_6x6:
         thread.start()
         
     def ecrire_valeur():
-        # Calculer la position pour centrer le texte dans la cellule
-        print("debug: ",etat_partage.debug)
+        # # Calculer la position pour centrer le texte dans la cellule
+        # print("debug: ",etat_partage.debug)
+        # Boucle pour afficher chaque entrée de façon structurée
+        for entry in etat_partage.debug:
+            condition, param1, param2, param3, mem_label, mem_values = entry[:6]
+            print(f"Condition: {condition}")
+            print(f"Param1: {param1}, Param2: {param2}, Param3: {param3}")
+            print(f"{mem_label} {mem_values}")
+            
+            # Affiche la colonne si elle est présente dans l'entrée
+            if len(entry) > 6:
+                col_label, col_values = entry[6:8]
+                print(f"{col_label} {col_values}")
+            print("-" * 50)  # Séparateur entre les entrées
         for row in range(6):
             for col in range(6):
                 x = offset_x + col * cell_size + cell_size // 2
@@ -238,15 +250,19 @@ class ihm_6x6:
 
                 # Ajouter ou modifier le texte au centre de la cellule cliquée
 
-                if etat_partage.text_ids[row][col] is not None:
-                    etat_partage.canvas.delete(etat_partage.text_ids[row][col])  # Effacer le texte existant
-
-                if etat_partage.text_ids[row][col] != "Rempli" :
+                if etat_partage.text_ids[row][col] is not None and etat_partage.text_ids[row][col] != "Rempli":
                     
+                    if etat_partage.grid_values[row][col] != etat_partage.grid_values2[row][col]:
+                        etat_partage.canvas.delete(etat_partage.text_ids[row][col])  # Effacer le texte existant
+                        etat_partage.grid_values[row][col] = etat_partage.grid_values2[row][col]
+                        valeur_str = str(etat_partage.grid_values[row][col])
+                        etat_partage.text_ids[row][col] = etat_partage.canvas.create_text(x, y, text=valeur_str, font=('Helvetica', 12), fill="red")
+                elif etat_partage.text_ids[row][col] != "Rempli" :
                 
                     etat_partage.grid_values[row][col] = etat_partage.grid_values2[row][col]
                     valeur_str = str(etat_partage.grid_values[row][col])
-                    etat_partage.text_ids[row][col] = etat_partage.canvas.create_text(x, y, text=valeur_str, font=('Helvetica', 12), fill="green")
+                    etat_partage.text_ids[row][col] = etat_partage.canvas.create_text(x, y, text=valeur_str, font=('Helvetica', 12), fill="blue")
+                
                     
 
 

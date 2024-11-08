@@ -14,6 +14,7 @@ class Agents2:
         Mem_resolution = [None] * 15
         a_trouver=taille*taille-trou
         nb_0_ou_1 = taille / 2
+        print(etat_partage.grid_values2)
         while etat_partage.running:
             with etat_partage.verrou:
                 
@@ -34,8 +35,8 @@ class Agents2:
                     current_column = [etat_partage.grid_values2[lig][col_idx] for lig in range(len(etat_partage.grid_values2))]
                     grid_col.append(current_column)
 
-                Mem_resolution_col = grid_col[row]
-                
+                Mem_resolution_col = grid_col[col]
+                #print("Mem col.", Mem_resolution_col, "row :",row, "col :",col)
                 if Mem_resolution[0]!=Mem_resolution_col[row]:
                     #Mem_resolution[0]
                     
@@ -134,57 +135,57 @@ class Agents2:
                     
                     
                 if etat_partage.text_ids2[Mem_resolution[13]][Mem_resolution[14]] != "Rempli": 
-                    print(Mem_resolution)
+                    #print(Mem_resolution)
                     
                     # Règles logiques pour déterminer la valeur
                     if Mem_resolution[1] == Mem_resolution[2] and Mem_resolution[2] != -2 and Mem_resolution[2] != -1 :
-                        print("condition",1)
-                        print(Mem_resolution)
+                        #print("condition",1)
+                        #print(Mem_resolution)
                         Mem_resolution[0] = abs(Mem_resolution[1] - 1)
                         etat_partage.debug.append(("condition 1",Mem_resolution[13],Mem_resolution[14],Mem_resolution[0], "Mem :", Mem_resolution))
                     elif Mem_resolution[3] == Mem_resolution[4] and Mem_resolution[4] != -2 and Mem_resolution[4] != -1:
-                        print("condition",2)
-                        print(Mem_resolution)
+                        #print("condition",2)
+                        #print(Mem_resolution)
                         Mem_resolution[0] = abs(Mem_resolution[3] - 1)
                         etat_partage.debug.append(("condition 2",Mem_resolution[13],Mem_resolution[14],Mem_resolution[0], "Mem :", Mem_resolution))
                     elif Mem_resolution[5] == Mem_resolution[6] and Mem_resolution[6] != -2 and Mem_resolution[6] != -1:
-                        print("condition",3)
-                        print(Mem_resolution)                               
+                        #print("condition",3)
+                        #print(Mem_resolution)                               
                         Mem_resolution[0] = abs(Mem_resolution[5] - 1)
                         etat_partage.debug.append(("condition 3",Mem_resolution[13],Mem_resolution[14],Mem_resolution[0], "Mem :", Mem_resolution))
                     elif Mem_resolution[7] == Mem_resolution[8] and Mem_resolution[8] != -2 and Mem_resolution[8] != -1:
-                        print("condition",4)
-                        print(Mem_resolution)
+                        #print("condition",4)
+                        #print(Mem_resolution)
                         Mem_resolution[0] = abs(Mem_resolution[7] - 1)
                         etat_partage.debug.append(("condition 4",Mem_resolution[13],Mem_resolution[14],Mem_resolution[0], "Mem :", Mem_resolution))
                     elif Mem_resolution[2] == Mem_resolution[6] and Mem_resolution[2] != -2 and Mem_resolution[2] != -1 :
-                        print("condition",5)
-                        print(Mem_resolution)
+                        #print("condition",5)
+                        #print(Mem_resolution)
                         Mem_resolution[0] = abs(Mem_resolution[2] - 1)
                         etat_partage.debug.append(("condition 5",Mem_resolution[13],Mem_resolution[14],Mem_resolution[0], "Mem :", Mem_resolution))
                     elif Mem_resolution[4] == Mem_resolution[8] and Mem_resolution[4] != -2 and Mem_resolution[4] != -1:
-                        print("condition",6)
-                        print(Mem_resolution)
+                        #print("condition",6)
+                        #print(Mem_resolution)
                         Mem_resolution[0] = abs(Mem_resolution[4] - 1)
                         etat_partage.debug.append(("condition 6",Mem_resolution[13],Mem_resolution[14],Mem_resolution[0], "Mem :", Mem_resolution))
                     elif Mem_resolution[9] == nb_0_ou_1:  # Nb de 1 dans la ligne atteint
-                        print("condition",7)
-                        print(Mem_resolution)
+                        #print("condition",7)
+                        #print(Mem_resolution)
                         Mem_resolution[0] = 0
                         etat_partage.debug.append(("condition 7",Mem_resolution[13],Mem_resolution[14],Mem_resolution[0], "Mem :", Mem_resolution))
                     elif Mem_resolution[10] == nb_0_ou_1:  # Nb de 0 dans la ligne atteint
-                        print("condition",8)
-                        print(Mem_resolution)
+                        #print("condition",8)
+                        #print(Mem_resolution)
                         Mem_resolution[0] = 1
                         etat_partage.debug.append(("condition 8",Mem_resolution[13],Mem_resolution[14],Mem_resolution[0], "Mem :", Mem_resolution))
                     elif Mem_resolution[11] == nb_0_ou_1:  # Nb de 1 dans la colonne atteint
-                        print("condition",9)
-                        print(Mem_resolution)
+                        #print("condition",9)
+                        #print(Mem_resolution)
                         Mem_resolution[0] = 0
                         etat_partage.debug.append(("condition 9",Mem_resolution[13],Mem_resolution[14],Mem_resolution[0], "Mem :", Mem_resolution))
                     elif Mem_resolution[12] == nb_0_ou_1:  # Nb de 0 dans la colonne atteint
-                        print("condition",10)
-                        print(Mem_resolution)
+                        #print("condition",10)
+                        #print(Mem_resolution)
                         Mem_resolution[0] = 1
                         etat_partage.debug.append(("condition 10",Mem_resolution[13],Mem_resolution[14],Mem_resolution[0], "Mem :", Mem_resolution,"colone:",Mem_resolution_col))
                     
@@ -200,7 +201,7 @@ class Agents2:
                         # etat_partage.canvas.create_text(x, y, text=valeur_str, font=('Helvetica', 12), fill="green")
                         etat_partage.text_ids2[Mem_resolution[13]][Mem_resolution[14]] = "Rempli"
                         progress = True
-                        print(Mem_resolution[13], Mem_resolution[14], "Trouvée ! Avec la valeur :", Mem_resolution[0])
+                        print(Mem_resolution[13], Mem_resolution[14], "Trouvée ! Avec la valeur :", Mem_resolution[0], Mem_resolution)
                         print("je sors du thread", thread_name)
                         Agents2.grille_complete+=1 
                         print(Agents2.grille_complete) 
