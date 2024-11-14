@@ -1,3 +1,4 @@
+import random
 import time
 import tkinter as tk
 import tkinter.messagebox
@@ -47,9 +48,9 @@ class ihm_10x10:
             canvas.create_line(offset_x + j * cell_size, offset_y, offset_x + j * cell_size, offset_y + rows * cell_size)  # Lignes verticales
         canvas.bind("<Button-1>", ihm_10x10.on_click)
         # creation des boutons
-        button_clear = tk.Button(root, text="Réinitialiser", command=ihm_10x10.clear10x10,width=15, height=3)
+        button_clear = tk.Button(root, text="Réinitialiser", command=self.clear10x10,width=15, height=3)
         button_verif = tk.Button(root, text="Vérifier", command=ihm_10x10.verifier10x10,width=15, height=3)
-        button_valider = tk.Button(root, text="Valider", command=ihm_10x10.valider10x10,width=15, height=3)
+        button_valider = tk.Button(root, text="Valider", command=self.afficher_msg_valider,width=15, height=3)
         button_home = tk.Button(root, text="Accueil", command= self.home,width=7, height=2)
         
         # Placement du bouton dans la fenêtre
@@ -82,10 +83,14 @@ class ihm_10x10:
             canvas.create_text(offset_x+10+50*i, offset_y-10, text=i+1, font=('Helvetica', 10), fill="black")
 
 
-        # Remplir le canvas avec les valeurs générées dans grid_values
-               # Remplir le canvas avec les valeurs générées dans grid_values
-        fichier_grille = "grille/10x10_3.txt"  # Chemin vers ton fichier txt
-        grille = ihm_10x10.lire_grille_depuis_fichier(fichier_grille)
+        # Générer un nombre aléatoire entre 1 et 3
+        random_number = random.randint(1, 3)
+
+        # Définir le nom du fichier avec le dernier caractère modifié
+        fichier_grille = f"grille/10x10_{random_number}.txt"  # Remplacer le dernier chiffre par le nombre aléatoire
+
+        # Lire la grille depuis le fichier modifié
+        grille = ihm_10x10.lire_grille_depuis_fichier(fichier_grille) 
         
         for row in range(10):
             for col in range(10):
@@ -106,14 +111,36 @@ class ihm_10x10:
         return grille
 
 
-    def clear10x10():
+    def clear10x10(self):
         global root, canvas, text_id_message
         root.destroy()
         for row in range(rows):
             for col in range(cols):
                 grid_values[row][col] = ""
-        ihm_10x10.grille10x10("a")
+        ihm_10x10.grille10x10(self, self.timer_enabled)
         text_id_message = canvas.create_text(350, 585, text="La grille a été réinitialisée", font=('Helvetica', 10), fill="black")
+
+    def afficher_msg_valider(self):
+        from vérification.verification import verification
+        global grid_values, text_id_message
+        if verification.check_empty_cells(grid_values) : 
+            canvas.delete(text_id_message)
+            text_id_message = canvas.create_text(310, 465, text="Vous devez d'abord terminer la grille !", font=('Helvetica', 10), fill="black")
+        else :
+            ihm_10x10.valider10x10()
+            self.stop_chronometer()
+            if self.timer_enabled == True :
+                minutes = self.elapsed_time // 60
+                seconds = self.elapsed_time % 60
+                aide_message = (
+                        "Félicitation, vous avez correctement completé la grille !\n\n"
+                        f"Temps final de jeu : {minutes:02}:{seconds:02}"
+                )
+            else :
+                aide_message = (
+                        "Félicitation, vous avez correctement completé la grille !\n\n")
+            tk.messagebox.showinfo("Bravo", aide_message)
+            self.home()
 
     def home(self):
         if self.timer_enabled == True :
@@ -148,7 +175,7 @@ class ihm_10x10:
                 text_id_message = canvas.create_text(390, 585, text="Malheureusement, la grille est fausse vous devez recommencer !", font=('Helvetica', 10), fill="black")
                 return False
             canvas.delete(text_id_message)
-            text_id_message = canvas.create_text(390, 585, text="Vous avez correctement complété la grille, félicitation !", font=('Helvetica', 10), fill="black")    
+            #text_id_message = canvas.create_text(390, 585, text="Vous avez correctement complété la grille, félicitation !", font=('Helvetica', 10), fill="black")    
             return True
         canvas.delete(text_id_message)
         text_id_message = canvas.create_text(390, 585,  text="Vous devez d'abord terminer la grille !", font=('Helvetica', 10), fill="black")
@@ -246,11 +273,12 @@ class ihm_10x10:
         
     def stop_chronometer(self):
         """Arrête le chronomètre et affiche la valeur finale."""
-        root.after_cancel(self._chronometer_running)  # Annule l'appel programmé
-        minutes = self.elapsed_time // 60
-        seconds = self.elapsed_time % 60
-        print(f"Temps final du chronomètre : {minutes:02}:{seconds:02}")
-        self.timer_label.config(text=f"Chronomètre arrêté à : {minutes:02}:{seconds:02}")
+        if self.timer_enabled == True :
+            root.after_cancel(self._chronometer_running)  # Annule l'appel programmé
+            minutes = self.elapsed_time // 60
+            seconds = self.elapsed_time % 60
+            print(f"Temps final du chronomètre : {minutes:02}:{seconds:02}")
+            self.timer_label.config(text=f"Chronomètre arrêté à : {minutes:02}:{seconds:02}")
 
     def afficher_aide(self):
         #"""Fonction appelée lors du clic sur le bouton Aide."""
