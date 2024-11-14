@@ -1,4 +1,5 @@
 import tkinter as tk
+import tkinter.messagebox
 import random
 import threading
 from grille.lecture import lecture
@@ -7,13 +8,26 @@ import etat_partage  # Importez le module partagé
 
 class ihm_10x10:
         
-    def grille10x10(self):
+    def grille10x10(self,timer_enabled):
         global taille, text_id_message, text_ids, grid_values, rows, cols, cell_size, canvas,  root,offset_x,offset_y
         taille =2
         # Définition des paramètres graphique
         root = tk.Tk()
         root.title("Grille 10x10")
 
+        timer_running = False
+        ################################### Timer ##########################################
+        self.timer_enabled = timer_enabled
+        self.elapsed_time = 0  # Temps écoulé en secondes
+
+        
+        if  self.timer_enabled :
+            self.timer_label = tk.Label(root, text="Chronomètre : 0s")
+            self.timer_label.pack()            
+            self.start_chronometer()
+            
+        #####################################################################################
+        
         # Dimensions de la grille
         rows, cols = 10, 10
         cell_size = 50  # Taille des cellules en pixels
@@ -36,17 +50,26 @@ class ihm_10x10:
         for j in range(cols + 1):
             canvas.create_line(offset_x + j * cell_size, offset_y, offset_x + j * cell_size, offset_y + rows * cell_size)  # Lignes verticales
         canvas.bind("<Button-1>", ihm_10x10.on_click)
+
         # creation des boutons
-        button_clear = tk.Button(root, text="Réinitialiser", command=ihm_10x10.clear10x10,width=15, height=3)
+        button_clear = tk.Button(root, text="Réinitialiser", command=self.clear10x10,width=15, height=3)
         button_verif = tk.Button(root, text="Vérifier", command=ihm_10x10.verifier10x10,width=15, height=3)
-        button_valider = tk.Button(root, text="Valider", command=ihm_10x10.valider10x10,width=15, height=3)
-        button_home = tk.Button(root, text="Accueil", command=ihm_10x10.home,width=7, height=2)
+        button_valider = tk.Button(root, text="Valider", command=self.afficher_msg_valider,width=15, height=3)
+        button_home = tk.Button(root, text="Accueil", command= self.home,width=7, height=2)
+        
         # Placement du bouton dans la fenêtre
         button_clear.place(x=700, y=100)
         button_verif.place(x=700, y=200)
         button_valider.place(x=700, y=300)
         button_home.place(x=900, y=0)
 
+        ############################## Aide #################################################
+        # Ajouter le bouton d'aide
+        button_aide = tk.Button(root, text="[?]", command=self.afficher_aide, width=4, height=1)
+        #button_aide.pack(side='right'& 'bottom')  # Position en bas à droite width=950 ; height=650
+        button_aide.place(x=950, y=650, anchor="se")
+        #####################################################################################
+        
         canvas.create_text(750, 40, text="TAKUZU grille 10x10", font=('Helvetica', 20), fill="black")
 
         canvas.create_text(180, 560, text="Message", font=('Helvetica', 10), fill="black")
@@ -64,17 +87,13 @@ class ihm_10x10:
             canvas.create_text(offset_x+10+50*i, offset_y-10, text=i+1, font=('Helvetica', 10), fill="black")
 
 
-        # Remplir le canvas avec les valeurs générées dans grid_values
-               # Remplir le canvas avec les valeurs générées dans grid_values
-                # Générer un nombre aléatoire entre 1 et 3
-        nombre_aleatoire = random.randint(1, 3)
-        # Remplir le canvas avec les valeurs générées dans grid_values
-        if nombre_aleatoire==1:
-            fichier_grille = "grille/10x10_1.txt"  # Chemin vers ton fichier txt
-        elif nombre_aleatoire==2:
-            fichier_grille = "grille/10x10_2.txt"  # Chemin vers ton fichier txt
-        elif nombre_aleatoire==3:
-            fichier_grille = "grille/10x10_3.txt"  # Chemin vers ton fichier txt
+       # Générer un nombre aléatoire entre 1 et 3
+        random_number = random.randint(1, 3)
+
+        # Définir le nom du fichier avec le dernier caractère modifié
+        fichier_grille = f"grille/10x10_{random_number}.txt"  # Remplacer le dernier chiffre par le nombre aléatoire
+
+        # Lire la grille depuis le fichier modifié
         grille = lecture.lire_grille_depuis_fichier(fichier_grille)
         
         for row in range(10):
@@ -125,9 +144,34 @@ class ihm_10x10:
         ihm_10x10.grille10x10("a")
         text_id_message = canvas.create_text(350, 585, text="La grille a été réinitialisée", font=('Helvetica', 10), fill="black")
 
-    def home():
+
+    def afficher_msg_valider(self):
+        from vérification.verification import verification
+        global grid_values, text_id_message
+        if verification.check_empty_cells(grid_values) : 
+            canvas.delete(text_id_message)
+            text_id_message = canvas.create_text(390, 585, text="Vous devez d'abord terminer la grille !", font=('Helvetica', 10), fill="black")
+        else :
+            ihm_10x10.valider10x10()
+            self.stop_chronometer()
+            if self.timer_enabled == True :
+                minutes = self.elapsed_time // 60
+                seconds = self.elapsed_time % 60
+                aide_message = (
+                        "Félicitation, vous avez correctement completé la grille !\n\n"
+                        f"Temps final de jeu : {minutes:02}:{seconds:02}"
+                )
+            else :
+                aide_message = (
+                        "Félicitation, vous avez correctement completé la grille !\n\n")
+            tk.messagebox.showinfo("Bravo", aide_message)
+            self.home()
+            
+    def home(self):
         from first_page import first_page 
         global root
+        if self.timer_enabled == True :
+            self.stop_chronometer()
         etat_partage.running = False
         etat_partage.verrou = None 
         root.destroy()
@@ -148,7 +192,7 @@ class ihm_10x10:
                     count = 1
         return True
 
-
+    
     def valider10x10():
         global text_id_message, grid_values
         from vérification.verification import verification
@@ -158,10 +202,10 @@ class ihm_10x10:
                 text_id_message = canvas.create_text(390, 585, text="Malheureusement, la grille est fausse vous devez recommencer !", font=('Helvetica', 10), fill="black")
                 return False
             canvas.delete(text_id_message)
-            text_id_message = canvas.create_text(390, 585, text="Vous avez correctement complété la grille, félicitation !", font=('Helvetica', 10), fill="black")    
+            #text_id_message = canvas.create_text(390, 585, text="Vous avez correctement complété la grille, félicitation !", font=('Helvetica', 10), fill="black")    
             return True
-        canvas.delete(text_id_message)
-        text_id_message = canvas.create_text(390, 585,  text="Vous devez d'abord terminer la grille !", font=('Helvetica', 10), fill="black")
+        #canvas.delete(text_id_message)
+        #text_id_message = canvas.create_text(390, 585,  text="Vous devez d'abord terminer la grille !", font=('Helvetica', 10), fill="black")
         
     def verifier10x10():
     # Vérifier les lignes
@@ -252,3 +296,33 @@ class ihm_10x10:
         etat_partage.running = False  # Mettre le drapeau à False pour arrêter les threads
         etat_partage.verrou = None 
         root.destroy()  # Détruire la fenêtre principale
+    
+    
+    def start_chronometer(self):
+        self.elapsed_time += 1  # Incrémente le temps écoulé
+        minutes = self.elapsed_time // 60  # Calcul des minutes
+        seconds = self.elapsed_time % 60  # Calcul des secondes
+        self.timer_label.config(text=f"Chronomètre : {minutes:02}:{seconds:02}")  # Affichage formaté MM:SS
+        #root.after(1000, self.start_chronometer)  # Relance après 1 seconde
+        self._chronometer_running = root.after(1000, self.start_chronometer)
+        
+    def stop_chronometer(self):
+        """Arrête le chronomètre et affiche la valeur finale."""
+        if self.timer_enabled == True :
+            root.after_cancel(self._chronometer_running)  # Annule l'appel programmé
+            minutes = self.elapsed_time // 60
+            seconds = self.elapsed_time % 60
+            print(f"Temps final du chronomètre : {minutes:02}:{seconds:02}")
+            self.timer_label.config(text=f"Chronomètre arrêté à : {minutes:02}:{seconds:02}")
+
+    def afficher_aide(self):
+        #"""Fonction appelée lors du clic sur le bouton Aide."""
+        aide_message = (
+            "Bienvenue dans le jeu Takuzu!\n\n"
+            "Objectif : Remplir la grille en suivant ces règles :\n"
+            "- Aucun chiffre ne doit se répéter plus de deux fois à la suite dans une ligne ou une colonne.\n"
+            "- Chaque ligne et chaque colonne doivent contenir un nombre égal de 0 et de 1.\n"
+            "- Les lignes et les colonnes doivent être uniques.\n\n"
+            "Bonne chance!"
+            )
+        tk.messagebox.showinfo("Aide Takuzu", aide_message)
