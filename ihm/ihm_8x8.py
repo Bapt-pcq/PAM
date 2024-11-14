@@ -92,7 +92,7 @@ class ihm_8x8:
             for j in range(8):  # Boucle pour les colonnes
                 ihm_8x8.create_thread(i, j)
         #ihm_6x6.etat_page()
-        print(grid_values)
+        #print(grid_values)
 
         root.protocol("WM_DELETE_WINDOW", self.on_close)
             # Utilisation des fonctions
