@@ -7,7 +7,7 @@ grid_values = None
 text_ids = None
 grid_values2 = None
 text_ids2 = None
-
+col_ligne = []
 
 root = None
 debug=[]

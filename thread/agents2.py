@@ -190,17 +190,11 @@ class Agents2:
                         etat_partage.debug.append(("condition 10",Mem_resolution[13],Mem_resolution[14],Mem_resolution[0], "Mem :", Mem_resolution,"colone:",Mem_resolution_col))
                     
                     if Mem_resolution[0] == 1 or Mem_resolution[0] == 0: 
-                        print("========================================================================================================")   
-                        
-                        
+                        print("========================================================================================================")                       
                         etat_partage.grid_values2[Mem_resolution[13]][Mem_resolution[14]] = Mem_resolution[0]
-                        # x = 50 + Mem_resolution[14] * 60 + 60 // 2
-                        # y = 50 + Mem_resolution[13] * 60 + 60 // 2
-                        # valeur_str = str(Mem_resolution[0])
-                        # etat_partage.root.after(0, lambda: Agents2.update_canvas_text(x, y, valeur_str))
-                        # etat_partage.canvas.create_text(x, y, text=valeur_str, font=('Helvetica', 12), fill="green")
                         etat_partage.text_ids2[Mem_resolution[13]][Mem_resolution[14]] = "Rempli"
-                        progress = True
+                        etat_partage.col_ligne.append((Mem_resolution[13],Mem_resolution[14]))
+                        
                         print(Mem_resolution[13], Mem_resolution[14], "Trouvée ! Avec la valeur :", Mem_resolution[0], Mem_resolution)
                         print("je sors du thread", thread_name)
                         Agents2.grille_complete+=1 
