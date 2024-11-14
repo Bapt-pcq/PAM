@@ -3,7 +3,7 @@ import threading
 import random
 import threading
 from grille.lecture import lecture
-from thread.agents import Agents
+from thread1.agents import Agents
 import etat_partage  # Importez le module partagé
 
 class ihm_6x6:     

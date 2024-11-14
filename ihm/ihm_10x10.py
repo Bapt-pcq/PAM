@@ -2,11 +2,10 @@ import tkinter as tk
 import random
 import threading
 from grille.lecture import lecture
-from thread.agents import Agents
+from thread1.agents import Agents
 import etat_partage  # Importez le module partagé
 
 class ihm_10x10:
-
         
     def grille10x10(self):
         global taille, text_id_message, text_ids, grid_values, rows, cols, cell_size, canvas,  root,offset_x,offset_y
