@@ -1,3 +1,4 @@
+
 import time
 import etat_partage  # Importez le module partagé
 import threading
@@ -7,7 +8,7 @@ class Agents2:
     # Fonction pour surveiller et réagir à la mise à jour de la variable
     
     
-    grille_complete =0
+    
     @staticmethod #afin que python puisse l'appeler dans la classe agent
     def resolution(row, col, taille,trou):  
         thread_name = threading.current_thread().name
@@ -19,7 +20,7 @@ class Agents2:
             with etat_partage.verrou:
                 
                 #grille_complete = all(all(case == 1 or case == 0 for case in row) for row in etat_partage.grid_values2)
-                if Agents2.grille_complete==a_trouver:
+                if etat_partage.grille_complete==a_trouver:
                     
                     etat_partage.running = False
                     print("Grille complétée !")
@@ -197,8 +198,8 @@ class Agents2:
                         
                         print(Mem_resolution[13], Mem_resolution[14], "Trouvée ! Avec la valeur :", Mem_resolution[0], Mem_resolution)
                         print("je sors du thread", thread_name)
-                        Agents2.grille_complete+=1 
-                        print(Agents2.grille_complete) 
+                        etat_partage.grille_complete+=1 
+                        print(etat_partage.grille_complete) 
                         return
             time.sleep(0.1)  # Fréquence de vérification 
                         

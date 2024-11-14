@@ -3,8 +3,8 @@ import threading
 import random
 import threading
 from grille.lecture import lecture
-from thread.agents import Agents
-from thread.agents2 import Agents2
+from thread1.agents import Agents
+from thread1.agents2 import Agents2
 import etat_partage  # Importez le module partagé
 import time 
 class ihm_6x6:     
@@ -28,12 +28,14 @@ class ihm_6x6:
         button_valider = tk.Button(etat_partage.root, text="Valider", command=ihm_6x6.valider,width=15, height=3)
         button_home = tk.Button(etat_partage.root, text="Accueil", command=ihm_6x6.home,width=7, height=2)
         button_resoudre = tk.Button(etat_partage.root, text="Resolution", command=ihm_6x6.ecrire_valeur,width=15, height=3)
+        button_aide = tk.Button(etat_partage.root, text="Aide", command=ihm_6x6.aide,width=15, height=3)
         # Placement du bouton dans la fenêtre
         button_clear.place(x=530, y=100)
         button_verif.place(x=530, y=200)
         button_valider.place(x=530, y=300)
         button_home.place(x=710, y=0)
         button_resoudre.place(x=530, y=400)
+        button_aide.place(x=530, y=500)
         # Dimensions de la grille
         rows, cols = 6, 6
         cell_size = 60  # Taille des cellules en pixels
@@ -124,10 +126,18 @@ class ihm_6x6:
         global text_id_message 
         etat_partage.running = False
         etat_partage.verrou = None 
+        etat_partage.verrou2 = None   # Le verrou peut être initialisé dans le script principal pour synchroniser les threads
+        etat_partage.canvas = None
+        etat_partage.grid_values = None
+        etat_partage.text_ids = None
+        etat_partage.grid_values2 = None
+        etat_partage.text_ids2 = None
+        etat_partage.col_ligne = []
+
+        etat_partage.grille_complete =0
+        etat_partage.debug=[]
         etat_partage.root.destroy()
-        for row in range(rows):
-            for col in range(cols):
-                etat_partage.grid_values[row][col] = -1
+        etat_partage.root = None
         ihm_6x6.grille6x6("a")
         text_id_message = etat_partage.canvas.create_text(250, 465, text="La grille a été réinitialisée", font=('Helvetica', 10), fill="black")
 
@@ -138,7 +148,18 @@ class ihm_6x6:
         
         etat_partage.running = False
         etat_partage.verrou = None 
+        etat_partage.verrou2 = None   # Le verrou peut être initialisé dans le script principal pour synchroniser les threads
+        etat_partage.canvas = None
+        etat_partage.grid_values = None
+        etat_partage.text_ids = None
+        etat_partage.grid_values2 = None
+        etat_partage.text_ids2 = None
+        etat_partage.col_ligne = []
+
+        etat_partage.grille_complete =0
+        etat_partage.debug=[]
         etat_partage.root.destroy()
+        etat_partage.root = None
         first_page()
 
 
@@ -229,20 +250,6 @@ class ihm_6x6:
         thread.start()
         
     def ecrire_valeur():
-        # # Calculer la position pour centrer le texte dans la cellule
-        # print("debug: ",etat_partage.debug)
-        # Boucle pour afficher chaque entrée de façon structurée
-        # for entry in etat_partage.debug:
-        #     condition, param1, param2, param3, mem_label, mem_values = entry[:6]
-        #     print(f"Condition: {condition}")
-        #     print(f"Param1: {param1}, Param2: {param2}, Param3: {param3}")
-        #     print(f"{mem_label} {mem_values}")
-            
-        #     # Affiche la colonne si elle est présente dans l'entrée
-        #     if len(entry) > 6:
-        #         col_label, col_values = entry[6:8]
-        #         print(f"{col_label} {col_values}")
-        #     print("-" * 50)  # Séparateur entre les entrées
         for i in range(len(etat_partage.col_ligne)):
             
             col = etat_partage.col_ligne[i][1]
@@ -268,7 +275,34 @@ class ihm_6x6:
             etat_partage.canvas.update_idletasks()
                 
                 
-                    
+    def aide():
+        arret = 0
+        i=0
+        while arret==0:
+            col = etat_partage.col_ligne[i][1]
+            row = etat_partage.col_ligne[i][0]
+            x = offset_x + col * cell_size + cell_size // 2
+            y = offset_y + row * cell_size + cell_size // 2
+
+            # Ajouter ou modifier le texte au centre de la cellule cliquée
+            print(row,col,etat_partage.grid_values[row][col],etat_partage.grid_values2[row][col],etat_partage.text_ids[row][col])
+            if etat_partage.text_ids[row][col] is not None and etat_partage.text_ids[row][col] != "Rempli":
+                
+                if etat_partage.grid_values[row][col] != etat_partage.grid_values2[row][col] and etat_partage.grid_values[row][col]!=-1:
+                    etat_partage.canvas.delete(etat_partage.text_ids[row][col])  # Effacer le texte existant
+                    etat_partage.grid_values[row][col] = etat_partage.grid_values2[row][col]
+                    valeur_str = str(etat_partage.grid_values[row][col])
+                    etat_partage.text_ids[row][col] = etat_partage.canvas.create_text(x, y, text=valeur_str, font=('Helvetica', 12), fill="red")
+                    arret+=1
+            elif etat_partage.text_ids[row][col] != "Rempli" :
+            
+                etat_partage.grid_values[row][col] = etat_partage.grid_values2[row][col]
+                valeur_str = str(etat_partage.grid_values[row][col])
+                etat_partage.text_ids[row][col] = etat_partage.canvas.create_text(x, y, text=valeur_str, font=('Helvetica', 12), fill="blue")
+                arret+=1
+            time.sleep(0.3)
+            etat_partage.canvas.update_idletasks()
+            i+=1                         
 
 
 
@@ -302,8 +336,8 @@ class ihm_6x6:
                 etat_partage.text_ids[row][col] = etat_partage.canvas.create_text(x, y, text="1", font=('Helvetica', 12), fill="green")
             elif etat_partage.grid_values[row][col] == 1:
                 etat_partage.grid_values[row][col] = -1
-                etat_partage.text_ids[row][col] = etat_partage.canvas.create_text(x, y, text='', font=('Helvetica', 12), fill="green")
-                
+                etat_partage.text_ids[row][col] = etat_partage.canvas.create_text(x, y, text="", font=('Helvetica', 12), fill="green")
+                etat_partage.text_ids[row][col] = None
     def on_close(self):
        
         print("Fermeture de la fenêtre...")
