@@ -43,4 +43,4 @@ class Agents :
                     ])
                     
             print(Mem,row,col)
-            time.sleep(2)  # Fréquence de vérification    
+            time.sleep(1)  # Fréquence de vérification    
