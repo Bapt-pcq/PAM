@@ -1,0 +1,70 @@
+
+    1
+    -1
+     -1 
+    -1
+    -1
+
+if Mem_resolution[1] and Mem_resolution[2] and Mem_resolution[6] ==-1 :
+    if Mem_resolution[11] (nb de 1 dans la colonne) == taille/2 -1 and Mem_resolution[5] ==0 :
+        Mem_resolution[0] == 1
+    elif Mem_resolution[11] (nb de 1 dans la colonne) == taille/2 -1 and Mem_resolution[5] ==1 :
+        Mem_resolution[6] == 0
+        #Mem_resolution[1] == 0
+    elif Mem_resolution[12] (nb de 0 dans la colonne) == taille/2 -1 and Mem_resolution[5] ==0 :
+        Mem_resolution[6] == 1
+        #Mem_resolution[1] == 1
+    elif Mem_resolution[12] (nb de 0 dans la colonne) == taille/2 -1 and Mem_resolution[5] ==1 :
+        Mem_resolution[0] == 0
+
+elif Mem_resolution[2] and Mem_resolution[6] and Mem_resolution[5] == -1 :
+    if Mem_resolution[11] (nb de 1 dans la colonne) == taille/2 -1 and Mem_resolution[1] ==0 :
+        Mem_resolution[0] == 1
+    elif Mem_resolution[11] (nb de 1 dans la colonne) == taille/2 -1 and Mem_resolution[1] ==1 :
+        Mem_resolution[2] == 0
+        #Mem_resolution[5] == 0
+    elif Mem_resolution[12] (nb de 0 dans la colonne) == taille/2 -1 and Mem_resolution[1] ==0 :
+        Mem_resolution[2] == 1
+        #Mem_resolution[5] == 1
+    elif Mem_resolution[12] (nb de 0 dans la colonne) == taille/2 -1 and Mem_resolution[1] ==1 :
+        Mem_resolution[0] == 0
+
+elif Mem_resolution[3] and Mem_resolution[4] and Mem_resolution[8] == -1 :
+    if Mem_resolution[9] (nb 1 dans la ligne) == taille/2 -1 and Mem_resolution[7]==0 :
+        Mem_resolution[0]=1
+    elif Mem_resolution[9] (nb 1 dans la ligne) == taille/2 -1 and Mem_resolution[7]==1 :
+        Mem_resolution[8]=0
+        #Mem_resolution[3]=0
+    elif Mem_resolution[10] (nb 0 dans la ligne) == taille/2 -1 and Mem_resolution[7]==0 :
+        Mem_resolution[8]=1
+        #Mem_resolution[3]=1
+    elif Mem_resolution[10] (nb 0 dans la ligne) == taille/2 -1 and Mem_resolution[7]==1 :
+        Mem_resolution[0]=0
+elif Mem_resolution[7] and Mem_resolution[8] and Mem_resolution[4] ==-1 :
+    if Mem_resolution[9] (nb 1 dans la ligne) == taille/2 -1 and Mem_resolution[3]==0 :
+        Mem_resolution[0]=1
+    elif Mem_resolution[9] (nb 1 dans la ligne) == taille/2 -1 and Mem_resolution[3]==1 :
+        Mem_resolution[7]=0
+        #Mem_resolution[4]=0
+    elif Mem_resolution[10] (nb 0 dans la ligne) == taille/2 -1 and Mem_resolution[3]==0 :
+        Mem_resolution[4]=1
+        #Mem_resolution[7]=1
+    elif Mem_resolution[10] (nb 0 dans la ligne) == taille/2 -1 and Mem_resolution[3]==1 :
+        Mem_resolution[0]=0
+
+    1
+    1
+-1 -1 -1 -1 0
+    0
+    0
+
+Si Mem_resolution[9] (nb 1 dans la ligne) == taille/2 -1
+Si Mem_resolution[10] (nb 0 dans la ligne) == taille/2 -1
+Si Mem_resolution[11] (nb de 1 dans la colonne) == taille/2 -1 and Mem_resolution[5] ==0 or Mem_resolution[1]==0 :
+    Mem_resolution[0] == 1
+Si Mem_resolution[12] (nb de 0 dans la colonne) == taille/2 -1
+
+
+
+
+

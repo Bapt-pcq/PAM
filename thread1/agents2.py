@@ -15,12 +15,14 @@ class Agents2:
         Mem_resolution = [None] * 15
         a_trouver=taille*taille-trou
         nb_0_ou_1 = taille / 2
+        tour = 0
         print(etat_partage.grid_values2)
         while etat_partage.running:
             with etat_partage.verrou:
                 
                 #grille_complete = all(all(case == 1 or case == 0 for case in row) for row in etat_partage.grid_values2)
-                if etat_partage.grille_complete==a_trouver:
+                if etat_partage.grille_complete==a_trouver or tour == 20:
+                    print(etat_partage.debug)
                     
                     etat_partage.running = False
                     print("Grille complétée !")
@@ -28,7 +30,7 @@ class Agents2:
                     
                     print(etat_partage.grid_values2)
                     break
-
+                    
                 Mem_resolution_row = etat_partage.grid_values2[row]
                 grid_col = []
                 # Parcourir chaque colonne de la grille
@@ -190,6 +192,123 @@ class Agents2:
                         Mem_resolution[0] = 1
                         etat_partage.debug.append(("condition 10",Mem_resolution[13],Mem_resolution[14],Mem_resolution[0], "Mem :", Mem_resolution,"colone:",Mem_resolution_col))
                     
+                    elif Mem_resolution[1] ==-1 and Mem_resolution[2] ==-1 and Mem_resolution[6] ==-1 :
+                        if Mem_resolution[11] == (taille/2 -1) and Mem_resolution[5] ==0 :
+                            Mem_resolution[0] == 1
+                        elif Mem_resolution[11] == (taille/2 -1) and Mem_resolution[5] ==1 :
+                            #Mem_resolution[6] == 0
+                            
+                            row_bis = Mem_resolution[13]+1
+                            col_bis = Mem_resolution[14]
+                            etat_partage.grid_values2[row_bis][col_bis] = 0
+                            etat_partage.debug.append(("condition 11",row_bis,col_bis,0, "Mem :", Mem_resolution))
+
+                            #Mem_resolution[1] == 0
+                            row_bis2 = Mem_resolution[13]-2
+                            col_bis2 = Mem_resolution[14]
+                            etat_partage.grid_values2[row_bis2][col_bis2] = 0
+                            etat_partage.debug.append(("condition 11",row_bis2,col_bis2,0, "Mem :", Mem_resolution))                              
+                            
+                        elif Mem_resolution[12] == (taille/2 -1) and Mem_resolution[5] ==0 :
+                            
+                            row_bis = Mem_resolution[13]+1
+                            col_bis = Mem_resolution[14]
+                            etat_partage.grid_values2[row_bis][col_bis] = 1
+                            etat_partage.debug.append(("condition 12",row_bis,col_bis,1, "Mem :", Mem_resolution))
+                            
+                            #Mem_resolution[1] == 1
+                            row_bis2 = Mem_resolution[13]-2
+                            col_bis2 = Mem_resolution[14]
+                            etat_partage.grid_values2[row_bis2][col_bis2] = 1
+                            etat_partage.debug.append(("condition 12",row_bis2,col_bis2,1, "Mem :", Mem_resolution)) 
+                        elif Mem_resolution[12] == (taille/2 -1) and Mem_resolution[5] ==1 :
+                            Mem_resolution[0] == 0
+
+                    elif Mem_resolution[2]== -1 and Mem_resolution[6]== -1 and Mem_resolution[5] == -1 :
+                        if Mem_resolution[11] == (taille/2 -1) and Mem_resolution[1] ==0 :
+                            Mem_resolution[0] == 1
+                        elif Mem_resolution[11] == (taille/2 -1) and Mem_resolution[1] ==1 :
+                            #Mem_resolution[2] == 0
+                            row_bis = Mem_resolution[13]-1
+                            col_bis = Mem_resolution[14]
+                            etat_partage.grid_values2[row_bis][col_bis] = 0
+                            etat_partage.debug.append(("condition 13",row_bis,col_bis,0, "Mem :", Mem_resolution))
+                            #Mem_resolution[5] == 0
+                            row_bis2 = Mem_resolution[13]+2
+                            col_bis2 = Mem_resolution[14]
+                            etat_partage.grid_values2[row_bis2][col_bis2] = 0
+                            etat_partage.debug.append(("condition 13",row_bis2,col_bis2,0, "Mem :", Mem_resolution)) 
+                        elif Mem_resolution[12] == (taille/2 -1) and Mem_resolution[1] ==0 :
+                            #Mem_resolution[2] == 1
+                            row_bis = Mem_resolution[13]-1
+                            col_bis = Mem_resolution[14]
+                            etat_partage.grid_values2[row_bis][col_bis] = 1
+                            etat_partage.debug.append(("condition 14",row_bis,col_bis,1, "Mem :", Mem_resolution))
+                            
+                            #Mem_resolution[5] == 1
+                            row_bis2 = Mem_resolution[13]+2
+                            col_bis2 = Mem_resolution[14]
+                            etat_partage.grid_values2[row_bis2][col_bis2] = 1
+                            etat_partage.debug.append(("condition 14",row_bis2,col_bis2,1, "Mem :", Mem_resolution)) 
+                        elif Mem_resolution[12] == (taille/2 -1) and Mem_resolution[1] ==1 :
+                            Mem_resolution[0] == 0
+
+                    elif Mem_resolution[3]== -1 and Mem_resolution[4]== -1 and Mem_resolution[8] == -1 :
+                        if Mem_resolution[9] == (taille/2 -1) and Mem_resolution[7]==0 :
+                            Mem_resolution[0]=1
+                        elif Mem_resolution[9] == (taille/2 -1) and Mem_resolution[7]==1 :
+                            # Mem_resolution[8]=0
+                            row_bis = Mem_resolution[13]
+                            col_bis = Mem_resolution[14]-1
+                            etat_partage.grid_values2[row_bis][col_bis] = 0
+                            etat_partage.debug.append(("condition 15",row_bis,col_bis,0, "Mem :", Mem_resolution))
+                            #Mem_resolution[3]=0
+                            row_bis2 = Mem_resolution[13]
+                            col_bis2 = Mem_resolution[14]+2
+                            etat_partage.grid_values2[row_bis2][col_bis2] = 0
+                            etat_partage.debug.append(("condition 15",row_bis2,col_bis2,0, "Mem :", Mem_resolution)) 
+                        elif Mem_resolution[10] == (taille/2 -1) and Mem_resolution[7]==0 :
+                            # Mem_resolution[8]=1
+                            row_bis = Mem_resolution[13]
+                            col_bis = Mem_resolution[14]-1
+                            etat_partage.grid_values2[row_bis][col_bis] = 1
+                            etat_partage.debug.append(("condition 16",row_bis,col_bis,1, "Mem :", Mem_resolution))
+                            #Mem_resolution[3]=1
+                            row_bis2 = Mem_resolution[13]+2
+                            col_bis2 = Mem_resolution[14]
+                            etat_partage.grid_values2[row_bis2][col_bis2] = 1
+                            etat_partage.debug.append(("condition 16",row_bis2,col_bis2,1, "Mem :", Mem_resolution)) 
+                        elif Mem_resolution[10] == (taille/2 -1) and Mem_resolution[7]==1 :
+                            Mem_resolution[0]=0
+                    elif Mem_resolution[7]== -1 and Mem_resolution[8]== -1 and Mem_resolution[4] ==-1 :
+                        if Mem_resolution[9] == (taille/2 -1) and Mem_resolution[3]==0 :
+                            Mem_resolution[0]=1
+                        elif Mem_resolution[9] == (taille/2 -1) and Mem_resolution[3]==1 :
+                            # Mem_resolution[4]=0
+                            row_bis = Mem_resolution[13]
+                            col_bis = Mem_resolution[14]+1
+                            etat_partage.grid_values2[row_bis][col_bis] = 0
+                            etat_partage.debug.append(("condition 17",row_bis,col_bis,0, "Mem :", Mem_resolution))
+                            #Mem_resolution[7]=0
+                            row_bis2 = Mem_resolution[13]
+                            col_bis2 = Mem_resolution[14]-2
+                            etat_partage.grid_values2[row_bis2][col_bis2] = 0
+                            etat_partage.debug.append(("condition 17",row_bis2,col_bis2,0, "Mem :", Mem_resolution)) 
+                        elif Mem_resolution[10] == (taille/2 -1) and Mem_resolution[3]==0 :
+                            # Mem_resolution[4]=1
+                            row_bis = Mem_resolution[13]
+                            col_bis = Mem_resolution[14]+1
+                            etat_partage.grid_values2[row_bis][col_bis] = 1
+                            etat_partage.debug.append(("condition 18",row_bis,col_bis,1, "Mem :", Mem_resolution))
+                            #Mem_resolution[7]=1
+                            row_bis2 = Mem_resolution[13]
+                            col_bis2 = Mem_resolution[14]-2
+                            etat_partage.grid_values2[row_bis2][col_bis2] = 1
+                            etat_partage.debug.append(("condition 18",row_bis2,col_bis2,1, "Mem :", Mem_resolution)) 
+                        elif Mem_resolution[10] == (taille/2 -1) and Mem_resolution[3]==1 :
+                            Mem_resolution[0]=0
+                    
+
                     if Mem_resolution[0] == 1 or Mem_resolution[0] == 0: 
                         print("========================================================================================================")                       
                         etat_partage.grid_values2[Mem_resolution[13]][Mem_resolution[14]] = Mem_resolution[0]
@@ -197,10 +316,13 @@ class Agents2:
                         etat_partage.col_ligne.append((Mem_resolution[13],Mem_resolution[14]))
                         
                         print(Mem_resolution[13], Mem_resolution[14], "Trouvée ! Avec la valeur :", Mem_resolution[0], Mem_resolution)
-                        print("je sors du thread", thread_name)
+                        print("je sors du thread", thread_name,a_trouver)
                         etat_partage.grille_complete+=1 
                         print(etat_partage.grille_complete) 
+                        tour = 0
                         return
+                    tour+=1
+                    print(tour)
             time.sleep(0.1)  # Fréquence de vérification 
                         
 
