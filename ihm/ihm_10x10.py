@@ -92,7 +92,7 @@ class ihm_10x10:
 
         # Définir le nom du fichier avec le dernier caractère modifié
         fichier_grille = f"grille/10x10_{random_number}.txt"  # Remplacer le dernier chiffre par le nombre aléatoire
-
+        #fichier_grille = "grille/10x10_2.txt"
         # Lire la grille depuis le fichier modifié
         grille = lecture.lire_grille_depuis_fichier(fichier_grille)
         
@@ -117,7 +117,6 @@ class ihm_10x10:
 
         root.protocol("WM_DELETE_WINDOW", self.on_close)
             # Utilisation des fonctions
-
    
    
    
@@ -133,7 +132,7 @@ class ihm_10x10:
 
 
 
-    def clear10x10():
+    def clear10x10(self):
         global root, canvas, text_id_message
         etat_partage.running = False
         etat_partage.verrou = None 
@@ -141,7 +140,7 @@ class ihm_10x10:
         for row in range(rows):
             for col in range(cols):
                 grid_values[row][col] = ""
-        ihm_10x10.grille10x10("a")
+        ihm_10x10.grille10x10(self, self.timer_enabled)
         text_id_message = canvas.create_text(350, 585, text="La grille a été réinitialisée", font=('Helvetica', 10), fill="black")
 
 
