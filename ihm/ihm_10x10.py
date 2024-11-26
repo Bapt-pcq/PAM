@@ -4,7 +4,7 @@ import random
 import threading
 from grille.lecture import lecture
 from thread1.agents import Agents
-from thread1.agents2 import Agents2
+from thread1.agents_10x10 import Agents_10x10
 import etat_partage  # Importez le module partagé
 import time 
 
@@ -255,7 +255,7 @@ class ihm_10x10:
     def create_thread_resolution(i, j,trou):
         thread_name = f"t{i}{j}b"
         print(f"Création du thread {thread_name}")
-        thread = threading.Thread(target=Agents2.resolution, args=(i, j,10,trou), daemon=True, name=thread_name)
+        thread = threading.Thread(target=Agents_10x10.resolution, args=(i, j,10,trou), daemon=True, name=thread_name)
         thread.start()
         
     def ecrire_valeur():

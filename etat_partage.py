@@ -9,5 +9,7 @@ grid_values2 = None
 text_ids2 = None
 col_ligne = []
 grille_complete =0
+test = 0
+test2 = 0
 root = None
 debug=[]
