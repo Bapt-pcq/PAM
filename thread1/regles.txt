@@ -8,4 +8,32 @@ Règle 7 : Nb de 1 dans la ligne atteint, alors Mem[0]=0
 Règle 8 :Nb de 0 dans la ligne atteint, alors Mem[0]=1
 Règle 9 :Nb de 1 dans la colonne atteint, alors Mem[0]=0
 Règle 10 :Nb de 0 dans la colonne atteint, alors Mem[0]=1
-Règle 11 : Les 2 valeur au dessus et celle en dessous sont vides, il reste un seul 1/0* dans la colonne, la valeur 2 cases en dessous est égal à 1/0*, alors Mem[0] = 1/0*
+Règle 11 : Les 2 valeurs au dessus et celle en dessous sont vides, il reste un seul 1 dans la colonne, la valeur 2 cases en dessous est égal à 0, alors Mem[0] = 1
+Règle 12 : Les 2 valeurs au dessus et celle en dessous sont vides, il reste un seul 1 dans la colonne, la valeur 2 cases en dessous est égal à 1, alors la valeur en dessous et 2 au dessus sont égals à 0
+Règle 13 : Les 2 valeurs au dessus et celle en dessous sont vides, il reste un seul 0 dans la colonne, la valeur 2 cases en dessous est égal à 0, , alors la valeur en dessous et 2 au dessus sont égals à 1
+Règle 14 : Les 2 valeurs au dessus et celle en dessous sont vides, il reste un seul 0 dans la colonne, la valeur 2 cases en dessous est égal à 1, alors Mem[0] = 0
+Règle 15 : Les 2 valeurs en dessous et celle au dessus sont vides, il reste un seul 1 dans la colonne, la valeur 2 cases au dessus est égal à 0, alors Mem[0] = 1
+Règle 16 : Les 2 valeurs en dessous et celle au dessus sont vides, il reste un seul 1 dans la colonne, la valeur 2 cases au dessus est égal à 1, alors la valeur en dessous et 2 au dessus sont égals à 0
+Règle 17 : Les 2 valeurs en dessous et celle au dessus sont vides, il reste un seul 0 dans la colonne, la valeur 2 cases au dessus est égal à 0, alors la valeur en dessous et 2 au dessus sont égals à 1
+Règle 18 : Les 2 valeurs en dessous et celle au dessus sont vides, il reste un seul 0 dans la colonne, la valeur 2 cases au dessus est égal à 1, alors Mem[0] = 0
+Règle 19 : Les 2 valeurs à droite et celle à gauche sont vides, il reste un seul 1 dans la ligne, la valeur 2 cases à gauche est égal à 0, alors Mem[0] = 1
+Règle 20 : Les 2 valeurs à droite et celle à gauche sont vides, il reste un seul 1 dans la ligne, la valeur 2 cases à gauche est égal à 1, alors la valeur à gauche et celle 2 à droite sont égals à 0
+Règle 21 : Les 2 valeurs à droite et celle à gauche sont vides, il reste un seul 0 dans la ligne, la valeur 2 cases à gauche est égal à 0, alors la valeur à gauche et celle 2 à droite sont égals à 1
+Règle 22 : Les 2 valeurs à droite et celle à gauche sont vides, il reste un seul 0 dans la ligne, la valeur 2 cases à gauche est égal à 1, alors Mem[0] = 0
+Règle 23 : Les 2 valeurs à gauche et celle à droite sont vides, il reste un seul 1 dans la ligne, la valeur 2 cases à droite est égal à 0, alors Mem[0] = 1
+Règle 24 : Les 2 valeurs à gauche et celle à droite sont vides, il reste un seul 1 dans la ligne, la valeur 2 cases à droite est égal à 1, alors la valeur à droite et celle 2 à gauche sont égals à 0
+Règle 25 : Les 2 valeurs à gauche et celle à droite sont vides, il reste un seul 0 dans la ligne, la valeur 2 cases à droite est égal à 0, alors la valeur à droite et celle 2 à gauche sont égals à 1
+Règle 26 : Les 2 valeurs à gauche et celle à droite sont vides, il reste un seul 0 dans la ligne, la valeur 2 cases à droite est égal à 1, alors Mem[0] = 0
+Spécifique 10x10 : 
+Règle 27 : Si dans la ligne il y a 3 valeurs vides (dont Mem[0]), 1 de ces valeurs est voisine à Mem[0] et égal à 0, et il reste un 1 dans la ligne, alors l'autre valeur vide est égale à 0               
+Règle 28 : Si dans la ligne il y a 3 valeurs vides (dont Mem[0]), 1 de ces valeurs est voisine à Mem[0] et égal à 1, et il reste un 0 dans la ligne, alors l'autre valeur vide est égale à 1 
+Règle 29 : Si dans la colonne il y a 3 valeurs vides (dont Mem[0]), 1 de ces valeurs est voisine à Mem[0] et égal à 0, et il reste un 1 dans la colonne, alors l'autre valeur vide est égale à 0 
+Règle 30 : Si dans la colonne il y a 3 valeurs vides (dont Mem[0]), 1 de ces valeurs est voisine à Mem[0] et égal à 1, et il reste un 0 dans la colonne, alors l'autre valeur vide est égale à 1 
+
+
+
+
+
+
+
+

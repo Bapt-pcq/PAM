@@ -206,132 +206,138 @@ class Agents_10x10:
                         if tour>10:   #les conditions suivantes entre en jeux uniquement si l'on commence à boucler plus de 10 fois
                             if Mem_resolution[1] ==-1 and Mem_resolution[2] ==-1 and Mem_resolution[6] ==-1 : #on vérifie si 3 valeurs spécifiques sont vides
                             
-                                if Mem_resolution[11] == (taille/2 -1) and Mem_resolution[5] ==0 : #Règles 11 : Les 2 valeur au dessus et celle en dessous sont vides, il reste un seul 1/0* dans la colonne, la valeur 2 cases en dessous est égal à 1/0*, alors Mem[0] = 1/0*
+                                if Mem_resolution[11] == (taille/2 -1) and Mem_resolution[5] ==0 : #Règle 11 : Les 2 valeurs au dessus et celle en dessous sont vides, il reste un seul 1 dans la colonne, la valeur 2 cases en dessous est égal à 0, alors Mem[0] = 1
                                     Mem_resolution[0] = 1
                                     etat_partage.debug.append(("condition 11",Mem_resolution[13],Mem_resolution[14],1, "Mem :", Mem_resolution)) 
-                                elif Mem_resolution[11] == (taille/2 -1) and Mem_resolution[5] ==1 :
+                                elif Mem_resolution[11] == (taille/2 -1) and Mem_resolution[5] ==1 :#Règle 12 : Les 2 valeurs au dessus et celle en dessous sont vides, il reste un seul 1 dans la colonne, la valeur 2 cases en dessous est égal à 1, alors la valeur en dessous et 2 au dessus sont égals à 0
                                     
                                     row_bis = Mem_resolution[13]+1
                                     col_bis = Mem_resolution[14]
                                     etat_partage.grid_values2[row_bis][col_bis] = 0
-                                    etat_partage.debug.append(("condition 11",row_bis,col_bis,0, "Mem :", Mem_resolution))
+                                    etat_partage.debug.append(("condition 12",row_bis,col_bis,0, "Mem :", Mem_resolution))
 
                                     #Mem_resolution[1] == 0
                                     row_bis2 = Mem_resolution[13]-2
                                     col_bis2 = Mem_resolution[14]
                                     etat_partage.grid_values2[row_bis2][col_bis2] = 0
-                                    etat_partage.debug.append(("condition 11",row_bis2,col_bis2,0, "Mem :", Mem_resolution))                              
+                                    etat_partage.debug.append(("condition 12",row_bis2,col_bis2,0, "Mem :", Mem_resolution))                              
                                     
-                                elif Mem_resolution[12] == (taille/2 -1) and Mem_resolution[5] ==0 :
+                                elif Mem_resolution[12] == (taille/2 -1) and Mem_resolution[5] ==0 :  #Règle 13 : Les 2 valeurs au dessus et celle en dessous sont vides, il reste un seul 0 dans la colonne, la valeur 2 cases en dessous est égal à 0, , alors la valeur en dessous et 2 au dessus sont égals à 1
                                     
                                     row_bis = Mem_resolution[13]+1
                                     col_bis = Mem_resolution[14]
                                     etat_partage.grid_values2[row_bis][col_bis] = 1
-                                    etat_partage.debug.append(("condition 12",row_bis,col_bis,1, "Mem :", Mem_resolution))
+                                    etat_partage.debug.append(("condition 13",row_bis,col_bis,1, "Mem :", Mem_resolution))
                                     
                                     #Mem_resolution[1] == 1
                                     row_bis2 = Mem_resolution[13]-2
                                     col_bis2 = Mem_resolution[14]
                                     etat_partage.grid_values2[row_bis2][col_bis2] = 1
-                                    etat_partage.debug.append(("condition 12",row_bis2,col_bis2,1, "Mem :", Mem_resolution)) 
-                                elif Mem_resolution[12] == (taille/2 -1) and Mem_resolution[5] ==1 :
+                                    etat_partage.debug.append(("condition 13",row_bis2,col_bis2,1, "Mem :", Mem_resolution)) 
+                                elif Mem_resolution[12] == (taille/2 -1) and Mem_resolution[5] ==1 : #Règle 14 : Les 2 valeurs au dessus et celle en dessous sont vides, il reste un seul 0 dans la colonne, la valeur 2 cases en dessous est égal à 1, alors Mem[0] = 0
                                     Mem_resolution[0] = 0
-
+                                    etat_partage.debug.append(("condition 14",Mem_resolution[13],Mem_resolution[14],0, "Mem :", Mem_resolution)) 
                             elif Mem_resolution[2]== -1 and Mem_resolution[6]== -1 and Mem_resolution[5] == -1 :
-                                if Mem_resolution[11] == (taille/2 -1) and Mem_resolution[1] ==0 :
+                                if Mem_resolution[11] == (taille/2 -1) and Mem_resolution[1] ==0 : #Règle 15 : Les 2 valeurs en dessous et celle au dessus sont vides, il reste un seul 1 dans la colonne, la valeur 2 cases au dessus est égal à 0, alors Mem[0] = 1
                                     Mem_resolution[0] = 1
-                                elif Mem_resolution[11] == (taille/2 -1) and Mem_resolution[1] ==1 :
+                                    etat_partage.debug.append(("condition 15",Mem_resolution[13],Mem_resolution[14],1, "Mem :", Mem_resolution)) 
+                                elif Mem_resolution[11] == (taille/2 -1) and Mem_resolution[1] ==1 :  #Règle 16 : Les 2 valeurs en dessous et celle au dessus sont vides, il reste un seul 1 dans la colonne, la valeur 2 cases au dessus est égal à 1, alors la valeur en dessous et 2 au dessus sont égals à 0
                                     #Mem_resolution[2] == 0
                                     row_bis = Mem_resolution[13]-1
                                     col_bis = Mem_resolution[14]
                                     etat_partage.grid_values2[row_bis][col_bis] = 0
-                                    etat_partage.debug.append(("condition 13",row_bis,col_bis,0, "Mem :", Mem_resolution))
+                                    etat_partage.debug.append(("condition 16",row_bis,col_bis,0, "Mem :", Mem_resolution))
                                     #Mem_resolution[5] == 0
                                     row_bis2 = Mem_resolution[13]+2
                                     col_bis2 = Mem_resolution[14]
                                     etat_partage.grid_values2[row_bis2][col_bis2] = 0
-                                    etat_partage.debug.append(("condition 13",row_bis2,col_bis2,0, "Mem :", Mem_resolution)) 
-                                elif Mem_resolution[12] == (taille/2 -1) and Mem_resolution[1] ==0 :
+                                    etat_partage.debug.append(("condition 16",row_bis2,col_bis2,0, "Mem :", Mem_resolution)) 
+                                elif Mem_resolution[12] == (taille/2 -1) and Mem_resolution[1] ==0 : #Règle 17 : Les 2 valeurs en dessous et celle au dessus sont vides, il reste un seul 0 dans la colonne, la valeur 2 cases au dessus est égal à 0, alors la valeur en dessous et 2 au dessus sont égals à 1
                                     #Mem_resolution[2] == 1
                                     row_bis = Mem_resolution[13]-1
                                     col_bis = Mem_resolution[14]
                                     etat_partage.grid_values2[row_bis][col_bis] = 1
-                                    etat_partage.debug.append(("condition 14",row_bis,col_bis,1, "Mem :", Mem_resolution))
+                                    etat_partage.debug.append(("condition 17",row_bis,col_bis,1, "Mem :", Mem_resolution))
                                     
                                     #Mem_resolution[5] == 1
                                     row_bis2 = Mem_resolution[13]+2
                                     col_bis2 = Mem_resolution[14]
                                     etat_partage.grid_values2[row_bis2][col_bis2] = 1
-                                    etat_partage.debug.append(("condition 14",row_bis2,col_bis2,1, "Mem :", Mem_resolution)) 
-                                elif Mem_resolution[12] == (taille/2 -1) and Mem_resolution[1] ==1 :
+                                    etat_partage.debug.append(("condition 17",row_bis2,col_bis2,1, "Mem :", Mem_resolution)) 
+                                elif Mem_resolution[12] == (taille/2 -1) and Mem_resolution[1] ==1 : #Règle 18 : Les 2 valeurs en dessous et celle au dessus sont vides, il reste un seul 0 dans la colonne, la valeur 2 cases au dessus est égal à 1, alors Mem[0] = 0
                                     Mem_resolution[0] = 0
-
+                                    etat_partage.debug.append(("condition 18",Mem_resolution[13],Mem_resolution[14],1, "Mem :", Mem_resolution)) 
                             elif Mem_resolution[3]== -1 and Mem_resolution[4]== -1 and Mem_resolution[8] == -1 :
-                                if Mem_resolution[9] == (taille/2 -1) and Mem_resolution[7]==0 :
+                                if Mem_resolution[9] == (taille/2 -1) and Mem_resolution[7]==0 : #Règle 19 : Les 2 valeurs à droite et celle à gauche sont vides, il reste un seul 1 dans la ligne, la valeur 2 cases à gauche est égal à 0, alors Mem[0] = 1
                                     Mem_resolution[0]=1
-                                elif Mem_resolution[9] == (taille/2 -1) and Mem_resolution[7]==1 :
+                                    etat_partage.debug.append(("condition 19",Mem_resolution[13],Mem_resolution[14],1, "Mem :", Mem_resolution)) 
+                                elif Mem_resolution[9] == (taille/2 -1) and Mem_resolution[7]==1 : #Règle 20 : Les 2 valeurs à droite et celle à gauche sont vides, il reste un seul 1 dans la ligne, la valeur 2 cases à gauche est égal à 1, alors la valeur à gauche et celle 2 à droite sont égals à 0
                                     # Mem_resolution[8]=0
                                     row_bis = Mem_resolution[13]
                                     col_bis = Mem_resolution[14]-1
                                     etat_partage.grid_values2[row_bis][col_bis] = 0
-                                    etat_partage.debug.append(("condition 15",row_bis,col_bis,0, "Mem :", Mem_resolution))
+                                    etat_partage.debug.append(("condition 20",row_bis,col_bis,0, "Mem :", Mem_resolution))
                                     #Mem_resolution[3]=0
                                     row_bis2 = Mem_resolution[13]
                                     col_bis2 = Mem_resolution[14]+2
                                     etat_partage.grid_values2[row_bis2][col_bis2] = 0
-                                    etat_partage.debug.append(("condition 15",row_bis2,col_bis2,0, "Mem :", Mem_resolution)) 
-                                elif Mem_resolution[10] == (taille/2 -1) and Mem_resolution[7]==0 :
+                                    etat_partage.debug.append(("condition 20",row_bis2,col_bis2,0, "Mem :", Mem_resolution)) 
+                                elif Mem_resolution[10] == (taille/2 -1) and Mem_resolution[7]==0 : #Règle 21 : Les 2 valeurs à droite et celle à gauche sont vides, il reste un seul 0 dans la ligne, la valeur 2 cases à gauche est égal à 0, alors la valeur à gauche et celle 2 à droite sont égals à 1
                                     # Mem_resolution[8]=1
                                     row_bis = Mem_resolution[13]
                                     col_bis = Mem_resolution[14]-1
                                     etat_partage.grid_values2[row_bis][col_bis] = 1
-                                    etat_partage.debug.append(("condition 16",row_bis,col_bis,1, "Mem :", Mem_resolution))
+                                    etat_partage.debug.append(("condition 21",row_bis,col_bis,1, "Mem :", Mem_resolution))
                                     #Mem_resolution[3]=1
                                     row_bis2 = Mem_resolution[13]+2
                                     col_bis2 = Mem_resolution[14]
                                     etat_partage.grid_values2[row_bis2][col_bis2] = 1
-                                    etat_partage.debug.append(("condition 16",row_bis2,col_bis2,1, "Mem :", Mem_resolution)) 
-                                elif Mem_resolution[10] == (taille/2 -1) and Mem_resolution[7]==1 :
+                                    etat_partage.debug.append(("condition 21",row_bis2,col_bis2,1, "Mem :", Mem_resolution)) 
+                                elif Mem_resolution[10] == (taille/2 -1) and Mem_resolution[7]==1 : #Règle 22 : Les 2 valeurs à droite et celle à gauche sont vides, il reste un seul 0 dans la ligne, la valeur 2 cases à gauche est égal à 1, alors Mem[0] = 0
                                     Mem_resolution[0]=0
+                                    etat_partage.debug.append(("condition 22",Mem_resolution[13],Mem_resolution[14],0, "Mem :", Mem_resolution)) 
                             elif Mem_resolution[7]== -1 and Mem_resolution[8]== -1 and Mem_resolution[4] ==-1 :
                                 
-                                if Mem_resolution[9] == (taille/2 -1) and Mem_resolution[3]==0 :
+                                if Mem_resolution[9] == (taille/2 -1) and Mem_resolution[3]==0 : #Règle 23 : Les 2 valeurs à gauche et celle à droite sont vides, il reste un seul 1 dans la ligne, la valeur 2 cases à droite est égal à 0, alors Mem[0] = 1
                                     Mem_resolution[0]=1
-                                elif Mem_resolution[9] == (taille/2 -1) and Mem_resolution[3]==1 :
+                                    etat_partage.debug.append(("condition 23",Mem_resolution[13],Mem_resolution[14],1, "Mem :", Mem_resolution)) 
+                                elif Mem_resolution[9] == (taille/2 -1) and Mem_resolution[3]==1 : #Règle 24 : Les 2 valeurs à gauche et celle à droite sont vides, il reste un seul 1 dans la ligne, la valeur 2 cases à droite est égal à 1, alors la valeur à droite et celle 2 à gauche sont égals à 0
                                     # Mem_resolution[4]=0
                                     row_bis = Mem_resolution[13]
                                     col_bis = Mem_resolution[14]+1
                                     etat_partage.grid_values2[row_bis][col_bis] = 0
-                                    etat_partage.debug.append(("condition 17",row_bis,col_bis,0, "Mem :", Mem_resolution))
+                                    etat_partage.debug.append(("condition 24",row_bis,col_bis,0, "Mem :", Mem_resolution))
                                     #Mem_resolution[7]=0
                                     row_bis2 = Mem_resolution[13]
                                     col_bis2 = Mem_resolution[14]-2
                                     etat_partage.grid_values2[row_bis2][col_bis2] = 0
-                                    etat_partage.debug.append(("condition 17",row_bis2,col_bis2,0, "Mem :", Mem_resolution)) 
-                                elif Mem_resolution[10] == (taille/2 -1) and Mem_resolution[3]==0 :
+                                    etat_partage.debug.append(("condition 24",row_bis2,col_bis2,0, "Mem :", Mem_resolution)) 
+                                elif Mem_resolution[10] == (taille/2 -1) and Mem_resolution[3]==0 : #Règle 25 : Les 2 valeurs à gauche et celle à droite sont vides, il reste un seul 0 dans la ligne, la valeur 2 cases à droite est égal à 0, alors la valeur à droite et celle 2 à gauche sont égals à 1
                                     # Mem_resolution[4]=1
                                     row_bis = Mem_resolution[13]
                                     col_bis = Mem_resolution[14]+1
                                     etat_partage.grid_values2[row_bis][col_bis] = 1
-                                    etat_partage.debug.append(("condition 18",row_bis,col_bis,1, "Mem :", Mem_resolution))
+                                    etat_partage.debug.append(("condition 25",row_bis,col_bis,1, "Mem :", Mem_resolution))
                                     #Mem_resolution[7]=1
                                     row_bis2 = Mem_resolution[13]
                                     col_bis2 = Mem_resolution[14]-2
                                     etat_partage.grid_values2[row_bis2][col_bis2] = 1
-                                    etat_partage.debug.append(("condition 18",row_bis2,col_bis2,1, "Mem :", Mem_resolution)) 
-                                elif Mem_resolution[10] == (taille/2 -1) and Mem_resolution[3]==1 :
+                                    etat_partage.debug.append(("condition 25",row_bis2,col_bis2,1, "Mem :", Mem_resolution)) 
+                                elif Mem_resolution[10] == (taille/2 -1) and Mem_resolution[3]==1 : #Règle 26 : Les 2 valeurs à gauche et celle à droite sont vides, il reste un seul 0 dans la ligne, la valeur 2 cases à droite est égal à 1, alors Mem[0] = 0
                                     Mem_resolution[0]=0
+                                    etat_partage.debug.append(("condition 26",Mem_resolution[13],Mem_resolution[14],0, "Mem :", Mem_resolution)) 
                         if tour>20 : 
+                            #Les indices de la Mem correspondant à la ligne ou la colonne
                             Mem_lignes = [24,25,26,27,28,29,30,31,32,42,43,44,45,46,47,48,49,50]
                             Mem_colonnes = [15,16,17,18,19,20,21,22,23,33,34,35,36,37,38,39,40,41]
                             #On crée une nouvelle liste pour stocker les indices ayant un -1 
                             indices =[]
                             #on travail sur la ligne
-                            if Mem_resolution[9] ==4 or Mem_resolution[10] ==4:
+                            if Mem_resolution[9] ==(taille/2 -1) or Mem_resolution[10] ==(taille/2 -1):
                                 for i in Mem_lignes :
                                     if Mem_resolution[i] == -1 :
-                                        indices.append(i)
-                                indices_0 = [24,42]
+                                        indices.append(i) #on recupere les indices vide dans la ligne
+                                indices_0 = [24,42] #indices voisin à Mem[0]
                                 valeur = 0
                                 num_final = 0
                                 
@@ -339,11 +345,11 @@ class Agents_10x10:
                                     for num in indices_0 :
                                         if num in indices :
                                             valeur +=1
-                                            num_final = num
+                                            num_final = num #indice voisin
                                             indices.remove(num)
                                             
                                     
-                                    if valeur == 1 :
+                                    if valeur == 1 : #Si 1 seul valeur voisine
                                         #case a ecrire
                                         if 24 <= indices[0] <= 32 :
                                             row_bis2 = Mem_resolution[13]
@@ -353,26 +359,26 @@ class Agents_10x10:
                                             col_bis2 = Mem_resolution[14]-(indices[0]-23) 
                                         if num_final == 24 :
                                             #dans le cas ou on a 4 1
-                                            if Mem_resolution[9] ==4 and (Mem_resolution[3] ==0 or Mem_resolution[8] ==0):                    
+                                            if Mem_resolution[9] ==(taille/2 -1) and (Mem_resolution[3] ==0 or Mem_resolution[8] ==0): #Règle 27 : Si dans la ligne il y a 3 valeurs vides (dont Mem[0]), 1 de ces valeurs est voisine à Mem[0] et égal à 0, et il reste un 1 dans la ligne, alors l'autre valeur vide est égale à 0               
                                                 etat_partage.grid_values2[row_bis2][col_bis2] = 0
-                                                etat_partage.debug.append(("condition 19",row_bis2,col_bis2,0, "Mem :", Mem_resolution))
+                                                etat_partage.debug.append(("condition 27",row_bis2,col_bis2,0, "Mem :", Mem_resolution))
                                                 #dans le cas ou on a 4 0
-                                            elif  Mem_resolution[10] ==4 and (Mem_resolution[3] ==1 or Mem_resolution[8] ==1):                     
+                                            elif  Mem_resolution[10] ==(taille/2 -1) and (Mem_resolution[3] ==1 or Mem_resolution[8] ==1): #Règle 28 : Si dans la ligne il y a 3 valeurs vides (dont Mem[0]), 1 de ces valeurs est voisine à Mem[0] et égal à 1, et il reste un 0 dans la ligne, alors l'autre valeur vide est égale à 1                      
                                                 etat_partage.grid_values2[row_bis2][col_bis2] = 1
-                                                etat_partage.debug.append(("condition 20",row_bis2,col_bis2,1, "Mem :", Mem_resolution))
+                                                etat_partage.debug.append(("condition 28",row_bis2,col_bis2,1, "Mem :", Mem_resolution))
                                         elif num_final == 42 :
                                             #dans le cas ou on a 4 1
                                             
-                                            if Mem_resolution[9] ==4 and (Mem_resolution[4] ==0 or Mem_resolution[7] ==0):
+                                            if Mem_resolution[9] ==(taille/2 -1) and (Mem_resolution[4] ==0 or Mem_resolution[7] ==0):
                                                 etat_partage.grid_values2[row_bis2][col_bis2] = 0
-                                                etat_partage.debug.append(("condition 21",row_bis2,col_bis2,0, "Mem :", Mem_resolution))
+                                                etat_partage.debug.append(("condition 27",row_bis2,col_bis2,0, "Mem :", Mem_resolution))
                                             #dans le cas ou on a 4 0
-                                            elif  Mem_resolution[10] ==4 and (Mem_resolution[4] ==1 or Mem_resolution[7] ==1):   
+                                            elif  Mem_resolution[10] ==(taille/2 -1) and (Mem_resolution[4] ==1 or Mem_resolution[7] ==1):   
                                                 etat_partage.grid_values2[row_bis2][col_bis2] = 1
-                                                etat_partage.debug.append(("condition 22",row_bis2,col_bis2,1, "Mem :", Mem_resolution))
+                                                etat_partage.debug.append(("condition 28",row_bis2,col_bis2,1, "Mem :", Mem_resolution))
                             indices=[]                    
                             #on travail sur la colonne
-                            if Mem_resolution[11] ==4 or Mem_resolution[12] ==4:
+                            if Mem_resolution[11] ==(taille/2 -1) or Mem_resolution[12] ==(taille/2 -1):
                                 for i in Mem_colonnes :
                                     if Mem_resolution[i] == -1 :
                                         indices.append(i)
@@ -398,22 +404,22 @@ class Agents_10x10:
                                             col_bis2 = Mem_resolution[14] 
                                         if num_final == 15 :
                                             #dans le cas ou on a 4 1
-                                            if Mem_resolution[11] ==4 and (Mem_resolution[1] ==0 or Mem_resolution[6] ==0):                    
+                                            if Mem_resolution[11] ==(taille/2 -1) and (Mem_resolution[1] ==0 or Mem_resolution[6] ==0): #Règle 29 : Si dans la colonne il y a 3 valeurs vides (dont Mem[0]), 1 de ces valeurs est voisine à Mem[0] et égal à 0, et il reste un 1 dans la colonne, alors l'autre valeur vide est égale à 0                      
                                                 etat_partage.grid_values2[row_bis2][col_bis2] = 0
-                                                etat_partage.debug.append(("condition 23",row_bis2,col_bis2,0, "Mem :", Mem_resolution))
+                                                etat_partage.debug.append(("condition 29",row_bis2,col_bis2,0, "Mem :", Mem_resolution))
                                                 #dans le cas ou on a 4 0
-                                            elif  Mem_resolution[12] ==4 and (Mem_resolution[1] ==1 or Mem_resolution[6] ==1):                     
+                                            elif  Mem_resolution[12] ==(taille/2 -1) and (Mem_resolution[1] ==1 or Mem_resolution[6] ==1):  #Règle 30 : Si dans la colonne il y a 3 valeurs vides (dont Mem[0]), 1 de ces valeurs est voisine à Mem[0] et égal à 1, et il reste un 0 dans la colonne, alors l'autre valeur vide est égale à 1                     
                                                 etat_partage.grid_values2[row_bis2][col_bis2] = 1
-                                                etat_partage.debug.append(("condition 24",row_bis2,col_bis2,1, "Mem :", Mem_resolution))
+                                                etat_partage.debug.append(("condition 30",row_bis2,col_bis2,1, "Mem :", Mem_resolution))
                                         elif num_final == 33 :
                                             #dans le cas ou on a 4 1
-                                            if Mem_resolution[11] ==4 and (Mem_resolution[2] ==0 or Mem_resolution[5] ==0):
+                                            if Mem_resolution[11] ==(taille/2 -1) and (Mem_resolution[2] ==0 or Mem_resolution[5] ==0):
                                                 etat_partage.grid_values2[row_bis2][col_bis2] = 0
-                                                etat_partage.debug.append(("condition 25",row_bis2,col_bis2,0, "Mem :", Mem_resolution))
+                                                etat_partage.debug.append(("condition 29",row_bis2,col_bis2,0, "Mem :", Mem_resolution))
                                             #dans le cas ou on a 4 0
-                                            elif  Mem_resolution[12] ==4 and (Mem_resolution[2] ==1 or Mem_resolution[5] ==1):
+                                            elif  Mem_resolution[12] ==(taille/2 -1) and (Mem_resolution[2] ==1 or Mem_resolution[5] ==1):
                                                 etat_partage.grid_values2[row_bis2][col_bis2] = 1
-                                                etat_partage.debug.append(("condition 26",row_bis2,col_bis2,1, "Mem :", Mem_resolution))   
+                                                etat_partage.debug.append(("condition 30",row_bis2,col_bis2,1, "Mem :", Mem_resolution))   
                        
                                      
                     if Mem_resolution[0] == 1 or Mem_resolution[0] == 0: 

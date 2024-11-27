@@ -74,6 +74,7 @@ class ihm_8x8:
                # Remplir le canvas avec les valeurs générées dans grid_values
         # Générer un nombre aléatoire entre 1 et 3
         nombre_aleatoire = random.randint(1, 3)
+        nombre_aleatoire = 2
         # Remplir le canvas avec les valeurs générées dans grid_values
         if nombre_aleatoire==1:
             fichier_grille = "grille/8x8_1.txt"  # Chemin vers ton fichier txt
