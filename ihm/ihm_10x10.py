@@ -259,6 +259,7 @@ class ihm_10x10:
         thread.start()
         
     def ecrire_valeur():
+        print(etat_partage.debug)
         print(etat_partage.col_ligne)
         for i in range(etat_partage.grille_complete):
             

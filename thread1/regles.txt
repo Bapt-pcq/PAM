@@ -1,0 +1,11 @@
+Règle 1 : Les 2 valeurs au dessus sont identiques, alors Mem[0] égal la valeur opposée
+Règle 2 : Les 2 valeurs à droite sont identiques, alors Mem[0] égal la valeur opposée
+Règle 3 : Les 2 valeurs en dessous sont identiques, alors Mem[0] égal la valeur opposée
+Règle 4 : Les 2 valeurs à gauches sont identiques, alors Mem[0] égal la valeur opposée
+Règle 5 : Les 2 valeurs de la colonne entourant la case sont identiques, alors Mem[0] égal la valeur opposée
+Règle 6 : Les 2 valeurs de la ligne entourant la case sont identiques, alors Mem[0] égal la valeur opposée
+Règle 7 : Nb de 1 dans la ligne atteint, alors Mem[0]=0
+Règle 8 :Nb de 0 dans la ligne atteint, alors Mem[0]=1
+Règle 9 :Nb de 1 dans la colonne atteint, alors Mem[0]=0
+Règle 10 :Nb de 0 dans la colonne atteint, alors Mem[0]=1
+Règle 11 : Les 2 valeur au dessus et celle en dessous sont vides, il reste un seul 1/0* dans la colonne, la valeur 2 cases en dessous est égal à 1/0*, alors Mem[0] = 1/0*

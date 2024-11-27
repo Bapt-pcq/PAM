@@ -22,7 +22,7 @@ class Agents_10x10:
                 
                 #grille_complete = all(all(case == 1 or case == 0 for case in row) for row in etat_partage.grid_values2)
                 if etat_partage.grille_complete==a_trouver or tour == 30:
-                    print(etat_partage.debug)
+                    
                     etat_partage.test ==1
                     etat_partage.running = False
                     print("Grille complétée !")
@@ -173,63 +173,43 @@ class Agents_10x10:
                     #print(Mem_resolution)
                     if Mem_resolution[0] != 1 and Mem_resolution[0] != 0 :
                         # Règles logiques pour déterminer la valeur
-                        if Mem_resolution[1] == Mem_resolution[2] and Mem_resolution[2] != -2 and Mem_resolution[2] != -1 :
-                            #print("condition",1)
-                            #print(Mem_resolution)
+                        if Mem_resolution[1] == Mem_resolution[2] and Mem_resolution[2] != -2 and Mem_resolution[2] != -1 : #Règle 1 : Les 2 valeurs au dessus sont identiques, alors Mem[0] égal la valeur opposée
                             Mem_resolution[0] = abs(Mem_resolution[1] - 1)
-                            etat_partage.debug.append(("condition 1",Mem_resolution[13],Mem_resolution[14],Mem_resolution[0], "Mem :", Mem_resolution))
-                        elif Mem_resolution[3] == Mem_resolution[4] and Mem_resolution[4] != -2 and Mem_resolution[4] != -1:
-                            #print("condition",2)
-                            #print(Mem_resolution)
+                            etat_partage.debug.append(("condition 1",Mem_resolution[13],Mem_resolution[14],Mem_resolution[0], "Mem :", Mem_resolution)) #stockage des informations dans l'ordre de complétion
+                        elif Mem_resolution[3] == Mem_resolution[4] and Mem_resolution[4] != -2 and Mem_resolution[4] != -1: #Règle 2 : Les 2 valeurs à droite sont identiques, alors Mem[0] égal la valeur opposée
                             Mem_resolution[0] = abs(Mem_resolution[3] - 1)
                             etat_partage.debug.append(("condition 2",Mem_resolution[13],Mem_resolution[14],Mem_resolution[0], "Mem :", Mem_resolution))
-                        elif Mem_resolution[5] == Mem_resolution[6] and Mem_resolution[6] != -2 and Mem_resolution[6] != -1:
-                            #print("condition",3)
-                            #print(Mem_resolution)                               
+                        elif Mem_resolution[5] == Mem_resolution[6] and Mem_resolution[6] != -2 and Mem_resolution[6] != -1: #Règle 3 : Les 2 valeurs en dessous sont identiques, alors Mem[0] égal la valeur opposée                            
                             Mem_resolution[0] = abs(Mem_resolution[5] - 1)
                             etat_partage.debug.append(("condition 3",Mem_resolution[13],Mem_resolution[14],Mem_resolution[0], "Mem :", Mem_resolution))
-                        elif Mem_resolution[7] == Mem_resolution[8] and Mem_resolution[8] != -2 and Mem_resolution[8] != -1:
-                            #print("condition",4)
-                            #print(Mem_resolution)
+                        elif Mem_resolution[7] == Mem_resolution[8] and Mem_resolution[8] != -2 and Mem_resolution[8] != -1: #Règle 4 : Les 2 valeurs à gauches sont identiques, alors Mem[0] égal la valeur opposée
                             Mem_resolution[0] = abs(Mem_resolution[7] - 1)
                             etat_partage.debug.append(("condition 4",Mem_resolution[13],Mem_resolution[14],Mem_resolution[0], "Mem :", Mem_resolution))
-                        elif Mem_resolution[2] == Mem_resolution[6] and Mem_resolution[2] != -2 and Mem_resolution[2] != -1 :
-                            #print("condition",5)
-                            #print(Mem_resolution)
+                        elif Mem_resolution[2] == Mem_resolution[6] and Mem_resolution[2] != -2 and Mem_resolution[2] != -1 : #Règle 5 : Les 2 valeurs de la colonne entourant la case sont identiques, alors Mem[0] égal la valeur opposée
                             Mem_resolution[0] = abs(Mem_resolution[2] - 1)
                             etat_partage.debug.append(("condition 5",Mem_resolution[13],Mem_resolution[14],Mem_resolution[0], "Mem :", Mem_resolution))
-                        elif Mem_resolution[4] == Mem_resolution[8] and Mem_resolution[4] != -2 and Mem_resolution[4] != -1:
-                            #print("condition",6)
-                            #print(Mem_resolution)
+                        elif Mem_resolution[4] == Mem_resolution[8] and Mem_resolution[4] != -2 and Mem_resolution[4] != -1: #Règle 6 : Les 2 valeurs de la ligne entourant la case sont identiques, alors Mem[0] égal la valeur opposée
                             Mem_resolution[0] = abs(Mem_resolution[4] - 1)
                             etat_partage.debug.append(("condition 6",Mem_resolution[13],Mem_resolution[14],Mem_resolution[0], "Mem :", Mem_resolution))
-                        elif Mem_resolution[9] == nb_0_ou_1:  # Nb de 1 dans la ligne atteint
-                            #print("condition",7)
-                            #print(Mem_resolution)
+                        elif Mem_resolution[9] == nb_0_ou_1:  # Règle 7 : Nb de 1 dans la ligne atteint, alors Mem[0]=0
                             Mem_resolution[0] = 0
                             etat_partage.debug.append(("condition 7",Mem_resolution[13],Mem_resolution[14],Mem_resolution[0], "Mem :", Mem_resolution))
-                        elif Mem_resolution[10] == nb_0_ou_1:  # Nb de 0 dans la ligne atteint
-                            #print("condition",8)
-                            #print(Mem_resolution)
+                        elif Mem_resolution[10] == nb_0_ou_1:  # Règle 8 :Nb de 0 dans la ligne atteint, alors Mem[0]=1
                             Mem_resolution[0] = 1
                             etat_partage.debug.append(("condition 8",Mem_resolution[13],Mem_resolution[14],Mem_resolution[0], "Mem :", Mem_resolution))
-                        elif Mem_resolution[11] == nb_0_ou_1:  # Nb de 1 dans la colonne atteint
-                            #print("condition",9)
-                            #print(Mem_resolution)
+                        elif Mem_resolution[11] == nb_0_ou_1:  # Règle 9 :Nb de 1 dans la colonne atteint, alors Mem[0]=0
                             Mem_resolution[0] = 0
                             etat_partage.debug.append(("condition 9",Mem_resolution[13],Mem_resolution[14],Mem_resolution[0], "Mem :", Mem_resolution))
-                        elif Mem_resolution[12] == nb_0_ou_1:  # Nb de 0 dans la colonne atteint
-                            #print("condition",10)
-                            #print(Mem_resolution)
+                        elif Mem_resolution[12] == nb_0_ou_1:  # Règle 10 :Nb de 0 dans la colonne atteint, alors Mem[0]=1
                             Mem_resolution[0] = 1
                             etat_partage.debug.append(("condition 10",Mem_resolution[13],Mem_resolution[14],Mem_resolution[0], "Mem :", Mem_resolution,"colone:",Mem_resolution_col))
-                        if tour>10:   
-                            if Mem_resolution[1] ==-1 and Mem_resolution[2] ==-1 and Mem_resolution[6] ==-1 :
+                        if tour>10:   #les conditions suivantes entre en jeux uniquement si l'on commence à boucler plus de 10 fois
+                            if Mem_resolution[1] ==-1 and Mem_resolution[2] ==-1 and Mem_resolution[6] ==-1 : #on vérifie si 3 valeurs spécifiques sont vides
                             
-                                if Mem_resolution[11] == (taille/2 -1) and Mem_resolution[5] ==0 :
+                                if Mem_resolution[11] == (taille/2 -1) and Mem_resolution[5] ==0 : #Règles 11 : Les 2 valeur au dessus et celle en dessous sont vides, il reste un seul 1/0* dans la colonne, la valeur 2 cases en dessous est égal à 1/0*, alors Mem[0] = 1/0*
                                     Mem_resolution[0] = 1
+                                    etat_partage.debug.append(("condition 11",Mem_resolution[13],Mem_resolution[14],1, "Mem :", Mem_resolution)) 
                                 elif Mem_resolution[11] == (taille/2 -1) and Mem_resolution[5] ==1 :
-                                    #Mem_resolution[6] == 0
                                     
                                     row_bis = Mem_resolution[13]+1
                                     col_bis = Mem_resolution[14]
