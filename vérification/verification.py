@@ -49,7 +49,7 @@ class verification :
         # Parcourir chaque ligne de la grille
         for row in grid:
             # Vérifier s'il y a une cellule vide ('') dans la ligne
-            if '' in row:
+            if -1 in row:
                 return True  # Il y a au moins une cellule vide
         return False  # Pas de cellules vides
 

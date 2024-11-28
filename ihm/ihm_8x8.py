@@ -12,7 +12,7 @@ import time
 class ihm_8x8:
 
 
-    def grille8x8(self):
+    def grille8x8(self, timer_enabled):
         global taille, text_id_message, rows, cols, cell_size,offset_x,offset_y
         taille =1
         # Définition des paramètres graphique
@@ -41,20 +41,52 @@ class ihm_8x8:
         for j in range(cols + 1):
              etat_partage.canvas.create_line(offset_x + j * cell_size, offset_y, offset_x + j * cell_size, offset_y + rows * cell_size)  # Lignes verticales
         etat_partage.canvas.bind("<Button-1>", ihm_8x8.on_click)
+        
+        ################################### Timer ##########################################
+        self.timer_enabled = timer_enabled
+        self.elapsed_time = 0  # Temps écoulé en secondes
+
+        
+        if self.timer_enabled :
+            self.timer_label = tk.Label(etat_partage.root, text="Chronomètre : 0s")
+            self.timer_label.pack()
+            self.start_chronometer()
+            
+        #####################################################################################
+        
+        ############################## Aide #################################################
+        # Ajouter le bouton d'aide
+        button_aide = tk.Button(etat_partage.root, text="[?]", command=self.afficher_aide, width=4, height=1)
+        #button_aide.pack(side='right'& 'bottom')  # Position en bas à droite width=760 ; height=520
+        button_aide.place(x=760, y=520, anchor="se")
+        #####################################################################################
+        
         # creation des boutons
-        button_clear = tk.Button(etat_partage.root, text="Réinitialiser", command=ihm_8x8.clear,width=15, height=3)
+        button_clear = tk.Button(etat_partage.root, text="Réinitialiser", command=self.clear,width=15, height=3)
         button_verif = tk.Button(etat_partage.root, text="Vérifier", command=ihm_8x8.verifier,width=15, height=3)
-        button_valider = tk.Button(etat_partage.root, text="Valider", command=ihm_8x8.valider,width=15, height=3)
-        button_home = tk.Button(etat_partage.root, text="Accueil", command=ihm_8x8.home,width=7, height=2)
-        button_resoudre = tk.Button(etat_partage.root, text="Resolution", command=ihm_8x8.ecrire_valeur,width=15, height=3)
+        button_valider = tk.Button(etat_partage.root, text="Valider", command=self.afficher_msg_valider,width=15, height=3)
+        button_home = tk.Button(etat_partage.root, text="Accueil", command=self.home,width=7, height=2)
+        button_resoudre = tk.Button(etat_partage.root, text="Resolution", command=self.ecrire_valeur,width=15, height=3)
         button_aide = tk.Button(etat_partage.root, text="Aide", command=ihm_8x8.aide,width=15, height=3)
-        # Placement du bouton dans la fenêtre
-        button_clear.place(x=530, y=100)
-        button_verif.place(x=530, y=200)
-        button_valider.place(x=530, y=300)
+        
+        # # Placement du bouton dans la fenêtre
+        # button_clear.place(x=530, y=100)
+        # button_verif.place(x=530, y=200)
+        # button_valider.place(x=530, y=300)
         button_home.place(x=710, y=0)
-        button_resoudre.place(x=530, y=400)
-        button_aide.place(x=530, y=500)
+        # button_resoudre.place(x=530, y=400)
+        # button_aide.place(x=530, y=500)
+        
+        # Dimensions de la grille
+        grid_width = 8 * 50  # Largeur totale de la grille
+        grid_height = 8 * 50  # Hauteur totale de la grille
+
+        # Position des boutons par rapport à la grille
+        button_clear.place(x=grid_width + 150, y=grid_height // 2 - 100)  # Réinitialiser
+        button_verif.place(x=grid_width + 150, y=grid_height // 2 - 50)   # Vérifier
+        button_valider.place(x=grid_width + 150, y=grid_height // 2)      # Valider
+        button_resoudre.place(x=grid_width + 150, y=grid_height // 2 + 50)  # Résolution
+        button_aide.place(x=grid_width + 150, y=grid_height // 2 + 100)    # Aide
         
         etat_partage.canvas.create_text(590, 40, text="TAKUZU grille 8x8", font=('Helvetica', 20), fill="black")
         etat_partage.canvas.create_text(80, 440, text="Message", font=('Helvetica', 10), fill="black")
@@ -133,7 +165,7 @@ class ihm_8x8:
 
 
     # effacer et regenerer la grille
-    def clear():
+    def clear(self):
         global text_id_message 
         etat_partage.running = False
         etat_partage.verrou = None 
@@ -149,12 +181,12 @@ class ihm_8x8:
         etat_partage.debug=[]
         etat_partage.root.destroy()
         etat_partage.root = None
-        ihm_8x8.grille8x8("a")
+        ihm_8x8.grille8x8(self, self.timer_enabled)
         text_id_message = etat_partage.canvas.create_text(250, 465, text="La grille a été réinitialisée", font=('Helvetica', 10), fill="black")
 
 
 
-    def home():
+    def home(self):
         from first_page import first_page 
         etat_partage.running = False
         etat_partage.verrou = None 
@@ -168,13 +200,36 @@ class ihm_8x8:
 
         etat_partage.grille_complete =0
         etat_partage.debug=[]
+        if self.timer_enabled ==True :
+            self.stop_chronometer()
         etat_partage.root.destroy()
         etat_partage.root = None
         first_page()
 
+    def afficher_msg_valider(self):
+        from vérification.verification import verification
+        global grid_values, text_id_message
+        if verification.check_empty_cells(etat_partage.grid_values) : 
+            etat_partage.canvas.delete(text_id_message)
+            text_id_message = etat_partage.canvas.create_text(310, 465, text="Vous devez d'abord terminer la grille !", font=('Helvetica', 10), fill="black")
+        else :
+            ihm_8x8.valider()
+            self.stop_chronometer()
+            if self.timer_enabled == True :
+                minutes = self.elapsed_time // 60
+                seconds = self.elapsed_time % 60
+                aide_message = (
+                        "Félicitation, vous avez correctement completé la grille !\n\n"
+                        f"Temps final de jeu : {minutes:02}:{seconds:02}"
+                )
+            else :
+                aide_message = (
+                        "Félicitation, vous avez correctement completé la grille !\n\n")
+            tk.messagebox.showinfo("Bravo", aide_message)
+            self.home()
 
     def valider():
-        global text_id_message
+        global text_id_message, grid_values
         from vérification.verification import verification
         if not verification.check_empty_cells(etat_partage.grid_values) :
             if not ihm_8x8.verifier():
@@ -182,10 +237,9 @@ class ihm_8x8:
                 text_id_message = etat_partage.canvas.create_text(310, 465, text="Malheureusement, la grille est fausse vous devez recommencer !", font=('Helvetica', 10), fill="black")
                 return False
             etat_partage.canvas.delete(text_id_message)
-            text_id_message = etat_partage.canvas.create_text(310, 465, text="Vous avez correctement complété la grille, félicitation !", font=('Helvetica', 10), fill="black")    
+            #text_id_message = canvas.create_text(310, 465, text="Vous avez correctement complété la grille, félicitation !", font=('Helvetica', 10), fill="black")    
             return True
-        etat_partage.canvas.delete(text_id_message)
-        text_id_message = etat_partage.canvas.create_text(310, 465, text="Vous devez d'abord terminer la grille !", font=('Helvetica', 10), fill="black")
+         
     def verifier():
         # Vérifier les lignes
         global text_id_message
@@ -257,7 +311,9 @@ class ihm_8x8:
         thread = threading.Thread(target=Agents2.resolution, args=(i, j,8,trou), daemon=True, name=thread_name)
         thread.start()
         
-    def ecrire_valeur():
+    def ecrire_valeur(self):
+        if self.timer_enabled ==True :
+            self.stop_chronometer()
         for i in range(len(etat_partage.col_ligne)):
             
             col = etat_partage.col_ligne[i][1]
@@ -307,7 +363,6 @@ class ihm_8x8:
                 valeur_str = str(etat_partage.grid_values[row][col])
                 etat_partage.text_ids[row][col] = etat_partage.canvas.create_text(x, y, text=valeur_str, font=('Helvetica', 12), fill="blue")
                 arret+=1
-            time.sleep(0.3)
             etat_partage.canvas.update_idletasks()
             i+=1   
                   
@@ -347,3 +402,33 @@ class ihm_8x8:
         etat_partage.running = False  # Mettre le drapeau à False pour arrêter les threads
         etat_partage.verrou = None
         etat_partage.root.destroy()  # Détruire la fenêtre principale
+        
+
+    def start_chronometer(self):
+        self.elapsed_time += 1  # Incrémente le temps écoulé
+        minutes = self.elapsed_time // 60  # Calcul des minutes
+        seconds = self.elapsed_time % 60  # Calcul des secondes
+        self.timer_label.config(text=f"Chronomètre : {minutes:02}:{seconds:02}")  # Affichage formaté MM:SS
+        #root.after(1000, self.start_chronometer)  # Relance après 1 seconde
+        self._chronometer_running = etat_partage.root.after(1000, self.start_chronometer)
+        
+    def stop_chronometer(self):
+        if self.timer_enabled == True :
+            etat_partage.root.after_cancel(self._chronometer_running)  # Annule l'appel programmé
+            minutes = self.elapsed_time // 60
+            seconds = self.elapsed_time % 60
+            print(f"Temps final du chronomètre : {minutes:02}:{seconds:02}")
+            self.timer_label.config(text=f"Chronomètre arrêté à : {minutes:02}:{seconds:02}")
+            
+        
+    def afficher_aide(self):
+        #"""Fonction appelée lors du clic sur le bouton Aide."""
+        aide_message = (
+            "Bienvenue dans le jeu Takuzu!\n\n"
+            "Objectif : Remplir la grille en suivant ces règles :\n"
+            "- Aucun chiffre ne doit se répéter plus de deux fois à la suite dans une ligne ou une colonne.\n"
+            "- Chaque ligne et chaque colonne doivent contenir un nombre égal de 0 et de 1.\n"
+            "- Les lignes et les colonnes doivent être uniques.\n\n"
+            "Bonne chance!"
+            )
+        tk.messagebox.showinfo("Aide Takuzu", aide_message)

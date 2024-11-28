@@ -1,4 +1,5 @@
 import tkinter as tk
+import tkinter.messagebox
 import threading
 import random
 import threading
@@ -7,8 +8,10 @@ from thread1.agents import Agents
 from thread1.agents2 import Agents2
 import etat_partage  # Importez le module partagé
 import time 
+
+
 class ihm_6x6:     
-    def grille6x6(self):
+    def grille6x6(self, timer_enabled):
         global taille, text_id_message, rows, cols, cell_size , offset_x, offset_y
         taille =0
         # Définition des paramètres graphique
@@ -22,20 +25,51 @@ class ihm_6x6:
         etat_partage.canvas = tk.Canvas(etat_partage.root, width=8*50*1.9, height=8*50*1.3)
         etat_partage.canvas.pack()
 
+
+        ################################### Timer ##########################################
+        self.timer_enabled = timer_enabled
+        self.elapsed_time = 0  # Temps écoulé en secondes
+        
+        if self.timer_enabled :
+            self.timer_label = tk.Label(etat_partage.root, text="Chronomètre : 0s")
+            self.timer_label.pack()
+            self.start_chronometer()
+            
+        #####################################################################################
+        
+        ############################## Aide #################################################
+        # Ajouter le bouton d'aide
+        button_aide = tk.Button(etat_partage.root, text="[?]", command=self.afficher_aide, width=4, height=1)
+        #button_aide.pack(side='right'& 'bottom')  # Position en bas à droite width=760 ; height=520
+        button_aide.place(x=760, y=520, anchor="se")
+        #####################################################################################      
         # creation des boutons
-        button_clear = tk.Button(etat_partage.root, text="Réinitialiser", command=ihm_6x6.clear,width=15, height=3)
-        button_verif = tk.Button(etat_partage.root, text="Vérifier", command=ihm_6x6.verifier,width=15, height=3)
-        button_valider = tk.Button(etat_partage.root, text="Valider", command=ihm_6x6.valider,width=15, height=3)
-        button_home = tk.Button(etat_partage.root, text="Accueil", command=ihm_6x6.home,width=7, height=2)
-        button_resoudre = tk.Button(etat_partage.root, text="Resolution", command=ihm_6x6.ecrire_valeur,width=15, height=3)
-        button_aide = tk.Button(etat_partage.root, text="Aide", command=ihm_6x6.aide,width=15, height=3)
+        button_clear = tk.Button(etat_partage.root, text="Réinitialiser", command=self.clear,width=10, height=3)
+        button_verif = tk.Button(etat_partage.root, text="Vérifier", command=ihm_6x6.verifier,width=10, height=3)
+        button_valider = tk.Button(etat_partage.root, text="Valider", command=self.afficher_msg_valider,width=10, height=3)
+        button_home = tk.Button(etat_partage.root, text="Accueil", command=self.home,width=7, height=2)
+        button_resoudre = tk.Button(etat_partage.root, text="Resolution", command=self.ecrire_valeur,width=10, height=3)
+        button_aide = tk.Button(etat_partage.root, text="Aide", command=ihm_6x6.aide,width=10, height=3)
         # Placement du bouton dans la fenêtre
-        button_clear.place(x=530, y=100)
-        button_verif.place(x=530, y=200)
-        button_valider.place(x=530, y=300)
+        # button_clear.place(x=530, y=100)
+        # button_verif.place(x=530, y=200)
+        # button_valider.place(x=530, y=300)
         button_home.place(x=710, y=0)
-        button_resoudre.place(x=530, y=400)
-        button_aide.place(x=530, y=500)
+        # button_resoudre.place(x=530, y=400)
+        # button_aide.place(x=530, y=500)
+
+        # Dimensions de la grille
+        grid_width = 8 * 50  # Largeur totale de la grille
+        grid_height = 8 * 50  # Hauteur totale de la grille
+
+        # Position des boutons par rapport à la grille
+        button_clear.place(x=grid_width + 150, y=grid_height // 2 - 100)  # Réinitialiser
+        button_verif.place(x=grid_width + 150, y=grid_height // 2 - 50)   # Vérifier
+        button_valider.place(x=grid_width + 150, y=grid_height // 2)      # Valider
+        button_resoudre.place(x=grid_width + 150, y=grid_height // 2 + 50)  # Résolution
+        button_aide.place(x=grid_width + 150, y=grid_height // 2 + 100)    # Aide
+
+
         # Dimensions de la grille
         rows, cols = 6, 6
         cell_size = 60  # Taille des cellules en pixels
@@ -74,7 +108,6 @@ class ihm_6x6:
 
         # Générer un nombre aléatoire entre 1 et 3
         nombre_aleatoire = random.randint(1, 3)
-        nombre_aleatoire=4
         # Remplir le etat_partage.canvas avec les valeurs générées dans etat_partage.grid_values
         if nombre_aleatoire==1:
             fichier_grille = "grille/6x6_1.txt"  # Chemin vers ton fichier txt
@@ -82,13 +115,11 @@ class ihm_6x6:
             fichier_grille = "grille/6x6_2.txt"  # Chemin vers ton fichier txt
         elif nombre_aleatoire==3:
             fichier_grille = "grille/6x6_3.txt"  # Chemin vers ton fichier txt
-        elif nombre_aleatoire==4:
-            fichier_grille = "grille/6x6_4.txt"  # Chemin vers ton fichier txt
         grille = lecture.lire_grille_depuis_fichier(fichier_grille)
         
         for row in range(6):
             for col in range(6):
-                print(grille[row][col])
+                #print(grille[row][col])
                 if grille[row][col]!=-1:
                     etat_partage.text_ids[row][col] = "Rempli"
                     etat_partage.text_ids2[row][col] = "Rempli"
@@ -108,7 +139,7 @@ class ihm_6x6:
         #     for j in range(6):  # Boucle pour les colonnes
         #         ihm_6x6.create_thread(i, j)
         #ihm_6x6.etat_page()
-        print(etat_partage.grid_values)
+        #print(etat_partage.grid_values)
         etat_partage.verrou = threading.Lock()
         
         #Création des threads de résolution en arrière plan
@@ -120,12 +151,12 @@ class ihm_6x6:
     
     def create_thread(i, j):
         thread_name = f"t{i}{j}"
-        print(f"Création du thread {thread_name}")
+        #print(f"Création du thread {thread_name}")
         thread = threading.Thread(target=Agents.surveiller_valeur, args=(i, j), daemon=True, name=thread_name)
         thread.start()
 
     # effacer et regenerer la grille
-    def clear():
+    def clear(self):
         global text_id_message 
         etat_partage.running = False
         etat_partage.verrou = None 
@@ -141,12 +172,12 @@ class ihm_6x6:
         etat_partage.debug=[]
         etat_partage.root.destroy()
         etat_partage.root = None
-        ihm_6x6.grille6x6("a")
+        ihm_6x6.grille6x6(self, self.timer_enabled)
         text_id_message = etat_partage.canvas.create_text(250, 465, text="La grille a été réinitialisée", font=('Helvetica', 10), fill="black")
 
 
 
-    def home():
+    def home(self):
         from first_page import first_page 
         
         etat_partage.running = False
@@ -161,26 +192,49 @@ class ihm_6x6:
 
         etat_partage.grille_complete =0
         etat_partage.debug=[]
+        if self.timer_enabled == True : 
+            self.stop_chronometer()
         etat_partage.root.destroy()
         etat_partage.root = None
         first_page()
 
 
 
-    def valider():
+    def afficher_msg_valider(self):
         from vérification.verification import verification
-        global text_id_message
-        if not verification.check_empty_cells(etat_partage.grid_values) :
+        global grid_values, text_id_message
+        if verification.check_empty_cells(etat_partage.grid_values): 
+            etat_partage.canvas.delete(text_id_message)
+            text_id_message = etat_partage.canvas.create_text(310, 465, text="Vous devez d'abord terminer la grille !", font=('Helvetica', 10), fill="black")
+        else :
+            ihm_6x6.valider(self)
+            self.stop_chronometer()
+            if self.timer_enabled == True :
+                minutes = self.elapsed_time // 60
+                seconds = self.elapsed_time % 60
+                aide_message = (
+                        "Félicitation, vous avez correctement completé la grille !\n\n"
+                        f"Temps final de jeu : {minutes:02}:{seconds:02}"
+                )
+            else :
+                aide_message = (
+                        "Félicitation, vous avez correctement completé la grille !\n\n")
+            tk.messagebox.showinfo("Bravo", aide_message)
+            self.home()
+
+    def valider(self):
+        from vérification.verification import verification
+        global text_id_message, grid_values
+        print("La valeur de values grids est de : ", etat_partage.grid_values)
+        if not verification.check_empty_cells(etat_partage.grid_values):
             if not ihm_6x6.verifier():
                 etat_partage.canvas.delete(text_id_message)
                 text_id_message = etat_partage.canvas.create_text(310, 465, text="Malheureusement, la grille est fausse vous devez recommencer !", font=('Helvetica', 10), fill="black")
                 return False
             etat_partage.canvas.delete(text_id_message)
-            text_id_message = etat_partage.canvas.create_text(310, 465, text="Vous avez correctement complété la grille, félicitation !", font=('Helvetica', 10), fill="black")    
+            #text_id_message = canvas.create_text(310, 465, text="Vous avez correctement complété la grille, félicitation !", font=('Helvetica', 10), fill="black")    
             return True
-        etat_partage.canvas.delete(text_id_message)
-        text_id_message = etat_partage.canvas.create_text(310, 465, text="Vous devez d'abord terminer la grille !", font=('Helvetica', 10), fill="black")
-        
+           
     def verifier():
         from vérification.verification import verification
         # Vérifier les lignes
@@ -237,7 +291,7 @@ class ihm_6x6:
     def init_resolution():
          #creation d'un thread par case
         trou=0
-        print(etat_partage.text_ids2)
+        #print(etat_partage.text_ids2)
         for row in range(rows):
             for col in range(cols):
                 if(etat_partage.text_ids2[row][col]=="Rempli"):
@@ -248,11 +302,13 @@ class ihm_6x6:
         
     def create_thread_resolution(i, j,trou):
         thread_name = f"t{i}{j}b"
-        print(f"Création du thread {thread_name}")
+        #print(f"Création du thread {thread_name}")
         thread = threading.Thread(target=Agents2.resolution, args=(i, j,6,trou), daemon=True, name=thread_name)
         thread.start()
         
-    def ecrire_valeur():
+    def ecrire_valeur(self):
+        if self.timer_enabled == True : 
+            self.stop_chronometer()
         for i in range(len(etat_partage.col_ligne)):
             
             col = etat_partage.col_ligne[i][1]
@@ -276,7 +332,6 @@ class ihm_6x6:
                 etat_partage.text_ids[row][col] = etat_partage.canvas.create_text(x, y, text=valeur_str, font=('Helvetica', 12), fill="blue")
             time.sleep(0.3)
             etat_partage.canvas.update_idletasks()
-                
                 
     def aide():
         arret = 0
@@ -303,10 +358,8 @@ class ihm_6x6:
                 valeur_str = str(etat_partage.grid_values[row][col])
                 etat_partage.text_ids[row][col] = etat_partage.canvas.create_text(x, y, text=valeur_str, font=('Helvetica', 12), fill="blue")
                 arret+=1
-            time.sleep(0.3)
             etat_partage.canvas.update_idletasks()
             i+=1                         
-
 
 
 
@@ -348,5 +401,33 @@ class ihm_6x6:
         etat_partage.verrou = None 
         
         etat_partage.root.destroy()  # Détruire la fenêtre principale
-      
+        
+    def start_chronometer(self):
+        self.elapsed_time += 1  # Incrémente le temps écoulé
+        minutes = self.elapsed_time // 60  # Calcul des minutes
+        seconds = self.elapsed_time % 60  # Calcul des secondes
+        self.timer_label.config(text=f"Chronomètre : {minutes:02}:{seconds:02}")  # Affichage formaté MM:SS
+        #root.after(1000, self.start_chronometer)  # Relance après 1 seconde
+        self._chronometer_running = etat_partage.root.after(1000, self.start_chronometer)
+        
+    def stop_chronometer(self):
+        """Arrête le chronomètre et affiche la valeur finale."""
+        if self.timer_enabled == True :
+            etat_partage.root.after_cancel(self._chronometer_running)  # Annule l'appel programmé
+            minutes = self.elapsed_time // 60
+            seconds = self.elapsed_time % 60
+            print(f"Temps final du chronomètre : {minutes:02}:{seconds:02}")
+            self.timer_label.config(text=f"Chronomètre arrêté à : {minutes:02}:{seconds:02}")
+        
+    def afficher_aide(self):
+        #"""Fonction appelée lors du clic sur le bouton Aide."""
+        aide_message = (
+            "Bienvenue dans le jeu Takuzu!\n\n"
+            "Objectif : Remplir la grille en suivant ces règles :\n"
+            "- Aucun chiffre ne doit se répéter plus de deux fois à la suite dans une ligne ou une colonne.\n"
+            "- Chaque ligne et chaque colonne doivent contenir un nombre égal de 0 et de 1.\n"
+            "- Les lignes et les colonnes doivent être uniques.\n\n"
+            "Bonne chance!"
+            )
+        tk.messagebox.showinfo("Aide Takuzu", aide_message)
     
