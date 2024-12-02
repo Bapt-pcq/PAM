@@ -16,12 +16,12 @@ class Agents_10x10:
         a_trouver=taille*taille-trou
         nb_0_ou_1 = taille / 2
         tour = 0
-        print(etat_partage.grid_values2)
+        #print(etat_partage.grid_values2)
         while etat_partage.running:
             with etat_partage.verrou:
                 
                 #grille_complete = all(all(case == 1 or case == 0 for case in row) for row in etat_partage.grid_values2)
-                if etat_partage.grille_complete==a_trouver or tour == 30:
+                if etat_partage.grille_complete==a_trouver :
                     
                     etat_partage.test ==1
                     etat_partage.running = False
@@ -31,7 +31,14 @@ class Agents_10x10:
                     
                     print(etat_partage.grid_values2)
                     break
-                    
+                if tour == 35 :
+                    print("Grille partiellement remplie valeur restante : ", a_trouver - etat_partage.grille_complete)
+                    etat_partage.test ==1
+                    etat_partage.running = False
+                    tour = 0  
+                    print(etat_partage.grid_values2)
+                    break
+                
                 Mem_resolution_row = etat_partage.grid_values2[row]
                 grid_col = []
                 # Parcourir chaque colonne de la grille
@@ -203,7 +210,7 @@ class Agents_10x10:
                         elif Mem_resolution[12] == nb_0_ou_1:  # Règle 10 :Nb de 0 dans la colonne atteint, alors Mem[0]=1
                             Mem_resolution[0] = 1
                             etat_partage.debug.append(("condition 10",Mem_resolution[13],Mem_resolution[14],Mem_resolution[0], "Mem :", Mem_resolution,"colone:",Mem_resolution_col))
-                        if tour>10:   #les conditions suivantes entre en jeux uniquement si l'on commence à boucler plus de 10 fois
+                        if tour>5:   #les conditions suivantes entre en jeux uniquement si l'on commence à boucler plus de 10 fois
                             if Mem_resolution[1] ==-1 and Mem_resolution[2] ==-1 and Mem_resolution[6] ==-1 : #on vérifie si 3 valeurs spécifiques sont vides
                             
                                 if Mem_resolution[11] == (taille/2 -1) and Mem_resolution[5] ==0 : #Règle 11 : Les 2 valeurs au dessus et celle en dessous sont vides, il reste un seul 1 dans la colonne, la valeur 2 cases en dessous est égal à 0, alors Mem[0] = 1
@@ -326,7 +333,7 @@ class Agents_10x10:
                                 elif Mem_resolution[10] == (taille/2 -1) and Mem_resolution[3]==1 : #Règle 26 : Les 2 valeurs à gauche et celle à droite sont vides, il reste un seul 0 dans la ligne, la valeur 2 cases à droite est égal à 1, alors Mem[0] = 0
                                     Mem_resolution[0]=0
                                     etat_partage.debug.append(("condition 26",Mem_resolution[13],Mem_resolution[14],0, "Mem :", Mem_resolution)) 
-                        if tour>20 : 
+                        if tour>10 : 
                             #Les indices de la Mem correspondant à la ligne ou la colonne
                             Mem_lignes = [24,25,26,27,28,29,30,31,32,42,43,44,45,46,47,48,49,50]
                             Mem_colonnes = [15,16,17,18,19,20,21,22,23,33,34,35,36,37,38,39,40,41]
@@ -435,7 +442,7 @@ class Agents_10x10:
                         tour = 0
                         return
                     tour+=1
-                    print(tour)
+                    
             time.sleep(0.1)  # Fréquence de vérification 
                         
 

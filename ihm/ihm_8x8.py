@@ -106,14 +106,19 @@ class ihm_8x8:
                # Remplir le canvas avec les valeurs générées dans grid_values
         # Générer un nombre aléatoire entre 1 et 3
         nombre_aleatoire = random.randint(1, 3)
-        nombre_aleatoire = 2
+       
+        if etat_partage.num_grille != 0 :
+            nombre_aleatoire = etat_partage.num_grille
         # Remplir le canvas avec les valeurs générées dans grid_values
         if nombre_aleatoire==1:
             fichier_grille = "grille/8x8_1.txt"  # Chemin vers ton fichier txt
+            etat_partage.num_grille=1
         elif nombre_aleatoire==2:
             fichier_grille = "grille/8x8_2.txt"  # Chemin vers ton fichier txt
+            etat_partage.num_grille=2
         elif nombre_aleatoire==3:
             fichier_grille = "grille/8x8_3.txt"  # Chemin vers ton fichier txt
+            etat_partage.num_grille=3
         
         grille = lecture.lire_grille_depuis_fichier(fichier_grille)
         
@@ -197,6 +202,7 @@ class ihm_8x8:
         etat_partage.grid_values2 = None
         etat_partage.text_ids2 = None
         etat_partage.col_ligne = []
+        etat_partage.num_grille = 0
 
         etat_partage.grille_complete =0
         etat_partage.debug=[]

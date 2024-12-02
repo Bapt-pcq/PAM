@@ -13,3 +13,4 @@ test = 0
 test2 = 0
 root = None
 debug=[]
+num_grille = 0

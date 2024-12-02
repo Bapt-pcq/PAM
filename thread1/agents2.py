@@ -16,13 +16,13 @@ class Agents2:
         a_trouver=taille*taille-trou
         nb_0_ou_1 = taille / 2
         tour = 0
-        print(etat_partage.grid_values2)
+        #print(etat_partage.grid_values2)
         while etat_partage.running:
             with etat_partage.verrou:
                 
                 #grille_complete = all(all(case == 1 or case == 0 for case in row) for row in etat_partage.grid_values2)
-                if etat_partage.grille_complete==a_trouver or tour == 30:
-                    print(etat_partage.debug)
+                if etat_partage.grille_complete==a_trouver :
+                    #print(etat_partage.debug)
                     etat_partage.test ==1
                     etat_partage.running = False
                     print("Grille complétée !")
@@ -31,7 +31,13 @@ class Agents2:
                     
                     print(etat_partage.grid_values2)
                     break
-                    
+                if tour == 35 :
+                    print("Grille partiellement remplie valeur restante : ", a_trouver - etat_partage.grille_complete)
+                    etat_partage.test ==1
+                    etat_partage.running = False
+                    tour = 0  
+                    print(etat_partage.grid_values2)
+                    break    
                 Mem_resolution_row = etat_partage.grid_values2[row]
                 grid_col = []
                 # Parcourir chaque colonne de la grille
@@ -411,7 +417,7 @@ class Agents2:
                         tour = 0
                         return
                     tour+=1
-                    print(tour)
+                    #print(tour)
             time.sleep(0.1)  # Fréquence de vérification 
                         
 

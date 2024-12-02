@@ -112,17 +112,22 @@ class ihm_10x10:
         # Remplir le canvas avec les valeurs générées dans grid_values
                # Remplir le canvas avec les valeurs générées dans grid_values
                 # Générer un nombre aléatoire entre 1 et 3
-        nombre_aleatoire = random.randint(1, 3)
-        nombre_aleatoire=3
+        nombre_aleatoire = random.randint(1, 4)
+        if etat_partage.num_grille != 0 :
+            nombre_aleatoire = etat_partage.num_grille
         # Remplir le canvas avec les valeurs générées dans grid_values
         if nombre_aleatoire==1:
             fichier_grille = "grille/10x10_1.txt"  # Chemin vers ton fichier txt
+            etat_partage.num_grille = 1
         elif nombre_aleatoire==2:
             fichier_grille = "grille/10x10_2.txt"  # Chemin vers ton fichier txt
+            etat_partage.num_grille = 2
         elif nombre_aleatoire==3:
             fichier_grille = "grille/10x10_3.txt"  # Chemin vers ton fichier txt
+            etat_partage.num_grille = 3
         elif nombre_aleatoire==4:
             fichier_grille = "grille/10x10_4.txt"  # Chemin vers ton fichier txt
+            etat_partage.num_grille = 4
         grille = lecture.lire_grille_depuis_fichier(fichier_grille)
         
         for row in range(10):
@@ -199,6 +204,7 @@ class ihm_10x10:
         etat_partage.grid_values2 = None
         etat_partage.text_ids2 = None
         etat_partage.col_ligne = []
+        etat_partage.num_grille = 0
 
         etat_partage.grille_complete =0
         etat_partage.debug=[]
@@ -235,7 +241,7 @@ class ihm_10x10:
         global text_id_message, grid_values
         from vérification.verification import verification
         if not verification.check_empty_cells(etat_partage.grid_values) :
-            if not ihm_10x10.verifier():
+            if not ihm_10x10.verifier10x10():
                 etat_partage.canvas.delete(text_id_message)
                 text_id_message = etat_partage.canvas.create_text(390, 585, text="Malheureusement, la grille est fausse vous devez recommencer !", font=('Helvetica', 10), fill="black")
                 return False

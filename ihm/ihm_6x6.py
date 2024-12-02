@@ -108,13 +108,19 @@ class ihm_6x6:
 
         # Générer un nombre aléatoire entre 1 et 3
         nombre_aleatoire = random.randint(1, 3)
+        nombre_aleatoire = 3
+        if etat_partage.num_grille !=0:
+            nombre_aleatoire = etat_partage.num_grille
         # Remplir le etat_partage.canvas avec les valeurs générées dans etat_partage.grid_values
         if nombre_aleatoire==1:
             fichier_grille = "grille/6x6_1.txt"  # Chemin vers ton fichier txt
+            etat_partage.num_grille = 1
         elif nombre_aleatoire==2:
             fichier_grille = "grille/6x6_2.txt"  # Chemin vers ton fichier txt
+            etat_partage.num_grille = 2
         elif nombre_aleatoire==3:
             fichier_grille = "grille/6x6_3.txt"  # Chemin vers ton fichier txt
+            etat_partage.num_grille = 3
         grille = lecture.lire_grille_depuis_fichier(fichier_grille)
         
         for row in range(6):
