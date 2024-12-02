@@ -108,7 +108,7 @@ class ihm_6x6:
 
         # Générer un nombre aléatoire entre 1 et 3
         nombre_aleatoire = random.randint(1, 3)
-        nombre_aleatoire = 3
+       
         if etat_partage.num_grille !=0:
             nombre_aleatoire = etat_partage.num_grille
         # Remplir le etat_partage.canvas avec les valeurs générées dans etat_partage.grid_values
