@@ -375,7 +375,7 @@ class ihm_10x10:
             y = offset_y + row * cell_size + cell_size // 2
 
             # Ajouter ou modifier le texte au centre de la cellule cliquée
-            print(row,col,etat_partage.grid_values[row][col],etat_partage.grid_values2[row][col],len(etat_partage.col_ligne))
+            #print(row,col,etat_partage.grid_values[row][col],etat_partage.grid_values2[row][col],len(etat_partage.col_ligne))
             if etat_partage.text_ids[row][col] is not None and etat_partage.text_ids[row][col] != "Rempli":
                 
                 if etat_partage.grid_values[row][col] != etat_partage.grid_values2[row][col] and etat_partage.grid_values[row][col]!=-1:

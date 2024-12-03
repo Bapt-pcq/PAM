@@ -49,7 +49,7 @@ class ihm_6x6:
         button_valider = tk.Button(etat_partage.root, text="Valider", command=self.afficher_msg_valider,width=10, height=3)
         button_home = tk.Button(etat_partage.root, text="Accueil", command=self.home,width=7, height=2)
         button_resoudre = tk.Button(etat_partage.root, text="Resolution", command=self.ecrire_valeur,width=10, height=3)
-        button_aide = tk.Button(etat_partage.root, text="Aide", command=ihm_6x6.aide,width=10, height=3)
+        button_aide = tk.Button(etat_partage.root, text="Aide", command=self.aide,width=10, height=3)
         # Placement du bouton dans la fenêtre
         # button_clear.place(x=530, y=100)
         # button_verif.place(x=530, y=200)
@@ -246,7 +246,8 @@ class ihm_6x6:
     def check_grid_state():
         from vérification.verification import verification
         global button_verif, button_aide
-        
+        if etat_partage.canvas == None  :
+            return True
         if not verification.check_empty_cells(etat_partage.grid_values):
             button_verif.config(state="disabled")
             button_aide.config(state="disabled")
@@ -359,16 +360,11 @@ class ihm_6x6:
                 etat_partage.text_ids[row][col] = etat_partage.canvas.create_text(x, y, text=valeur_str, font=('Helvetica', 12), fill="blue")
             time.sleep(0.3)
             etat_partage.canvas.update_idletasks()
-                
-    def aide():
-        from vérification.verification import verification
-        global button_verif, button_aide
-        if not verification.check_empty_cells(etat_partage.grid_values):
-            button_verif.config(state="disabled")
-            button_aide.config(state="disabled")
-        else :     
-            button_verif.config(state="normal")
-            button_aide.config(state="normal")
+    
+                   
+    def aide(self):
+        self.elapsed_time+=10 
+        
         arret = 0
         i=0
         while arret==0:
@@ -378,7 +374,7 @@ class ihm_6x6:
             y = offset_y + row * cell_size + cell_size // 2
 
             # Ajouter ou modifier le texte au centre de la cellule cliquée
-            print(row,col,etat_partage.grid_values[row][col],etat_partage.grid_values2[row][col],etat_partage.text_ids[row][col])
+            #print(row,col,etat_partage.grid_values[row][col],etat_partage.grid_values2[row][col],etat_partage.text_ids[row][col])
             if etat_partage.text_ids[row][col] is not None and etat_partage.text_ids[row][col] != "Rempli":
                 
                 if etat_partage.grid_values[row][col] != etat_partage.grid_values2[row][col] and etat_partage.grid_values[row][col]!=-1:
