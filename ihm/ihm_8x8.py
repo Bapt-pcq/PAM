@@ -13,7 +13,7 @@ class ihm_8x8:
 
 
     def grille8x8(self, timer_enabled):
-        global taille, text_id_message, rows, cols, cell_size,offset_x,offset_y
+        global taille, text_id_message, rows, cols, cell_size,offset_x,offset_y, button_verif, button_aide
         taille =1
         # Définition des paramètres graphique
         etat_partage.root = tk.Tk()
@@ -152,6 +152,7 @@ class ihm_8x8:
 
         etat_partage.root.protocol("WM_DELETE_WINDOW", self.on_close)
             # Utilisation des fonctions
+        ihm_8x8.check_grid_state()
         return True
    
    
@@ -245,7 +246,18 @@ class ihm_8x8:
             etat_partage.canvas.delete(text_id_message)
             #text_id_message = canvas.create_text(310, 465, text="Vous avez correctement complété la grille, félicitation !", font=('Helvetica', 10), fill="black")    
             return True
-         
+    def check_grid_state():
+        from vérification.verification import verification
+        global button_verif, button_aide
+        
+        if not verification.check_empty_cells(etat_partage.grid_values):
+            button_verif.config(state="disabled")
+            button_aide.config(state="disabled")
+        else :     
+            button_verif.config(state="normal")
+            button_aide.config(state="normal") 
+        
+        etat_partage.root.after(1000, ihm_8x8.check_grid_state)      
     def verifier():
         # Vérifier les lignes
         global text_id_message

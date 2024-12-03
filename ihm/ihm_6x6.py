@@ -12,7 +12,7 @@ import time
 
 class ihm_6x6:     
     def grille6x6(self, timer_enabled):
-        global taille, text_id_message, rows, cols, cell_size , offset_x, offset_y
+        global taille, text_id_message, rows, cols, cell_size , offset_x, offset_y, button_verif, button_aide
         taille =0
         # Définition des paramètres graphique
        
@@ -152,9 +152,10 @@ class ihm_6x6:
         ihm_6x6.init_resolution()
         etat_partage.root.protocol("WM_DELETE_WINDOW", self.on_close)
             # Utilisation des fonctions
-
-        return True
+        ihm_6x6.check_grid_state()
+        
     
+
     def create_thread(i, j):
         thread_name = f"t{i}{j}"
         #print(f"Création du thread {thread_name}")
@@ -206,6 +207,7 @@ class ihm_6x6:
 
 
 
+
     def afficher_msg_valider(self):
         from vérification.verification import verification
         global grid_values, text_id_message
@@ -230,7 +232,7 @@ class ihm_6x6:
 
     def valider(self):
         from vérification.verification import verification
-        global text_id_message, grid_values
+        global text_id_message
         print("La valeur de values grids est de : ", etat_partage.grid_values)
         if not verification.check_empty_cells(etat_partage.grid_values):
             if not ihm_6x6.verifier():
@@ -240,11 +242,30 @@ class ihm_6x6:
             etat_partage.canvas.delete(text_id_message)
             #text_id_message = canvas.create_text(310, 465, text="Vous avez correctement complété la grille, félicitation !", font=('Helvetica', 10), fill="black")    
             return True
-           
+    
+    def check_grid_state():
+        from vérification.verification import verification
+        global button_verif, button_aide
+        
+        if not verification.check_empty_cells(etat_partage.grid_values):
+            button_verif.config(state="disabled")
+            button_aide.config(state="disabled")
+        else :     
+            button_verif.config(state="normal")
+            button_aide.config(state="normal") 
+        
+        etat_partage.root.after(1000, ihm_6x6.check_grid_state)  
     def verifier():
         from vérification.verification import verification
         # Vérifier les lignes
-        global text_id_message
+        global text_id_message, button_verif, button_aide
+        if not verification.check_empty_cells(etat_partage.grid_values):
+            button_verif.config(state="disabled")
+            button_aide.config(state="disabled")
+        else :     
+            button_verif.config(state="normal")
+            button_aide.config(state="normal")
+        
         if text_id_message != None:
             etat_partage.canvas.delete(text_id_message)
         if not verification.all_unique(etat_partage.grid_values):
@@ -340,6 +361,14 @@ class ihm_6x6:
             etat_partage.canvas.update_idletasks()
                 
     def aide():
+        from vérification.verification import verification
+        global button_verif, button_aide
+        if not verification.check_empty_cells(etat_partage.grid_values):
+            button_verif.config(state="disabled")
+            button_aide.config(state="disabled")
+        else :     
+            button_verif.config(state="normal")
+            button_aide.config(state="normal")
         arret = 0
         i=0
         while arret==0:
@@ -436,4 +465,7 @@ class ihm_6x6:
             "Bonne chance!"
             )
         tk.messagebox.showinfo("Aide Takuzu", aide_message)
+
+
+
     
