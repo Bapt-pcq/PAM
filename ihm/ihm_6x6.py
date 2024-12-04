@@ -152,7 +152,7 @@ class ihm_6x6:
         ihm_6x6.init_resolution()
         etat_partage.root.protocol("WM_DELETE_WINDOW", self.on_close)
             # Utilisation des fonctions
-        ihm_6x6.check_grid_state()
+        self.check_grid_state()
         
     
 
@@ -174,7 +174,7 @@ class ihm_6x6:
         etat_partage.grid_values2 = None
         etat_partage.text_ids2 = None
         etat_partage.col_ligne = []
-
+        self.stop_check()
         etat_partage.grille_complete =0
         etat_partage.debug=[]
         etat_partage.root.destroy()
@@ -196,7 +196,7 @@ class ihm_6x6:
         etat_partage.grid_values2 = None
         etat_partage.text_ids2 = None
         etat_partage.col_ligne = []
-
+        self.stop_check()
         etat_partage.grille_complete =0
         etat_partage.debug=[]
         if self.timer_enabled == True : 
@@ -243,11 +243,9 @@ class ihm_6x6:
             #text_id_message = canvas.create_text(310, 465, text="Vous avez correctement complété la grille, félicitation !", font=('Helvetica', 10), fill="black")    
             return True
     
-    def check_grid_state():
+    def check_grid_state(self):
         from vérification.verification import verification
         global button_verif, button_aide
-        if etat_partage.canvas == None  :
-            return True
         if not verification.check_empty_cells(etat_partage.grid_values):
             button_verif.config(state="disabled")
             button_aide.config(state="disabled")
@@ -255,7 +253,9 @@ class ihm_6x6:
             button_verif.config(state="normal")
             button_aide.config(state="normal") 
         
-        etat_partage.root.after(1000, ihm_6x6.check_grid_state)  
+        self._state_running = etat_partage.root.after(1000, self.check_grid_state) 
+    def stop_check(self):
+        etat_partage.root.after_cancel(self._state_running)
     def verifier():
         from vérification.verification import verification
         # Vérifier les lignes
@@ -430,7 +430,7 @@ class ihm_6x6:
         print("Fermeture de la fenêtre...")
         etat_partage.running = False  # Mettre le drapeau à False pour arrêter les threads
         etat_partage.verrou = None 
-        
+        self.stop_check()
         etat_partage.root.destroy()  # Détruire la fenêtre principale
         
     def start_chronometer(self):
