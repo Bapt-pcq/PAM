@@ -308,7 +308,7 @@ class ihm_8x8:
                 text_id_message = etat_partage.canvas.create_text(250, 465, text="Il y a une erreur dans la colonne " + str(col + 1) + " le nombre de 0 et de 1 est différent", font=('Helvetica', 10), fill="black")
 
                 return False
-        text_id_message = etat_partage.canvas.create_text(250, 465, text="Il n'y a pas d'erreur", font=('Helvetica', 10), fill="black")
+        text_id_message = etat_partage.canvas.create_text(275, 465, text="Il n'y a pas d'erreur", font=('Helvetica', 10), fill="black")
         return True
     
     def init_resolution():
