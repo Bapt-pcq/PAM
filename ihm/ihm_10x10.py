@@ -31,7 +31,7 @@ class ihm_10x10:
         etat_partage.text_ids2 = [[None for _ in range(cols)] for _ in range(rows)]
         etat_partage.grid_values2 = [["" for _ in range(cols)] for _ in range(rows)]
         text_id_message = None
-        
+        self._state_running= None
         # Définir les décalages pour centrer la grille
         offset_x = 30  # Décalage horizontal
         offset_y = 20  # Décalage vertical
@@ -186,7 +186,7 @@ class ihm_10x10:
         etat_partage.grid_values2 = None
         etat_partage.text_ids2 = None
         etat_partage.col_ligne = []
-
+        self.stop_check()
         etat_partage.grille_complete =0
         etat_partage.debug=[]
         etat_partage.root.destroy()
@@ -206,7 +206,7 @@ class ihm_10x10:
         etat_partage.text_ids2 = None
         etat_partage.col_ligne = []
         etat_partage.num_grille = 0
-
+        self.stop_check()
         etat_partage.grille_complete =0
         etat_partage.debug=[]
         if self.timer_enabled == True :
@@ -221,7 +221,7 @@ class ihm_10x10:
         global grid_values, text_id_message
         if verification.check_empty_cells(etat_partage.grid_values) : 
             etat_partage.canvas.delete(text_id_message)
-            text_id_message = etat_partage.canvas.create_text(390, 585, text="Vous devez d'abord terminer la grille !", font=('Helvetica', 10), fill="black")
+            text_id_message = etat_partage.canvas.create_text(365, 585, text="Vous devez d'abord terminer la grille !", font=('Helvetica', 10), fill="black")
         else :
             ihm_10x10.valider10x10()
             self.stop_chronometer()
@@ -251,7 +251,7 @@ class ihm_10x10:
             return True
         #canvas.delete(text_id_message)
         #text_id_message = canvas.create_text(390, 585,  text="Vous devez d'abord terminer la grille !", font=('Helvetica', 10), fill="black")
-    def check_grid_state():
+    def check_grid_state(self):
         from vérification.verification import verification
         global button_verif, button_aide
         
@@ -262,8 +262,11 @@ class ihm_10x10:
             button_verif.config(state="normal")
             button_aide.config(state="normal") 
         
-        etat_partage.root.after(1000, ihm_10x10.check_grid_state) 
-        
+        self._state_running = etat_partage.root.after(1000, self.check_grid_state) 
+    def stop_check(self):
+        if self._state_running :
+            etat_partage.root.after_cancel(self._state_running)
+            self._state_running = None          
         
     def verifier10x10():
     # Vérifier les lignes
@@ -328,7 +331,7 @@ class ihm_10x10:
         for i in range(10):  # Boucle pour les lignes
             for j in range(10):  # Boucle pour les colonnes
                 ihm_10x10.create_thread_resolution(i, j,trou)
-        
+
     def create_thread_resolution(i, j,trou):
         thread_name = f"t{i}{j}b"
         print(f"Création du thread {thread_name}")
@@ -431,6 +434,7 @@ class ihm_10x10:
         print("Fermeture de la fenêtre...")
         etat_partage.running = False  # Mettre le drapeau à False pour arrêter les threads
         etat_partage.verrou = None 
+        self.stop_check()
         etat_partage.root.destroy()  # Détruire la fenêtre principale
         
     def start_chronometer(self):

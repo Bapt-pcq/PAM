@@ -252,7 +252,6 @@ class ihm_6x6:
         else :     
             button_verif.config(state="normal")
             button_aide.config(state="normal") 
-        
         self._state_running = etat_partage.root.after(1000, self.check_grid_state) 
     def stop_check(self):
         etat_partage.root.after_cancel(self._state_running)

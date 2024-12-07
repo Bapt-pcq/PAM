@@ -30,18 +30,16 @@ class ihm_8x8:
         etat_partage.text_ids2 = [[None for _ in range(cols)] for _ in range(rows)]
         etat_partage.grid_values2 = [["" for _ in range(cols)] for _ in range(rows)]
         text_id_message = None
-        
         # Définir les décalages pour centrer la grille
         offset_x = 30  # Décalage horizontal
         offset_y = 20  # Décalage vertical
-        
+        self._state_running = None
         # Dessin des lignes horizontales et verticales
         for i in range(rows + 1):
              etat_partage.canvas.create_line(offset_x, offset_y + i * cell_size, offset_x + cols * cell_size, offset_y + i * cell_size)  # Lignes horizontales
         for j in range(cols + 1):
              etat_partage.canvas.create_line(offset_x + j * cell_size, offset_y, offset_x + j * cell_size, offset_y + rows * cell_size)  # Lignes verticales
         etat_partage.canvas.bind("<Button-1>", ihm_8x8.on_click)
-        
         ################################### Timer ##########################################
         self.timer_enabled = timer_enabled
         self.elapsed_time = 0  # Temps écoulé en secondes
@@ -182,7 +180,7 @@ class ihm_8x8:
         etat_partage.grid_values2 = None
         etat_partage.text_ids2 = None
         etat_partage.col_ligne = []
-
+        self.stop_check()
         etat_partage.grille_complete =0
         etat_partage.debug=[]
         etat_partage.root.destroy()
@@ -204,7 +202,7 @@ class ihm_8x8:
         etat_partage.text_ids2 = None
         etat_partage.col_ligne = []
         etat_partage.num_grille = 0
-
+        self.stop_check()
         etat_partage.grille_complete =0
         etat_partage.debug=[]
         if self.timer_enabled ==True :
@@ -218,7 +216,7 @@ class ihm_8x8:
         global grid_values, text_id_message
         if verification.check_empty_cells(etat_partage.grid_values) : 
             etat_partage.canvas.delete(text_id_message)
-            text_id_message = etat_partage.canvas.create_text(310, 465, text="Vous devez d'abord terminer la grille !", font=('Helvetica', 10), fill="black")
+            text_id_message = etat_partage.canvas.create_text(295, 465, text="Vous devez d'abord terminer la grille !", font=('Helvetica', 10), fill="black")
         else :
             ihm_8x8.valider()
             self.stop_chronometer()
@@ -246,18 +244,21 @@ class ihm_8x8:
             etat_partage.canvas.delete(text_id_message)
             #text_id_message = canvas.create_text(310, 465, text="Vous avez correctement complété la grille, félicitation !", font=('Helvetica', 10), fill="black")    
             return True
-    def check_grid_state():
+
+    def check_grid_state(self):
         from vérification.verification import verification
         global button_verif, button_aide
-        
         if not verification.check_empty_cells(etat_partage.grid_values):
             button_verif.config(state="disabled")
             button_aide.config(state="disabled")
         else :     
             button_verif.config(state="normal")
             button_aide.config(state="normal") 
-        
-        etat_partage.root.after(1000, ihm_8x8.check_grid_state)      
+        self._state_running = etat_partage.root.after(1000, self.check_grid_state) 
+    def stop_check(self):
+        if self._state_running :
+            etat_partage.root.after_cancel(self._state_running)
+            self._state_running = None    
     def verifier():
         # Vérifier les lignes
         global text_id_message
@@ -310,7 +311,7 @@ class ihm_8x8:
                 return False
         text_id_message = etat_partage.canvas.create_text(275, 465, text="Il n'y a pas d'erreur", font=('Helvetica', 10), fill="black")
         return True
-    
+
     def init_resolution():
          #creation d'un thread par case
         trou=0
@@ -419,6 +420,7 @@ class ihm_8x8:
         print("Fermeture de la fenêtre...")
         etat_partage.running = False  # Mettre le drapeau à False pour arrêter les threads
         etat_partage.verrou = None
+        self.stop_check()
         etat_partage.root.destroy()  # Détruire la fenêtre principale
         
 
